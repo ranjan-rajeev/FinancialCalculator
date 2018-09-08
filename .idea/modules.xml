@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FinancialCalculator.iml" filepath="$PROJECT_DIR$/FinancialCalculator.iml" />
-      <module fileurl="file://D:/Rajeev/AndroidProjects/FinancialCalculator/FinancialCalculator.iml" filepath="D:/Rajeev/AndroidProjects/FinancialCalculator/FinancialCalculator.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/FinancialCalculator.iml" filepath="$PROJECT_DIR$/.idea/FinancialCalculator.iml" />
+      <module fileurl="file://D:/Rajeev/AndroidProjects/FinancialCalculator/FinancialCalculator.iml" filepath="D:/Rajeev/AndroidProjects/FinancialCalculator/FinancialCalculator.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://D:/Rajeev/AndroidProjects/FinancialCalculator/app/app.iml" filepath="D:/Rajeev/AndroidProjects/FinancialCalculator/app/app.iml" />
     </modules>
