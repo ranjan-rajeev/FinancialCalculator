@@ -1,21 +1,17 @@
-package com.financialcalculator;
+package com.financialcalculator.emicalculator;
 
 import android.animation.ObjectAnimator;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -23,15 +19,21 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.financialcalculator.emicalculator.EmiAdapter;
-import com.financialcalculator.home.MainActivity;
+import com.financialcalculator.BaseActivity;
+import com.financialcalculator.R;
 import com.financialcalculator.model.DetailsEntity;
+import com.financialcalculator.model.YearsDetailsEntity;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import static android.view.View.GONE;
 
 public class EmiCalculatorActivity extends BaseActivity implements View.OnClickListener {
 
@@ -45,15 +47,21 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
     EditText etTenure, etInterest, etPrincipal;
     RecyclerView rvEMiDEtails;
     EmiAdapter emiAdapter;
+    YearEmiAdapter yearEmiAdapter;
     List<DetailsEntity> detailsEntityList;
+    List<YearsDetailsEntity> yearsDetailsEntities;
     ProgressBar progressPrincipal, progressInterest, progressInterestFull, progressPrincipalFull;
+    RadioGroup rgYearMonth;
+    RadioButton rbYear, rbMonth;
+
     public static final int ANIMATION_TIME = 3000;
+    String[] monthName = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL",
+            "AUG", "SEP", "OCT", "NOV",
+            "DEC"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         setContentView(R.layout.activity_emi_calculator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,6 +69,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
 
 
         init();
+        init_views();
         setListener();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +82,14 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
 
         animateProgressBar(progressInterestFull);
         animateProgressBar(progressPrincipalFull);
+
+
+    }
+
+    private void init_views() {
+        cvInput.setVisibility(View.VISIBLE);
+        cvResult.setVisibility(GONE);
+        cvDetails.setVisibility(GONE);
 
 
     }
@@ -94,11 +111,29 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
     private void setListener() {
         tvCalculate.setOnClickListener(this);
         tvDetails.setOnClickListener(this);
+        rgYearMonth.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                if (rbMonth.isChecked()) {
+                    if (!etTenure.getText().toString().equals("")) {
+                        double year = Double.parseDouble(etTenure.getText().toString());
+                        etTenure.setText("" + Math.round(year * 12));
+                    }
+                } else if (rbYear.isChecked()) {
+                    if (!etTenure.getText().toString().equals("")) {
+                        double month = Double.parseDouble(etTenure.getText().toString());
+                        etTenure.setText("" + (month / 12));
+                    }
+                }
+            }
+        });
     }
 
 
     private void init() {
-
+        rgYearMonth = findViewById(R.id.rgYearMonth);
+        rbYear = findViewById(R.id.rbYear);
+        rbMonth = findViewById(R.id.rbMonth);
         tvEmi = findViewById(R.id.tvEmi);
         tvTotalPayable = findViewById(R.id.tvTotalPayable);
         tvProgressInterestPercent = findViewById(R.id.tvProgressInterestPercent);
@@ -152,6 +187,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.tvDetails:
                 if (isValidInput()) {
+                    showLayouts();
                     new AsyncCalculateEMiDetails().execute();
                     calculateEmi(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
                     break;
@@ -159,6 +195,11 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
 
         }
 
+    }
+
+    private void showLayouts() {
+        cvResult.setVisibility(View.VISIBLE);
+        cvDetails.setVisibility(View.VISIBLE);
     }
 
 
@@ -170,12 +211,12 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         }
         if (etInterest.getText().toString().equals("")) {
             etInterest.requestFocus();
-            etInterest.setError("Enter Principal");
+            etInterest.setError("Enter Rate of Interest");
             return false;
         }
         if (etTenure.getText().toString().equals("")) {
             etTenure.requestFocus();
-            etTenure.setError("Enter Principal");
+            etTenure.setError("Enter Tenure");
             return false;
         }
         return true;
@@ -203,7 +244,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
             principal = (principal - principalPaid);
             double loanPAidPer = 100 - (principal / totalPrincipal);
 
-            DetailsEntity detailsEntity = new DetailsEntity(0, i, (principalPaid), (interestPAid), emi, principal, loanPAidPer);
+            DetailsEntity detailsEntity = new DetailsEntity(0, "" + i, (principalPaid), (interestPAid), emi, principal, loanPAidPer);
             detailsEntities.add(detailsEntity);
         }
 
@@ -211,16 +252,86 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         return detailsEntities;
     }
 
-    public List<DetailsEntity> getListDetailsYearly() {
+    public List<YearsDetailsEntity> getListDetailsYearly(String Principal, String Interest, String tenure) {
+
+
+        List<YearsDetailsEntity> yearsDetailsEntities = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        int currYear = calendar.get(Calendar.YEAR);
+        int currMonth = calendar.get(Calendar.MONTH);
+
+
         List<DetailsEntity> detailsEntities = new ArrayList<>();
-        return detailsEntities;
+
+
+        double principal = Double.parseDouble(Principal);
+        double totalPrincipal = principal;
+        double interestPercent = Double.parseDouble(Interest);
+        double timeInMonth = Double.parseDouble(tenure);
+
+        if (rbYear.isChecked()) {
+            timeInMonth = timeInMonth * 12;
+        }
+
+        double effectiveROI = interestPercent / 1200;
+        double top = Math.pow((1 + effectiveROI), timeInMonth);
+        double emi = (principal * effectiveROI * (top / (top - 1)));
+
+
+        double totalPrincipalPAid = 0;
+        double totalInterestPAid = 0;
+        double totalPayment = 0;
+
+        for (int i = 1; i <= timeInMonth; i++) {
+
+            double interestPAid = (effectiveROI * principal);
+            double principalPaid = (emi - interestPAid);
+            principal = (principal - principalPaid);
+            double loanPAidPer = 100 - (principal / totalPrincipal);
+
+            DetailsEntity detailsEntity = new DetailsEntity(currYear, monthName[currMonth], (principalPaid), (interestPAid), emi, principal, loanPAidPer);
+            detailsEntities.add(detailsEntity);
+
+            totalPrincipalPAid = totalPrincipalPAid + principalPaid;
+            totalInterestPAid = totalInterestPAid + interestPAid;
+            totalPayment = totalPayment + emi;
+
+            currMonth = currMonth + 1;
+
+
+            if (currMonth == 12 || i == (int)timeInMonth) {
+                YearsDetailsEntity yearsDetailsEntity = new YearsDetailsEntity(currYear, "", totalPrincipalPAid,
+                        totalInterestPAid, totalPayment, principal, loanPAidPer);
+                yearsDetailsEntity.setDetailsEntityList(detailsEntities);
+                yearsDetailsEntities.add(yearsDetailsEntity);
+
+                currYear = currYear + 1;
+                currMonth = 0;
+                //detailsEntities.clear();
+                detailsEntities = new ArrayList<>();
+                totalPrincipalPAid = 0;
+                totalInterestPAid = 0;
+                totalPayment = 0;
+
+            }
+
+
+        }
+
+
+        return yearsDetailsEntities;
     }
+
 
     public void calculateEmi(String Principal, String Interest, String tenure) {
 
         double principal = Double.parseDouble(Principal);
         double interestPercent = Double.parseDouble(Interest);
         double timeInMonth = Double.parseDouble(tenure);
+
+        if (rbYear.isChecked()) {
+            timeInMonth = timeInMonth * 12;
+        }
 
         double effectiveROI = interestPercent / 1200;
 
@@ -260,15 +371,21 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         @Override
         protected String doInBackground(Void... voids) {
 
-            detailsEntityList = getListDetailsMonthly(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
+            //detailsEntityList = getListDetailsMonthly(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
+            yearsDetailsEntities = getListDetailsYearly(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
+
             return "";
         }
 
         @Override
         protected void onPostExecute(String s) {
             cancelDialog();
-            emiAdapter = new EmiAdapter(EmiCalculatorActivity.this, detailsEntityList);
-            rvEMiDEtails.setAdapter(emiAdapter);
+            Log.d("EMI", "" + yearsDetailsEntities.size());
+            // emiAdapter = new EmiAdapter(EmiCalculatorActivity.this, detailsEntityList);
+            // rvEMiDEtails.setAdapter(emiAdapter);
+
+            yearEmiAdapter = new YearEmiAdapter(EmiCalculatorActivity.this, yearsDetailsEntities);
+            rvEMiDEtails.setAdapter(yearEmiAdapter);
             scrollToRow(scrollView, llEmiCAl, cvDetails);
         }
     }

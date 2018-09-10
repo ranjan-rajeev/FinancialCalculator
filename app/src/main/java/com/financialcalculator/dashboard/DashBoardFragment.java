@@ -1,6 +1,7 @@
 package com.financialcalculator.dashboard;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.financialcalculator.R;
+import com.financialcalculator.dashboard.emicompare.EmiCompareActivity;
+import com.financialcalculator.emicalculator.EmiCalculatorActivity;
 import com.financialcalculator.model.DashboardEntity;
 
 import java.util.ArrayList;
@@ -76,5 +79,17 @@ public class DashBoardFragment extends Fragment {
         rvBanking = view.findViewById(R.id.rvBanking);
         rvSip = view.findViewById(R.id.rvSip);
         rvGstVat = view.findViewById(R.id.rvGstVat);
+    }
+
+    public void redirectToResACtivity(DashboardEntity dashboardEntity) {
+        switch (dashboardEntity.getId()) {
+            case 1:
+                startActivity(new Intent(getActivity(), EmiCalculatorActivity.class));
+                break;
+            case 3:
+                startActivity(new Intent(getActivity(), EmiCompareActivity.class));
+                break;
+
+        }
     }
 }
