@@ -40,11 +40,37 @@ public class DashBoardFragment extends Fragment {
     private void init_lists() {
         int i = 0;
         emiCalList = new ArrayList<DashboardEntity>();
-        emiCalList.add(new DashboardEntity(++i, "EMI Calculator", R.drawable.ic_menu_camera));
-        emiCalList.add(new DashboardEntity(++i, "Pro EMI Calculator", R.drawable.ic_menu_share));
-        emiCalList.add(new DashboardEntity(++i, "Compare Loan", R.drawable.ic_menu_manage));
-        emiCalList.add(new DashboardEntity(++i, "EMI Calculator", R.drawable.ic_menu_send));/*
-        emiCalList.add(new DashboardEntity(++i, "EMI Calculator", R.drawable.ic_menu_camera));
+
+        emiCalList.add(new DashboardEntity(++i, "EMI Calculator", R.drawable.emi_cal));
+        emiCalList.add(new DashboardEntity(++i, "Compare Loan", R.drawable.compare_icon));
+        emiCalList.add(new DashboardEntity(++i, "Fixed Vs \nReducing Rate", R.drawable.compare_icon));
+
+
+        loanList = new ArrayList<>();
+        loanList.add(new DashboardEntity(++i, "Home Loan\n Calculator", R.drawable.emi_cal));
+        loanList.add(new DashboardEntity(++i, "Personal Loan\n Calculator", R.drawable.emi_cal));
+        loanList.add(new DashboardEntity(++i, "Loan Against\n Property", R.drawable.emi_cal));
+        loanList.add(new DashboardEntity(++i, "Gold Loan\n Calculator", R.drawable.emi_cal));
+
+
+        bankingList = new ArrayList<>();
+        bankingList.add(new DashboardEntity(++i, "FD Calculator", R.drawable.emi_cal));
+        bankingList.add(new DashboardEntity(++i, "RD Calculator", R.drawable.emi_cal));
+        bankingList.add(new DashboardEntity(++i, "PPF Calculator", R.drawable.emi_cal));
+        bankingList.add(new DashboardEntity(++i, "Simple & Compound\n Interest", R.drawable.emi_cal));
+
+        sipList = new ArrayList<>();
+        sipList.add(new DashboardEntity(++i, "Systematic \nInvestment Plan", R.drawable.emi_cal));
+        sipList.add(new DashboardEntity(++i, "Advance SIP \nCalculator", R.drawable.emi_cal));
+        sipList.add(new DashboardEntity(++i, "Systematic \nWithdrawal Plan", R.drawable.emi_cal));
+        sipList.add(new DashboardEntity(++i, "Lumpsum Calculator", R.drawable.emi_cal));
+
+
+        gstList = new ArrayList<>();
+        gstList.add(new DashboardEntity(++i, "GST Calculator", R.drawable.emi_cal));
+        gstList.add(new DashboardEntity(++i, "VAT Calculator", R.drawable.emi_cal));
+
+       /* emiCalList.add(new DashboardEntity(++i, "EMI Calculator", R.drawable.ic_menu_camera));
         emiCalList.add(new DashboardEntity(++i, "Pro EMI Calculator", R.drawable.ic_menu_share));
         emiCalList.add(new DashboardEntity(++i, "Compare Loan", R.drawable.ic_menu_manage));
         emiCalList.add(new DashboardEntity(++i, "EMI Calculator", R.drawable.ic_menu_send));*/
@@ -57,19 +83,19 @@ public class DashBoardFragment extends Fragment {
         rvEmiCAl.setAdapter(dashboardItemAdapter);
 
         rvBanking.setLayoutManager(new GridLayoutManager(this.getActivity(), 4));
-        dashboardItemAdapter = new DashboardItemAdapter(this, emiCalList);
+        dashboardItemAdapter = new DashboardItemAdapter(this, bankingList);
         rvBanking.setAdapter(dashboardItemAdapter);
 
         rvGstVat.setLayoutManager(new GridLayoutManager(this.getActivity(), 4));
-        dashboardItemAdapter = new DashboardItemAdapter(this, emiCalList);
+        dashboardItemAdapter = new DashboardItemAdapter(this, gstList);
         rvGstVat.setAdapter(dashboardItemAdapter);
 
         rvLoan.setLayoutManager(new GridLayoutManager(this.getActivity(), 4));
-        dashboardItemAdapter = new DashboardItemAdapter(this, emiCalList);
+        dashboardItemAdapter = new DashboardItemAdapter(this, loanList);
         rvLoan.setAdapter(dashboardItemAdapter);
 
         rvSip.setLayoutManager(new GridLayoutManager(this.getActivity(), 4));
-        dashboardItemAdapter = new DashboardItemAdapter(this, emiCalList);
+        dashboardItemAdapter = new DashboardItemAdapter(this, sipList);
         rvSip.setAdapter(dashboardItemAdapter);
     }
 
