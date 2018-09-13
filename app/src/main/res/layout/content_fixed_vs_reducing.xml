@@ -2,12 +2,13 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/scrollView"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".emi.emicompare.EmiCompareActivity"
-    tools:showIn="@layout/activity_emi_compare">
+    tools:context=".emi.emifixedvsreducing.FixedVsReducingActivity"
+    tools:showIn="@layout/activity_fixed_vs_reducing">
+
 
     <LinearLayout
         android:id="@+id/llEmiCAl"
@@ -51,8 +52,8 @@
                             android:background="@color/colorPrimaryDark"
                             android:gravity="center"
                             android:padding="12dp"
-                            android:text="LOAN 1"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:text="Flat Rate"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                             android:textColor="@color/white"
                             android:visibility="visible" />
 
@@ -77,7 +78,7 @@
                             style="@style/CustomTextInputLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Interest1*"
+                            android:hint="Flat Rate*"
                             app:hintTextAppearance="@style/MyTextInputLayout">
 
                             <EditText
@@ -124,8 +125,8 @@
                             android:background="@color/colorPrimaryDark"
                             android:gravity="center"
                             android:padding="12dp"
-                            android:text="LOAN 2"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:text="Reducing Rate"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                             android:textColor="@color/white"
                             android:visibility="visible" />
 
@@ -150,7 +151,7 @@
                             style="@style/CustomTextInputLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Interest2*"
+                            android:hint="Reducing Rate*"
                             app:hintTextAppearance="@style/MyTextInputLayout">
 
                             <EditText
@@ -506,6 +507,4 @@
 
         </android.support.v7.widget.CardView>
     </LinearLayout>
-
-
 </android.support.v4.widget.NestedScrollView>

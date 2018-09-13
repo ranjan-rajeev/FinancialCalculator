@@ -1,4 +1,4 @@
-package com.financialcalculator.emicalculator;
+package com.financialcalculator.emi.emicalculator;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.financialcalculator.R;
-import com.financialcalculator.model.DetailsEntity;
 import com.financialcalculator.model.YearsDetailsEntity;
 
 import java.util.List;

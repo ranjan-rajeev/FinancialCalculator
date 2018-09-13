@@ -6,15 +6,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.financialcalculator.R;
-import com.financialcalculator.dashboard.emicompare.EmiCompareActivity;
-import com.financialcalculator.emicalculator.EmiCalculatorActivity;
+import com.financialcalculator.emi.emicompare.EmiCompareActivity;
+import com.financialcalculator.emi.emicalculator.EmiCalculatorActivity;
+import com.financialcalculator.emi.emifixedvsreducing.FixedVsReducingActivity;
 import com.financialcalculator.model.DashboardEntity;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class DashBoardFragment extends Fragment {
 
         emiCalList.add(new DashboardEntity(++i, "EMI Calculator", R.drawable.emi_cal));
         emiCalList.add(new DashboardEntity(++i, "Compare Loan", R.drawable.compare_icon));
-        emiCalList.add(new DashboardEntity(++i, "Fixed Vs \nReducing Rate", R.drawable.compare_icon));
+        emiCalList.add(new DashboardEntity(++i, "Flat Vs \nReducing Rate", R.drawable.compare_icon));
 
 
         loanList = new ArrayList<>();
@@ -112,8 +112,11 @@ public class DashBoardFragment extends Fragment {
             case 1:
                 startActivity(new Intent(getActivity(), EmiCalculatorActivity.class));
                 break;
-            case 3:
+            case 2:
                 startActivity(new Intent(getActivity(), EmiCompareActivity.class));
+                break;
+            case 3:
+                startActivity(new Intent(getActivity(), FixedVsReducingActivity.class));
                 break;
 
         }
