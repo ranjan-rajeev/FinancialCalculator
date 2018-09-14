@@ -10,4 +10,10 @@
     <string name="title_activity_emi_calculator">EMI Calculator</string>
     <string name="title_activity_emi_compare">EMI Compare</string>
     <string name="title_activity_fixed_vs_reducing">Flat Vs Reducing Rate</string>
+    <string name="title_activity_gst_calculator">Gst Calculator</string>
+    <string name="title_activity_vat_calculator">Vat Calculator</string>
+    <string-array name="gst_type">
+        <item>Add GST</item>
+        <item>Remove GST</item>
+    </string-array>
 </resources>

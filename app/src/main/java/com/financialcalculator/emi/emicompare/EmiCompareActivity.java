@@ -24,6 +24,9 @@ public class EmiCompareActivity extends BaseActivity implements View.OnClickList
 
     public static final int ANIMATION_TIME = 3000;
     NestedScrollView scrollView;
+    LinearLayout llEmiCAl;
+    CardView cvInput, cvResult;
+
     TextView tvDetails;
     EditText etTenure, etInterest, etPrincipal;
     EditText etPrincipalLoan2, etInterestLoan2, etTenureLoan2;
@@ -32,8 +35,6 @@ public class EmiCompareActivity extends BaseActivity implements View.OnClickList
     TextView tvEmiLoan2, tvTotalPayableLoan2, tvProgressInterestPercentLoan2, tvProgressInterestLoan2;
 
     ProgressBar progressInterest, progressInterestFull, progressInterestLoan2, progressInterestFullLoan2;
-    LinearLayout llEmiCAl;
-    CardView cvInput, cvResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
