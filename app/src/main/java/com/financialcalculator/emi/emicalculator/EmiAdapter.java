@@ -1,13 +1,10 @@
-package com.financialcalculator.emicalculator;
+package com.financialcalculator.emi.emicalculator;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -55,11 +52,11 @@ public class EmiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         if (holder instanceof EmiDetailsHolder) {
             DetailsEntity detailsEntity = detailsEntityList.get(position);
-            if (position % 2 == 0) {
+          /*  if (position % 2 == 0) {
                 ((EmiDetailsHolder) holder).llItem_details.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
             } else {
                 ((EmiDetailsHolder) holder).llItem_details.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lightGrey));
-            }
+            }*/
             ((EmiDetailsHolder) holder).yearMonth.setText("" + detailsEntity.getMonth());
             ((EmiDetailsHolder) holder).principalPaid.setText("" + detailsEntity.getPrincipal());
             ((EmiDetailsHolder) holder).intPAid.setText("" + detailsEntity.getInterest());

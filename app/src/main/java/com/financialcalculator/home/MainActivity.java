@@ -45,6 +45,16 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_camera);
+
+        showDashboard();
+    }
+
+    private void showDashboard() {
+        getSupportActionBar().setTitle("HOME");
+        Fragment fragment = new DashBoardFragment();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame, fragment);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -89,10 +99,10 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         switch (item.getItemId()) {
 
-            case R.id.nav_camera:
+            /*case R.id.nav_camera:
                 getSupportActionBar().setTitle("HOME");
                 fragment = new DashBoardFragment();
-                break;
+                break;*/
 
         }
 

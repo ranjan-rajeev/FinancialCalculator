@@ -1,16 +1,40 @@
 package com.financialcalculator.model;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
-public class DetailsEntity {
-    DecimalFormat format = new DecimalFormat("##.00");
+public class YearsDetailsEntity {
+
+    List<DetailsEntity> detailsEntityList;
+
+    boolean childVisible;
     int year;
+
+    public boolean isChildVisible() {
+        return childVisible;
+    }
+
+    public void setChildVisible(boolean childVisible) {
+        this.childVisible = childVisible;
+    }
+
     String month;
     double principal;
     double interest;
     double totalPayment;
     double balance;
     double loanPaidPercent;
+
+    DecimalFormat format = new DecimalFormat("##.00");
+
+    public List<DetailsEntity> getDetailsEntityList() {
+        return detailsEntityList;
+    }
+
+    public void setDetailsEntityList(List<DetailsEntity> detailsEntityList) {
+        this.detailsEntityList = detailsEntityList;
+    }
+
 
     public int getYear() {
         return year;
@@ -69,7 +93,7 @@ public class DetailsEntity {
     }
 
 
-    public DetailsEntity(int year, String month, double principal, double interest, double totalPayment, double balance, double loanPaidPercent) {
+    public YearsDetailsEntity(int year, String month, double principal, double interest, double totalPayment, double balance, double loanPaidPercent) {
         this.year = year;
         this.month = month;
         this.principal = Math.round(principal);
@@ -77,5 +101,6 @@ public class DetailsEntity {
         this.totalPayment = Math.round(totalPayment);
         this.balance = Math.round(balance);
         this.loanPaidPercent = Math.round(loanPaidPercent);
+        this.childVisible = false;
     }
 }

@@ -8,7 +8,7 @@
     android:background="@color/bg_light"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".EmiCalculatorActivity"
+    tools:context=".emi.emicalculator.EmiCalculatorActivity"
     tools:showIn="@layout/activity_emi_calculator">
 
     <LinearLayout
@@ -42,48 +42,84 @@
                     app:hintTextAppearance="@style/MyTextInputLayout">
 
                     <EditText
-                        android:maxLength="12"
-                        android:maxLines="1"
                         android:id="@+id/etPrincipal"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@drawable/corner_shape"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:maxLength="12"
+                        android:maxLines="1" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     style="@style/CustomTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Interest*"
+                    android:hint="Rate Of Interest*"
                     app:hintTextAppearance="@style/MyTextInputLayout">
 
                     <EditText
-                        android:maxLength="2"
-                        android:maxLines="1"
                         android:id="@+id/etInterest"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@drawable/corner_shape"
-                        android:inputType="numberDecimal" />
+                        android:inputType="numberDecimal"
+                        android:maxLength="5"
+                        android:maxLines="1" />
                 </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    style="@style/CustomTextInputLayout"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Loan Tenure(In Months)*"
-                    app:hintTextAppearance="@style/MyTextInputLayout">
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
 
-                    <EditText
-                        android:maxLength="3"
-                        android:maxLines="1"
-                        android:id="@+id/etTenure"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@drawable/corner_shape"
-                        android:inputType="number" />
-                </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        style="@style/CustomTextInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Loan Tenure*"
+                        app:hintTextAppearance="@style/MyTextInputLayout">
+
+                        <EditText
+                            android:id="@+id/etTenure"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@drawable/corner_shape"
+                            android:inputType="numberDecimal"
+                            android:maxLength="6"
+                            android:maxLines="1" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <RadioGroup
+                        android:id="@+id/rgYearMonth"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checkedButton="@id/rbYear"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp">
+
+                        <RadioButton
+                            android:id="@+id/rbYear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Yearly"
+                            android:textColor="@color/uvv_black" />
+
+                        <RadioButton
+                            android:id="@+id/rbMonth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Monthly"
+                            android:textColor="@color/uvv_black" />
+                    </RadioGroup>
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -102,7 +138,7 @@
                         android:background="@drawable/button_selector"
                         android:gravity="center"
                         android:padding="12dp"
-                        android:text="Details"
+                        android:text="Compare"
                         android:textColor="@color/white" />
 
                     <TextView
@@ -115,7 +151,8 @@
                         android:gravity="center"
                         android:padding="12dp"
                         android:text="Calculate"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:visibility="gone" />
                 </LinearLayout>
 
 
@@ -128,7 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:elevation="8dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -157,9 +194,9 @@
                     android:textStyle="bold" />
 
                 <View
-                    android:background="@color/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"/>
+                    android:layout_height="1dp"
+                    android:background="@color/divider" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -168,6 +205,7 @@
                     android:padding="10dp"
                     android:text="Total Payment"
                     android:textColor="@color/uvv_black" />
+
                 <TextView
 
                     android:layout_width="match_parent"
@@ -257,9 +295,9 @@
                             android:layout_below="@+id/tvInt"
                             android:gravity="center"
                             android:padding="10dp"
-                            android:textSize="20sp"
                             android:text="0 \u20B9"
                             android:textColor="@color/colorPrimary"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -329,9 +367,9 @@
                             android:layout_below="@+id/tvInt"
                             android:gravity="center"
                             android:padding="10dp"
-                            android:textSize="20sp"
                             android:text="0 \u20B9"
                             android:textColor="@color/colorPrimary"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -356,27 +394,20 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
-                <RadioGroup
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp">
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="EMI Projection"
+                    android:textColor="@color/uvv_black" />
 
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Yearly"
-                        android:textColor="@color/uvv_black" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Monthly"
-                        android:textColor="@color/uvv_black" />
-                </RadioGroup>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/divider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

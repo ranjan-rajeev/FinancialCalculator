@@ -3,7 +3,7 @@
     android:id="@+id/llItem_details"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/lightGrey"
+    android:background="@color/bg_light"
     android:orientation="horizontal">
 
     <TextView

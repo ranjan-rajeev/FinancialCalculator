@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.financialcalculator.R;
@@ -26,11 +27,13 @@ public class DashboardItemAdapter extends RecyclerView.Adapter<RecyclerView.View
     public class DashboardItemHolder extends RecyclerView.ViewHolder {
         ImageView ivIcon;
         TextView tvName;
+        RelativeLayout rl;
 
         public DashboardItemHolder(View view) {
             super(view);
             ivIcon = (ImageView) view.findViewById(R.id.ivIcon);
             tvName = (TextView) view.findViewById(R.id.tvName);
+            rl = view.findViewById(R.id.rl);
         }
     }
 
@@ -47,9 +50,18 @@ public class DashboardItemAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
+
         if (holder instanceof DashboardItemHolder) {
-            ((DashboardItemHolder) holder).ivIcon.setImageResource(list.get(position).getIcon());
-            ((DashboardItemHolder) holder).tvName.setText(list.get(position).getName());
+            final DashboardEntity dashboardEntity = list.get(position);
+            ((DashboardItemHolder) holder).ivIcon.setImageResource(dashboardEntity.getIcon());
+            ((DashboardItemHolder) holder).tvName.setText(dashboardEntity.getName());
+            ((DashboardItemHolder) holder).rl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((DashBoardFragment) mContext).redirectToResACtivity(dashboardEntity);
+                }
+            });
+
         }
     }
 

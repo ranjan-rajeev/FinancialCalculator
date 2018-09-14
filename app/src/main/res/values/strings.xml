@@ -8,4 +8,6 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_emi_calculator">EMI Calculator</string>
+    <string name="title_activity_emi_compare">EMI Compare</string>
+    <string name="title_activity_fixed_vs_reducing">Flat Vs Reducing Rate</string>
 </resources>
