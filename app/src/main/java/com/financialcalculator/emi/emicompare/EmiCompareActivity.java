@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.financialcalculator.BaseActivity;
+import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.R;
 
 import java.text.DecimalFormat;

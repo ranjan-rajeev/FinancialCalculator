@@ -21,7 +21,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.financialcalculator.BaseActivity;
+import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.R;
 import com.financialcalculator.model.DetailsEntity;
 import com.financialcalculator.model.YearsDetailsEntity;

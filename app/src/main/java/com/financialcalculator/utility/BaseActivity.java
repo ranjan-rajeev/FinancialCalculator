@@ -1,4 +1,4 @@
-package com.financialcalculator;
+package com.financialcalculator.utility;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -14,6 +14,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.financialcalculator.R;
 
 /**
  * Created by Rohit on 12/12/15.

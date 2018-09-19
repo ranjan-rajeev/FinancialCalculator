@@ -67,62 +67,54 @@
                         android:textColor="@color/uvv_black"
                         android:visibility="visible" />
 
-                    <RadioGroup
 
+                    <RadioGroup
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <RadioButton
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_weight="1"
+                            android:text="5%" />
 
-                            <RadioButton
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="5%" />
-
-                            <RadioButton
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="12%" />
-
-                            <RadioButton
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="18%" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <RadioButton
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_weight="1"
+                            android:text="12%" />
 
-                            <RadioButton
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="28%" />
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="18%" />
+                    </RadioGroup>
 
-                            <RadioButton
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="other" />
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                            <RadioButton
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="other"
-                                android:visibility="invisible" />
-                        </LinearLayout>
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="28%" />
 
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="other" />
 
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="other"
+                            android:visibility="invisible" />
                     </RadioGroup>
 
 
@@ -143,6 +135,15 @@
                             android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
+
+                    <Spinner
+                        android:id="@+id/spGstTYpe"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/corner_shape"
+                        tools:entries="@array/gst_type" />
+
+
                     <TextView
                         android:id="@+id/tvCalculate"
                         android:layout_width="match_parent"
@@ -153,7 +154,7 @@
                         android:background="@drawable/button_selector"
                         android:gravity="center"
                         android:padding="12dp"
-                        android:text="Compare"
+                        android:text="Calculate"
                         android:textColor="@color/white"
                         android:visibility="visible" />
                 </LinearLayout>
@@ -187,11 +188,11 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="EMI (Per Month)"
+                        android:text="Original Cost"
                         android:textColor="@color/uvv_black" />
 
                     <TextView
-                        android:id="@+id/tvEmi"
+                        android:id="@+id/tvOriginalCost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -210,19 +211,12 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Total Payment"
+                        android:text="GST Applied"
                         android:textColor="@color/uvv_black" />
 
-                    <TextView
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="( Principal + Interest )"
-                        android:textColor="@color/uvv_black" />
 
                     <TextView
-                        android:id="@+id/tvTotalPayable"
+                        android:id="@+id/tvAppliedGst"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -232,108 +226,6 @@
                         android:textSize="25sp"
                         android:textStyle="bold" />
 
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:layout_weight="1">
-
-
-                            <ProgressBar
-                                android:id="@+id/progressInterestFull"
-                                style="?android:attr/progressBarStyleHorizontal"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                android:max="100"
-                                android:progress="0"
-                                android:progressDrawable="@drawable/circular_full" />
-
-                            <ProgressBar
-                                android:id="@+id/progressInterest"
-                                style="?android:attr/progressBarStyleHorizontal"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                android:max="100"
-                                android:progress="0"
-                                android:progressDrawable="@drawable/circular" />
-
-                            <TextView
-                                android:id="@+id/tvProgressInterestPercent"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_centerVertical="true"
-                                android:gravity="center"
-                                android:text="0%"
-                                android:textAllCaps="true"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="30sp"
-                                android:textStyle="bold" />
-
-
-                        </RelativeLayout>
-
-                        <TextView
-                            style="@style/TextViewStyle.Small"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/progressInterest"
-                            android:gravity="center"
-                            android:paddingBottom="10dp"
-                            android:paddingTop="10dp"
-                            android:text="Total Interest Payable"
-                            android:textColor="@color/uvv_black" />
-
-                        <TextView
-                            android:id="@+id/tvProgressInterest"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/tvInt"
-                            android:gravity="center"
-                            android:padding="10dp"
-                            android:text="0 \u20B9"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/divider" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:text="EMI (Per Month)"
-                        android:textColor="@color/uvv_black" />
-
-                    <TextView
-                        android:id="@+id/tvEmiLoan2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="0\u20B9"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="25sp"
-                        android:textStyle="bold" />
 
                     <View
                         android:layout_width="match_parent"
@@ -345,19 +237,12 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Total Payment"
+                        android:text="Net Price"
                         android:textColor="@color/uvv_black" />
 
-                    <TextView
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="( Principal + Interest )"
-                        android:textColor="@color/uvv_black" />
 
                     <TextView
-                        android:id="@+id/tvTotalPayableLoan2"
+                        android:id="@+id/tvNetPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -368,78 +253,8 @@
                         android:textStyle="bold" />
 
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:layout_weight="1">
-
-
-                            <ProgressBar
-                                android:id="@+id/progressInterestFullLoan2"
-                                style="?android:attr/progressBarStyleHorizontal"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                android:max="100"
-                                android:progress="0"
-                                android:progressDrawable="@drawable/circular_full" />
-
-                            <ProgressBar
-                                android:id="@+id/progressInterestLoan2"
-                                style="?android:attr/progressBarStyleHorizontal"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                android:max="100"
-                                android:progress="0"
-                                android:progressDrawable="@drawable/circular" />
-
-                            <TextView
-                                android:id="@+id/tvProgressInterestPercentLoan2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_centerVertical="true"
-                                android:gravity="center"
-                                android:text="0%"
-                                android:textAllCaps="true"
-                                android:textColor="@color/colorPrimary"
-                                android:textSize="30sp"
-                                android:textStyle="bold" />
-
-
-                        </RelativeLayout>
-
-                        <TextView
-                            style="@style/TextViewStyle.Small"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/progressInterest"
-                            android:gravity="center"
-                            android:paddingBottom="10dp"
-                            android:paddingTop="10dp"
-                            android:text="Total Interest Payable"
-                            android:textColor="@color/uvv_black" />
-
-                        <TextView
-                            android:id="@+id/tvProgressInterestLoan2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/tvInt"
-                            android:gravity="center"
-                            android:padding="10dp"
-                            android:text="0 \u20B9"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
                 </LinearLayout>
+
             </LinearLayout>
 
         </android.support.v7.widget.CardView>

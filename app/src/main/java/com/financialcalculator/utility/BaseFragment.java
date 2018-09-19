@@ -1,4 +1,4 @@
-package com.financialcalculator;
+package com.financialcalculator.utility;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
