@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,6 +35,10 @@ public class BaseFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
+    }
+
+    public static String getFormattedDouble(double d) {
+        return new DecimalFormat("#").format(d);
     }
 
     protected void showDialog() {

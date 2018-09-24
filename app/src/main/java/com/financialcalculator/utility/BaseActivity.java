@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.financialcalculator.R;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by Rohit on 12/12/15.
  */
@@ -61,7 +63,12 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-
+    public static String getFormattedDouble(double d) {
+        return new DecimalFormat("#").format(d);
+    }
+    public static String getFormattedDoubleUpToDecimal(double d) {
+        return new DecimalFormat("#.##").format(d);
+    }
     //region all neccessary functions
     @Override
     protected void onResume() {
