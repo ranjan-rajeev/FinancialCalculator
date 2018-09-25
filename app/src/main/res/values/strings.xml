@@ -16,4 +16,5 @@
         <item>Add GST</item>
         <item>Remove GST</item>
     </string-array>
+    <string name="title_activity_fdcalculator">FD Calculator</string>
 </resources>

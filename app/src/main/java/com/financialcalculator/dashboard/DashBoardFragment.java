@@ -12,8 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.financialcalculator.R;
-import com.financialcalculator.emi.emicompare.EmiCompareActivity;
+import com.financialcalculator.banking.FDCalculatorActivity;
 import com.financialcalculator.emi.emicalculator.EmiCalculatorActivity;
+import com.financialcalculator.emi.emicompare.EmiCompareActivity;
 import com.financialcalculator.emi.emifixedvsreducing.FixedVsReducingActivity;
 import com.financialcalculator.gst.GstCalculatorActivity;
 import com.financialcalculator.gst.VatCalculatorActivity;
@@ -126,6 +127,8 @@ public class DashBoardFragment extends Fragment {
                 break;
             case Constants.VAT_CALCULATOR:
                 startActivity(new Intent(getActivity(), VatCalculatorActivity.class));
+            case Constants.FD_CALCULATOR:
+                startActivity(new Intent(getActivity(), FDCalculatorActivity.class));
                 break;
 
         }
