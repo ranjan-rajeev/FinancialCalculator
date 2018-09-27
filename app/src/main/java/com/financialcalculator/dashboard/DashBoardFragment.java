@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.financialcalculator.R;
-import com.financialcalculator.banking.FDCalculatorActivity;
+import com.financialcalculator.banking.fd.FDCalculatorActivity;
 import com.financialcalculator.emi.emicalculator.EmiCalculatorActivity;
 import com.financialcalculator.emi.emicompare.EmiCompareActivity;
 import com.financialcalculator.emi.emifixedvsreducing.FixedVsReducingActivity;

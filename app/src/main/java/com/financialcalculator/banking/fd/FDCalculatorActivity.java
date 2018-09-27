@@ -1,4 +1,4 @@
-package com.financialcalculator.banking;
+package com.financialcalculator.banking.fd;
 
 import android.graphics.Rect;
 import android.os.AsyncTask;
@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.financialcalculator.R;
-import com.financialcalculator.banking.fd.FDYearAdapter;
 import com.financialcalculator.model.FDDetailsEntity;
 import com.financialcalculator.model.FDEntity;
 import com.financialcalculator.utility.BaseActivity;
@@ -286,16 +285,16 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
         if (!etMonth.getText().toString().equals("")) {
             int month = Integer.parseInt(etMonth.getText().toString());
             if (month > 12) {
-                etYear.requestFocus();
-                etYear.setError("Month b/w 1 to 12");
+                etMonth.requestFocus();
+                etMonth.setError("Month b/w 1 to 12");
                 return false;
             }
         }
         if (!etDay.getText().toString().equals("")) {
             int month = Integer.parseInt(etDay.getText().toString());
             if (month > 31) {
-                etYear.requestFocus();
-                etYear.setError("Day b/w 1 to 31");
+                etDay.requestFocus();
+                etDay.setError("Day b/w 1 to 31");
                 return false;
             }
         }
