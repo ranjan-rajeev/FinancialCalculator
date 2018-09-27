@@ -1,5 +1,7 @@
 package com.financialcalculator.banking;
 
+import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
@@ -12,7 +14,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.financialcalculator.R;
+import com.financialcalculator.banking.fd.FDYearAdapter;
+import com.financialcalculator.model.FDDetailsEntity;
+import com.financialcalculator.model.FDEntity;
 import com.financialcalculator.utility.BaseActivity;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import static android.view.View.GONE;
 
 public class FDCalculatorActivity extends BaseActivity implements View.OnClickListener {
 
@@ -24,7 +35,14 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
     LinearLayout llEmiCAl;
     RecyclerView rvEMiDEtails;
 
-    double amount, rate, year, month, day, totalINterest, maturityAmt;
+    String[] monthName = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL",
+            "AUG", "SEP", "OCT", "NOV",
+            "DEC"};
+    double amount = 0, rate = 0, year = 0, month = 0, day = 0, totalINterest = 0, maturityAmt = 0;
+
+
+    List<FDDetailsEntity> fdDetailsEntityList;
+    FDYearAdapter yearEmiAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +68,16 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void init_views() {
+        cvInput.setVisibility(View.VISIBLE);
+        cvResult.setVisibility(GONE);
+        cvDetails.setVisibility(GONE);
+
+
+    }
+
+    private void showLayouts() {
+        cvResult.setVisibility(View.VISIBLE);
+        cvDetails.setVisibility(View.VISIBLE);
     }
 
     private void setListeners() {
@@ -81,10 +109,12 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
+        hideKeyBoard(view, this);
         switch (view.getId()) {
             case R.id.tvCalculate:
                 if (isValidInput()) {
-                    calculateFixedDeposit();
+                    showLayouts();
+                    new AsyncCalculateEMiDetails().execute();
                     bindDeposits();
                 }
                 break;
@@ -92,17 +122,147 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void calculateFixedDeposit() {
-        amount = Double.parseDouble(etPrincipal.getText().toString());
-        rate = Double.parseDouble(etInterest.getText().toString());
-        year = Double.parseDouble(etYear.getText().toString());
-        month = Double.parseDouble(etMonth.getText().toString());
-        day = Double.parseDouble(etDay.getText().toString());
+        if (!etPrincipal.getText().toString().equals(""))
+            amount = Double.parseDouble(etPrincipal.getText().toString());
+        else
+            amount = 0;
+
+        if (!etInterest.getText().toString().equals(""))
+            rate = Double.parseDouble(etInterest.getText().toString());
+        else
+            rate = 0;
+
+        if (!etYear.getText().toString().equals(""))
+            year = Double.parseDouble(etYear.getText().toString());
+        else
+            year = 0;
+
+        if (!etMonth.getText().toString().equals(""))
+            month = Double.parseDouble(etMonth.getText().toString());
+        else
+            month = 0;
+
+        if (!etDay.getText().toString().equals(""))
+            day = Double.parseDouble(etDay.getText().toString());
+        else
+            day = 0;
+
         double r = rate / 100;
         double n = 4;
-        double t = year + (month / 12) + (day / n);
+        double t = year + (month / 12) + (day / 365);
         maturityAmt = (amount * (Math.pow((1 + (r / n)), (n * t))));
         totalINterest = maturityAmt - amount;
 
+
+        getListDetailsYearly(amount, rate, year, month, day);
+    }
+
+
+    public List<FDDetailsEntity> getListDetailsYearly(double amount, double rate, double year, double month, double day) {
+
+
+        fdDetailsEntityList = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        int currYear = calendar.get(Calendar.YEAR);
+        int currMonth = calendar.get(Calendar.MONTH);
+
+        double r = rate / 100;
+        double n = 4;
+        double t = year + (month / 12) + (day / 365);
+        maturityAmt = (amount * (Math.pow((1 + (r / n)), (n * t))));
+        totalINterest = maturityAmt - amount;
+
+
+        List<FDEntity> fdEntities = new ArrayList<>();
+
+        double balance = amount;
+        double prevBalance = amount;
+        double balanceToShow = amount;
+        double interest = 0, totalINterest = 0, yearlyInterest = 0, interestToShow = 0;
+
+        double timeInMonth = getTimeINMOnth();
+
+
+        for (int i = 1; i <= timeInMonth; i++) {
+
+            if (i == timeInMonth && day != 0 && (day % 30 != 0)) {
+
+                double ti = ((day % 30) / 365);
+                balance = (prevBalance * (Math.pow((1 + (r / n)), (n * ti))));
+            } else {
+                balance = (prevBalance * (Math.pow((1 + (r / n)), (n * (1.0 / 12)))));
+            }
+
+
+            interest = balance - prevBalance;
+            prevBalance = balance;
+
+            yearlyInterest = yearlyInterest + interest;
+            interestToShow = interestToShow + interest;
+
+            if (i % 3 == 0 || i == timeInMonth) {
+                balanceToShow = balance;
+
+                FDEntity fdEntity = new FDEntity(monthName[currMonth], "" + currYear, getFormattedDouble(balanceToShow), getFormattedDouble(interest));
+                fdEntity.setInterestTotal(getFormattedDouble(interestToShow));
+                fdEntities.add(fdEntity);
+                interestToShow = 0;
+
+            } else {
+                FDEntity fdEntity = new FDEntity(monthName[currMonth], "" + currYear, getFormattedDouble(balanceToShow), getFormattedDouble(interest));
+                fdEntities.add(fdEntity);
+            }
+
+            currMonth = currMonth + 1;
+
+
+            if (currMonth == 12 || i == (int) timeInMonth) {
+                FDDetailsEntity fdDetailsEntity = new FDDetailsEntity();
+                fdDetailsEntity.setFdEntityLIst(fdEntities);
+                fdDetailsEntity.setInterest(getFormattedDouble(yearlyInterest));
+                fdDetailsEntity.setYear("" + currYear);
+                fdDetailsEntity.setMonth("");
+                fdDetailsEntity.setBalance(getFormattedDouble(balance));
+                fdDetailsEntityList.add(fdDetailsEntity);
+
+                currYear = currYear + 1;
+                currMonth = 0;
+                fdEntities = new ArrayList<>();
+                yearlyInterest = 0;
+            }
+
+
+        }
+
+
+        return fdDetailsEntityList;
+    }
+
+    private double getTimeINMOnth() {
+
+        double timeinMonth = 0;
+
+        if (!etYear.getText().toString().equals(""))
+            year = Double.parseDouble(etYear.getText().toString());
+        else
+            year = 0;
+        if (!etMonth.getText().toString().equals(""))
+            month = Double.parseDouble(etMonth.getText().toString());
+        else
+            month = 0;
+
+        if (!etDay.getText().toString().equals(""))
+            day = Double.parseDouble(etDay.getText().toString());
+        else
+            day = 0;
+
+
+        if (day == 0 || (day % 30 == 0)) {
+            timeinMonth = month + (year * 12) + (day / 30);
+        } else {
+            timeinMonth = month + (year * 12) + Math.ceil(day / 30);
+        }
+        return timeinMonth;
     }
 
     private void bindDeposits() {
@@ -112,6 +272,82 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
     }
 
     private boolean isValidInput() {
+
+        if (etPrincipal.getText().toString().equals("")) {
+            etPrincipal.requestFocus();
+            etPrincipal.setError("Enter Amount");
+            return false;
+        }
+        if (etInterest.getText().toString().equals("")) {
+            etInterest.requestFocus();
+            etInterest.setError("Enter Rate of Interest");
+            return false;
+        }
+        if (!etMonth.getText().toString().equals("")) {
+            int month = Integer.parseInt(etMonth.getText().toString());
+            if (month > 12) {
+                etYear.requestFocus();
+                etYear.setError("Month b/w 1 to 12");
+                return false;
+            }
+        }
+        if (!etDay.getText().toString().equals("")) {
+            int month = Integer.parseInt(etDay.getText().toString());
+            if (month > 31) {
+                etYear.requestFocus();
+                etYear.setError("Day b/w 1 to 31");
+                return false;
+            }
+        }
+
+        if (etYear.getText().toString().equals("") &&
+                etMonth.getText().toString().equals("") &&
+                etDay.getText().toString().equals("")) {
+            etYear.requestFocus();
+            etYear.setError("Enter Year");
+            return false;
+        }
+
         return true;
+    }
+
+    class AsyncCalculateEMiDetails extends AsyncTask<Void, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showDialog();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+
+            //detailsEntityList = getListDetailsMonthly(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
+            //fdDetailsEntityList = getListDetailsYearly(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
+            calculateFixedDeposit();
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            cancelDialog();
+
+            // emiAdapter = new EmiAdapter(EmiCalculatorActivity.this, detailsEntityList);
+            // rvEMiDEtails.setAdapter(emiAdapter);
+            bindDeposits();
+            yearEmiAdapter = new FDYearAdapter(FDCalculatorActivity.this, fdDetailsEntityList);
+            rvEMiDEtails.setAdapter(yearEmiAdapter);
+            scrollToRow(scrollView, llEmiCAl, cvDetails);
+        }
+    }
+
+    private void scrollToRow(final NestedScrollView scrollView, final LinearLayout linearLayout, final View textViewToShow) {
+        long delay = 200; //delay to let finish with possible modifications to ScrollView
+        scrollView.postDelayed(new Runnable() {
+            public void run() {
+                Rect textRect = new Rect(); //coordinates to scroll to
+                textViewToShow.getHitRect(textRect); //fills textRect with coordinates of TextView relative to its parent (LinearLayout)
+                scrollView.requestChildRectangleOnScreen(linearLayout, textRect, false); //ScrollView will make sure, the given textRect is visible
+            }
+        }, delay);
     }
 }

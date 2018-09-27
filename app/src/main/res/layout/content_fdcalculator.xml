@@ -2,6 +2,7 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -111,7 +112,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:background="@drawable/corner_shape"
-                            android:inputType="numberDecimal"
+                            android:inputType="number"
                             android:maxLength="6"
                             android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
@@ -129,7 +130,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:background="@drawable/corner_shape"
-                            android:inputType="numberDecimal"
+                            android:inputType="number"
                             android:maxLength="6"
                             android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
@@ -169,7 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:elevation="8dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -254,7 +255,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:elevation="8dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -286,7 +287,7 @@
 
                     <TextView
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@drawable/border_gray"
                         android:gravity="center"
@@ -304,7 +305,7 @@
                         android:gravity="center"
                         android:paddingBottom="8dp"
                         android:paddingTop="8dp"
-                        android:text="Principal"
+                        android:text="Interest\nAMount"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
 
@@ -316,7 +317,7 @@
                         android:gravity="center"
                         android:paddingBottom="8dp"
                         android:paddingTop="8dp"
-                        android:text="Interest"
+                        android:text="Interest\nCapitalized"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
 
