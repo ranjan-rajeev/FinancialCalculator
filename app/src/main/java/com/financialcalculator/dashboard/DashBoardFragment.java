@@ -21,6 +21,7 @@ import com.financialcalculator.emi.emifixedvsreducing.FixedVsReducingActivity;
 import com.financialcalculator.gst.GstCalculatorActivity;
 import com.financialcalculator.gst.VatCalculatorActivity;
 import com.financialcalculator.model.DashboardEntity;
+import com.financialcalculator.sip.LumpSumpSipActivity;
 import com.financialcalculator.sip.SIPCalculatorActivity;
 import com.financialcalculator.sip.SIPGoalCalculatorActivity;
 import com.financialcalculator.utility.Constants;
@@ -65,13 +66,13 @@ public class DashBoardFragment extends Fragment {
         bankingList.add(new DashboardEntity(Constants.FD_CALCULATOR, "FD Calculator", R.drawable.emi_cal));
         bankingList.add(new DashboardEntity(Constants.RD_CALCULATOR, "RD Calculator", R.drawable.emi_cal));
         bankingList.add(new DashboardEntity(Constants.PPF_CALCULATOR, "PPF Calculator", R.drawable.emi_cal));
-        bankingList.add(new DashboardEntity(Constants.SI_CI_CALCULATOR, "Simple & Compound\n Interest", R.drawable.emi_cal));
+        //bankingList.add(new DashboardEntity(Constants.SI_CI_CALCULATOR, "Simple & Compound\n Interest", R.drawable.emi_cal));
 
         sipList = new ArrayList<>();
         sipList.add(new DashboardEntity(Constants.SIP_CALCULATOR, "Systematic \nInvestment Plan", R.drawable.emi_cal));
-        sipList.add(new DashboardEntity(Constants.ADVANCE_SIP_CALCULATOR, "Advance SIP \nCalculator", R.drawable.emi_cal));
-        sipList.add(new DashboardEntity(Constants.SYSTEMATIC_WITHDRAWAL_PLAN, "Systematic \nWithdrawal Plan", R.drawable.emi_cal));
-        sipList.add(new DashboardEntity(Constants.LUMPSUMP_CALCULATOR, "Lumpsum Calculator", R.drawable.emi_cal));
+        sipList.add(new DashboardEntity(Constants.ADVANCE_SIP_CALCULATOR, "GOAL SIP \nCalculator", R.drawable.emi_cal));
+        //sipList.add(new DashboardEntity(Constants.SYSTEMATIC_WITHDRAWAL_PLAN, "Systematic \nWithdrawal Plan", R.drawable.emi_cal));
+        sipList.add(new DashboardEntity(Constants.LUMPSUMP_CALCULATOR, "Lumpsum SIP\nCalculator", R.drawable.emi_cal));
 
 
         gstList = new ArrayList<>();
@@ -86,23 +87,23 @@ public class DashBoardFragment extends Fragment {
     }
 
     private void setAdapters() {
-        rvEmiCAl.setLayoutManager(new GridLayoutManager(this.getActivity(), 4));
+        rvEmiCAl.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
         dashboardItemAdapter = new DashboardItemAdapter(this, emiCalList);
         rvEmiCAl.setAdapter(dashboardItemAdapter);
 
-        rvBanking.setLayoutManager(new GridLayoutManager(this.getActivity(), 4));
+        rvBanking.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
         dashboardItemAdapter = new DashboardItemAdapter(this, bankingList);
         rvBanking.setAdapter(dashboardItemAdapter);
 
-        rvGstVat.setLayoutManager(new GridLayoutManager(this.getActivity(), 4));
+        rvGstVat.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
         dashboardItemAdapter = new DashboardItemAdapter(this, gstList);
         rvGstVat.setAdapter(dashboardItemAdapter);
 
-        rvLoan.setLayoutManager(new GridLayoutManager(this.getActivity(), 4));
+        rvLoan.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
         dashboardItemAdapter = new DashboardItemAdapter(this, loanList);
         rvLoan.setAdapter(dashboardItemAdapter);
 
-        rvSip.setLayoutManager(new GridLayoutManager(this.getActivity(), 4));
+        rvSip.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
         dashboardItemAdapter = new DashboardItemAdapter(this, sipList);
         rvSip.setAdapter(dashboardItemAdapter);
     }
@@ -131,6 +132,7 @@ public class DashBoardFragment extends Fragment {
                 break;
             case Constants.VAT_CALCULATOR:
                 startActivity(new Intent(getActivity(), VatCalculatorActivity.class));
+                break;
             case Constants.FD_CALCULATOR:
                 startActivity(new Intent(getActivity(), FDCalculatorActivity.class));
                 break;
@@ -145,6 +147,9 @@ public class DashBoardFragment extends Fragment {
                 break;
             case Constants.ADVANCE_SIP_CALCULATOR:
                 startActivity(new Intent(getActivity(), SIPGoalCalculatorActivity.class));
+                break;
+            case Constants.LUMPSUMP_CALCULATOR:
+                startActivity(new Intent(getActivity(), LumpSumpSipActivity.class));
                 break;
 
         }

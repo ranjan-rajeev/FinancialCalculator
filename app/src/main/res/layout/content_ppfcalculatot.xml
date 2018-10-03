@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:elevation="8dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -276,7 +276,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:elevation="8dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -291,7 +291,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="FD Interest Breakup"
+                    android:text="PPF Interest Breakup"
                     android:textColor="@color/uvv_black" />
 
                 <View
@@ -350,7 +350,7 @@
                         android:gravity="center"
                         android:paddingTop="8dp"
                         android:paddingBottom="8dp"
-                        android:text="FD \n Balance"
+                        android:text="PPF \n Balance"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
                 </LinearLayout>

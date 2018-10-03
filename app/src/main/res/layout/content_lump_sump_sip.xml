@@ -2,12 +2,13 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/scrollView"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".banking.rd.RDCalculatorActivity"
-    tools:showIn="@layout/activity_rdcalculator">
+    tools:context=".sip.LumpSumpSipActivity"
+    tools:showIn="@layout/activity_lump_sump_sip">
+
     <LinearLayout
         android:id="@+id/llEmiCAl"
         android:layout_width="match_parent"
@@ -34,7 +35,7 @@
                     style="@style/CustomTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Monthly Deposit Amount*"
+                    android:hint="Lumpsum Amount*"
                     app:hintTextAppearance="@style/MyTextInputLayout">
 
                     <EditText
@@ -51,7 +52,7 @@
                     style="@style/CustomTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Rate Of Interest*"
+                    android:hint="Expected Rate Of Interest*"
                     app:hintTextAppearance="@style/MyTextInputLayout">
 
                     <EditText
@@ -65,13 +66,13 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical|left"
                     android:paddingTop="5dp"
                     android:text="Tenure *"
-                    android:textColor="@color/uvv_black" />
+                    android:textColor="@color/uvv_black"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -84,7 +85,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="Saving Term(In months)*"
+                        android:hint="Investment Term(In Yrs)*"
                         app:hintTextAppearance="@style/MyTextInputLayout">
 
                         <EditText
@@ -104,8 +105,8 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
-                        android:visibility="gone"
                         android:hint="Months*"
+                        android:visibility="gone"
                         app:hintTextAppearance="@style/MyTextInputLayout">
 
                         <EditText
@@ -140,13 +141,13 @@
                 </LinearLayout>
 
                 <Spinner
-                    android:visibility="gone"
-                    android:layout_marginTop="8dp"
                     android:id="@+id/spFdTYpe"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/spinner_backgrond"
-                    tools:entries="@array/fd_type" />
+                    android:visibility="gone"
+                    tools:entries="@array/sip_frequency" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -180,7 +181,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:elevation="8dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -195,7 +196,34 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Invested Amount"
+                    android:text="Monthly SIP Amount"
+                    android:textColor="@color/uvv_black"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvMonthly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="0\u20B9"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider"
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Total Invested Amount"
                     android:textColor="@color/uvv_black" />
 
                 <TextView
@@ -280,7 +308,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="RD Interest Breakup"
+                    android:text="SIP Interest Breakup"
                     android:textColor="@color/uvv_black" />
 
                 <View
@@ -339,7 +367,7 @@
                         android:gravity="center"
                         android:paddingBottom="8dp"
                         android:paddingTop="8dp"
-                        android:text="RD \n Balance"
+                        android:text="SIP \n Balance"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
                 </LinearLayout>

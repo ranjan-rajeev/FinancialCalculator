@@ -27,7 +27,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 
-public class SIPGoalCalculatorActivity extends BaseActivity implements View.OnClickListener {
+public class LumpSumpSipActivity extends BaseActivity implements View.OnClickListener {
 
     EditText etPrincipal, etInterest, etYear, etMonth, etDay;
     TextView tvCalculate, tvMonthly, tvPrincipal, tvTotalInterest, tvMaturity;
@@ -52,7 +52,7 @@ public class SIPGoalCalculatorActivity extends BaseActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sipgoal_calculator);
+        setContentView(R.layout.activity_lump_sump_sip);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -73,7 +73,6 @@ public class SIPGoalCalculatorActivity extends BaseActivity implements View.OnCl
         setAdapter();
         setListeners();
     }
-
 
     private void setAdapter() {
         fdType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.sip_frequency));
@@ -161,44 +160,15 @@ public class SIPGoalCalculatorActivity extends BaseActivity implements View.OnCl
         else
             day = 0;
 
-        //double r = rate / 100;
-        // double n = 4;
-        //double t = year + (month / 12) + (day / 365);
-        // double temp = (Math.pow((1 + (r / n)), (n * t)));
-        // maturityAmt = (amount * temp);
-        //totalINterest = maturityAmt - amount;
-
-
-        double r = rate / 1200;
-        double x = 1 + r;
-        double n = 12;
-        double t = (year * 12) + month;
-        double temp = ((Math.pow(x, t)) - 1) / r;
-        // maturityAmt = (amount * (Math.pow((1 + (r / n)), (n * t))));
-        monthlyInvest = amount / temp;
-
-
-       /* double i = rate / 1200;
-        double j = i + 1;
-        double n = year * 12;
-        double temp = Math.pow(j, (n - 1));
-        temp = temp / i;
-        temp = temp * j;
-        monthlyInvest = (amount ) / (temp);*/
-
+        double r = rate / 100;
+        double n = 4;
+        double t = year + (month / 12) + (day / 365);
+        maturityAmt = (amount * (Math.pow((1 + (r / n)), (n * t))));
+        totalINterest = maturityAmt - amount;
 
         switch (spFdTYpe.getSelectedItemPosition()) {
             case 0:
-                getListDetailsYearly(monthlyInvest, rate, year, month, day);
-                break;
-            case 1:
-                getListDetailsYearly(monthlyInvest, rate, year, month, day);
-                break;
-            case 2:
-                getListDetailsYearly(monthlyInvest, rate, year, month, day);
-                break;
-            case 3:
-                getListDetailsYearly(monthlyInvest, rate, year, month, day);
+                getListDetailsYearly(amount, rate, year, month, day);
                 break;
         }
     }
@@ -207,17 +177,17 @@ public class SIPGoalCalculatorActivity extends BaseActivity implements View.OnCl
     public List<FDDetailsEntity> getListDetailsYearly(double amount, double rate, double year, double month, double day) {
 
         totalINterest = 0;
-        principalAmount = 0;
+        principalAmount = amount;
         fdDetailsEntityList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         int currYear = calendar.get(Calendar.YEAR);
         int currMonth = calendar.get(Calendar.MONTH);
 
         double r = rate / 100;
-        //double n = 4;
-        //double t = year / 12 + (month / 12) + (day / 365);
-        //maturityAmt = (amount * (Math.pow((1 + (r / n)), (n * t))));
-        //totalINterest = maturityAmt - amount;
+        double n = 12;
+        double t = year + (month / 12) + (day / 365);
+        maturityAmt = (amount * (Math.pow((1 + (r / n)), (n * t))));
+        totalINterest = maturityAmt - amount;
 
 
         List<FDEntity> fdEntities = new ArrayList<>();
@@ -225,43 +195,38 @@ public class SIPGoalCalculatorActivity extends BaseActivity implements View.OnCl
         double balance = amount;
         double prevBalance = amount;
         double balanceToShow = amount;
-        double interest = 0, yearlyInterest = 0, interestToShow = 0;
+        double interest = 0, totalINterest = 0, yearlyInterest = 0, interestToShow = 0;
 
-        double timeInMonth = year * 12;
-        double frequency = 1;
+        double timeInMonth = getTimeINMOnth();
+
 
         for (int i = 1; i <= timeInMonth; i++) {
 
-            //balance = (prevBalance * (Math.pow((1 + (r / n)), (n * (1.0 / 12)))));
+            if (i == timeInMonth && day != 0 && (day % 30 != 0)) {
 
-            double rat = rate / 1200;
-            double x = 1 + rat;
-            //double t = (year * 12) + month;
-            double temp = ((Math.pow(x, i)) - 1) / rat;
-            // maturityAmt = (amount * (Math.pow((1 + (r / n)), (n * t))));
-            //monthlyInvest = amount / temp;
-            balance = amount * temp;
-            //balance = prevBalance + ((prevBalance * r * 1) / 12);
+                double ti = ((day % 30) / 365);
+                balance = (prevBalance * (Math.pow((1 + (r / n)), (n * ti))));
+            } else {
+                balance = (prevBalance * (Math.pow((1 + (r / n)), (n * (1.0 / 12)))));
+            }
+
+
             interest = balance - prevBalance;
             prevBalance = balance;
 
             yearlyInterest = yearlyInterest + interest;
             interestToShow = interestToShow + interest;
-            totalINterest = totalINterest + interest;
-            if ((i % frequency) == 0 || i == timeInMonth) {
 
-                balanceToShow = prevBalance;
+            if (i % 3 == 0 || i == timeInMonth) {
+                balanceToShow = balance;
+
                 FDEntity fdEntity = new FDEntity(monthName[currMonth], "" + currYear, getFormattedDouble(balanceToShow), getFormattedDouble(interest));
-                fdEntity.setInterestTotal(getFormattedDouble(interest));
+                fdEntity.setInterestTotal(getFormattedDouble(interestToShow));
                 fdEntities.add(fdEntity);
-                principalAmount = principalAmount + amount;
-                prevBalance = prevBalance + amount;
                 interestToShow = 0;
 
             } else {
-                balanceToShow = prevBalance;
                 FDEntity fdEntity = new FDEntity(monthName[currMonth], "" + currYear, getFormattedDouble(balanceToShow), getFormattedDouble(interest));
-                fdEntity.setInterestTotal(getFormattedDouble(interest));
                 fdEntities.add(fdEntity);
             }
 
@@ -286,7 +251,7 @@ public class SIPGoalCalculatorActivity extends BaseActivity implements View.OnCl
 
         }
 
-        maturityAmt = balance;
+
         return fdDetailsEntityList;
     }
 
@@ -403,7 +368,7 @@ public class SIPGoalCalculatorActivity extends BaseActivity implements View.OnCl
             // emiAdapter = new EmiAdapter(EmiCalculatorActivity.this, detailsEntityList);
             // rvEMiDEtails.setAdapter(emiAdapter);
             bindDeposits();
-            yearEmiAdapter = new FDYearAdapter(SIPGoalCalculatorActivity.this, fdDetailsEntityList);
+            yearEmiAdapter = new FDYearAdapter(LumpSumpSipActivity.this, fdDetailsEntityList);
             rvEMiDEtails.setAdapter(yearEmiAdapter);
             scrollToRow(scrollView, llEmiCAl, cvDetails);
         }

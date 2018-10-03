@@ -290,7 +290,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:elevation="8dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
