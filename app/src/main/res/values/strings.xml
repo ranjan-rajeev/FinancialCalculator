@@ -12,10 +12,31 @@
     <string name="title_activity_fixed_vs_reducing">Flat Vs Reducing Rate</string>
     <string name="title_activity_gst_calculator">Gst Calculator</string>
     <string name="title_activity_vat_calculator">Vat Calculator</string>
+    <string name="title_activity_ppfcalculatot">PPF Calculator</string>
+    <string name="title_activity_sipcalculator">SIP Calculator</string>
+    <string name="title_activity_sipgoal_calculator">SIP GOAL Calculator</string>
     <string-array name="gst_type">
         <item>Add GST</item>
         <item>Remove GST</item>
     </string-array>
+
+    <string-array name="fd_type">
+        <item>Add GST</item>
+        <item>Remove GST</item>
+    </string-array>
+    <string-array name="ppf_frequency">
+        <item>Add GST</item>
+        <item>Remove GST</item>
+    </string-array>
+    <string-array name="ppf_duration">
+        <item>Add GST</item>
+        <item>Remove GST</item>
+    </string-array>
+    <string-array name="sip_frequency">
+        <item>Add GST</item>
+        <item>Remove GST</item>
+    </string-array>
+
     <string name="title_activity_fdcalculator">FD Calculator</string>
     <string name="title_activity_rdcalculator">RD Calculator</string>
 </resources>
