@@ -2,7 +2,9 @@ package com.financialcalculator.dashboard;
 
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,6 +23,8 @@ import com.financialcalculator.emi.emifixedvsreducing.FixedVsReducingActivity;
 import com.financialcalculator.gst.GstCalculatorActivity;
 import com.financialcalculator.gst.VatCalculatorActivity;
 import com.financialcalculator.model.DashboardEntity;
+import com.financialcalculator.roomdb.RoomDatabase;
+import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
 import com.financialcalculator.sip.LumpSumpSipActivity;
 import com.financialcalculator.sip.SIPCalculatorActivity;
 import com.financialcalculator.sip.SIPGoalCalculatorActivity;
@@ -34,12 +38,16 @@ public class DashBoardFragment extends Fragment {
     RecyclerView rvEmiCAl, rvLoan, rvBanking, rvSip, rvGstVat;
     DashboardItemAdapter dashboardItemAdapter;
     List<DashboardEntity> emiCalList, loanList, bankingList, sipList, gstList;
+    RoomDatabase appDatabase;
+
+
+    List<EMISearchHistoryEntity> emiSearchHistoryEntityLIst;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
+        appDatabase = RoomDatabase.getAppDatabase(getActivity().getApplicationContext());
         init_widgets(view);
         init_lists();
         setAdapters();
@@ -119,7 +127,12 @@ public class DashBoardFragment extends Fragment {
     public void redirectToResACtivity(DashboardEntity dashboardEntity) {
         switch (dashboardEntity.getId()) {
             case Constants.EMI_CALCULATOR:
-                startActivity(new Intent(getActivity(), EmiCalculatorActivity.class));
+                if (emiSearchHistoryEntityLIst != null && emiSearchHistoryEntityLIst.size() > 0)
+                    startActivity(new Intent(getActivity(), EmiCalculatorActivity.class)
+                            .putExtra("LIST", (Parcelable) emiSearchHistoryEntityLIst.get(0)));
+                else
+                    startActivity(new Intent(getActivity(), EmiCalculatorActivity.class));
+
                 break;
             case Constants.COMPARE_LOAN:
                 startActivity(new Intent(getActivity(), EmiCompareActivity.class));
@@ -152,6 +165,20 @@ public class DashBoardFragment extends Fragment {
                 startActivity(new Intent(getActivity(), LumpSumpSipActivity.class));
                 break;
 
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new FetchAsyncList().execute();
+    }
+
+    private class FetchAsyncList extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            emiSearchHistoryEntityLIst = appDatabase.emiSearchHistoryDao().getAll();
+            return null;
         }
     }
 }

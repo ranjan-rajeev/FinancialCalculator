@@ -21,10 +21,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.R;
 import com.financialcalculator.model.DetailsEntity;
 import com.financialcalculator.model.YearsDetailsEntity;
+import com.financialcalculator.roomdb.RoomDatabase;
+import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
+import com.financialcalculator.utility.BaseActivity;
+import com.financialcalculator.utility.Constants;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -57,6 +60,11 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
             "AUG", "SEP", "OCT", "NOV",
             "DEC"};
 
+    List<EMISearchHistoryEntity> emiSearchHistoryEntities;
+    boolean isEdit = false;
+    RoomDatabase roomDatabase;
+    EMISearchHistoryEntity emiSearchHistoryEntity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +72,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        roomDatabase = RoomDatabase.getAppDatabase(this);
 
 
         init();
@@ -81,6 +90,19 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         animateProgressBar(progressInterestFull);
         animateProgressBar(progressPrincipalFull);
 
+        if (getIntent().hasExtra("LIST")) {
+            emiSearchHistoryEntity = getIntent().getExtras().getParcelable("LIST");
+            bindValues(emiSearchHistoryEntity);
+            isEdit = true;
+        }
+
+
+    }
+
+    private void bindValues(EMISearchHistoryEntity emiSearchHistoryEntity) {
+        etInterest.setText(""+emiSearchHistoryEntity.getRoi());
+        etPrincipal.setText(""+emiSearchHistoryEntity.getPrincipalAmt());
+        etTenure.setText(""+emiSearchHistoryEntity.getLoanTenure());
 
     }
 
@@ -185,6 +207,20 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.tvDetails:
                 if (isValidInput()) {
+                    if (!isEdit) {
+
+                        emiSearchHistoryEntity = new EMISearchHistoryEntity(Constants.EMI_CALCULATOR,
+                                etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString(), "year");
+                        isEdit = true;
+                        new InsertEMiHistory().execute();
+                    } else {
+                        emiSearchHistoryEntity.setLoanTenure(etTenure.getText().toString());
+                        emiSearchHistoryEntity.setLoanTenureTYpe("1");
+                        emiSearchHistoryEntity.setPrincipalAmt(etPrincipal.getText().toString());
+                        emiSearchHistoryEntity.setRoi(etInterest.getText().toString());
+                        emiSearchHistoryEntity.setUpdatedTime(Calendar.getInstance().getTimeInMillis());
+                        new UpdateEMiHistory().execute();
+                    }
                     showLayouts();
                     new AsyncCalculateEMiDetails().execute();
                     calculateEmi(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
@@ -297,7 +333,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
             currMonth = currMonth + 1;
 
 
-            if (currMonth == 12 || i == (int)timeInMonth) {
+            if (currMonth == 12 || i == (int) timeInMonth) {
                 YearsDetailsEntity yearsDetailsEntity = new YearsDetailsEntity(currYear, "", totalPrincipalPAid,
                         totalInterestPAid, totalPayment, principal, loanPAidPer);
                 yearsDetailsEntity.setDetailsEntityList(detailsEntities);
@@ -385,6 +421,22 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
             yearEmiAdapter = new YearEmiAdapter(EmiCalculatorActivity.this, yearsDetailsEntities);
             rvEMiDEtails.setAdapter(yearEmiAdapter);
             scrollToRow(scrollView, llEmiCAl, cvDetails);
+        }
+    }
+
+    private class InsertEMiHistory extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            roomDatabase.emiSearchHistoryDao().insertAll(emiSearchHistoryEntity);
+            return null;
+        }
+    }
+
+    private class UpdateEMiHistory extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            roomDatabase.emiSearchHistoryDao().update(emiSearchHistoryEntity);
+            return null;
         }
     }
 }
