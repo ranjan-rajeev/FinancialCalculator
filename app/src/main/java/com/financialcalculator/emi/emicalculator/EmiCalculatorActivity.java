@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -68,6 +69,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.activity_emi_calculator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -92,18 +94,28 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
 
         if (getIntent().hasExtra("LIST")) {
             emiSearchHistoryEntity = getIntent().getExtras().getParcelable("LIST");
-            bindValues(emiSearchHistoryEntity);
             isEdit = true;
+            bindValues(emiSearchHistoryEntity);
+
         }
 
 
     }
 
     private void bindValues(EMISearchHistoryEntity emiSearchHistoryEntity) {
-        etInterest.setText(""+emiSearchHistoryEntity.getRoi());
-        etPrincipal.setText(""+emiSearchHistoryEntity.getPrincipalAmt());
-        etTenure.setText(""+emiSearchHistoryEntity.getLoanTenure());
-
+        rgYearMonth.setOnCheckedChangeListener(null);
+        if (emiSearchHistoryEntity.getLoanTenureTYpe().equals("YEARS")) {
+            rbYear.setChecked(true);
+        } else {
+            rbMonth.setChecked(true);
+        }
+        etInterest.setText("" + emiSearchHistoryEntity.getRoi());
+        etPrincipal.setText("" + emiSearchHistoryEntity.getPrincipalAmt());
+        etTenure.setText("" + emiSearchHistoryEntity.getLoanTenure());
+        rgYearMonth.setOnCheckedChangeListener(onCheckedChangeListener);
+        tvDetails.performClick();
+        hideKeyBoard(etInterest, this);
+        scrollToRow(scrollView, llEmiCAl, cvInput);
     }
 
     private void init_views() {
@@ -131,7 +143,8 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
     private void setListener() {
         tvCalculate.setOnClickListener(this);
         tvDetails.setOnClickListener(this);
-        rgYearMonth.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        rgYearMonth.setOnCheckedChangeListener(onCheckedChangeListener);
+        /*rgYearMonth.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // checkedId is the RadioButton selected
                 if (rbMonth.isChecked()) {
@@ -146,9 +159,27 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
                     }
                 }
             }
-        });
+        });*/
     }
 
+    //region checked change listener
+    RadioGroup.OnCheckedChangeListener onCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+            if (rbMonth.isChecked()) {
+                if (!etTenure.getText().toString().equals("")) {
+                    double year = Double.parseDouble(etTenure.getText().toString());
+                    etTenure.setText("" + Math.round(year * 12));
+                }
+            } else if (rbYear.isChecked()) {
+                if (!etTenure.getText().toString().equals("")) {
+                    double month = Double.parseDouble(etTenure.getText().toString());
+                    etTenure.setText("" + (month / 12));
+                }
+            }
+        }
+    };
+    //endregion
 
     private void init() {
         rgYearMonth = findViewById(R.id.rgYearMonth);
@@ -210,12 +241,21 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
                     if (!isEdit) {
 
                         emiSearchHistoryEntity = new EMISearchHistoryEntity(Constants.EMI_CALCULATOR,
-                                etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString(), "year");
+                                etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString(), "MONTHS");
+
+                        if (rbYear.isChecked()) {
+                            emiSearchHistoryEntity.setLoanTenureTYpe("YEARS");
+                        }
                         isEdit = true;
                         new InsertEMiHistory().execute();
                     } else {
+                        if (rbYear.isChecked()) {
+                            emiSearchHistoryEntity.setLoanTenureTYpe("YEARS");
+                        } else {
+                            emiSearchHistoryEntity.setLoanTenureTYpe("MONTHS");
+                        }
                         emiSearchHistoryEntity.setLoanTenure(etTenure.getText().toString());
-                        emiSearchHistoryEntity.setLoanTenureTYpe("1");
+
                         emiSearchHistoryEntity.setPrincipalAmt(etPrincipal.getText().toString());
                         emiSearchHistoryEntity.setRoi(etInterest.getText().toString());
                         emiSearchHistoryEntity.setUpdatedTime(Calendar.getInstance().getTimeInMillis());

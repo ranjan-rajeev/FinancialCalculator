@@ -1,7 +1,5 @@
 package com.financialcalculator.utility;
 
-import java.text.DecimalFormat;
-
 public class Constants {
     public static final int EMI_CALCULATOR = 1;
     public static final int COMPARE_LOAN = 2;
@@ -24,8 +22,7 @@ public class Constants {
 
     public static final int GST_CALCULATOR = 16;
     public static final int VAT_CALCULATOR = 17;
-
-
+    public static final String CURRENCY = "\u20B9";
 
 
 }

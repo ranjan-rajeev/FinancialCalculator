@@ -25,6 +25,7 @@ import com.financialcalculator.gst.VatCalculatorActivity;
 import com.financialcalculator.model.DashboardEntity;
 import com.financialcalculator.roomdb.RoomDatabase;
 import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
+import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.sip.LumpSumpSipActivity;
 import com.financialcalculator.sip.SIPCalculatorActivity;
 import com.financialcalculator.sip.SIPGoalCalculatorActivity;
@@ -127,11 +128,13 @@ public class DashBoardFragment extends Fragment {
     public void redirectToResACtivity(DashboardEntity dashboardEntity) {
         switch (dashboardEntity.getId()) {
             case Constants.EMI_CALCULATOR:
-                if (emiSearchHistoryEntityLIst != null && emiSearchHistoryEntityLIst.size() > 0)
-                    startActivity(new Intent(getActivity(), EmiCalculatorActivity.class)
-                            .putExtra("LIST", (Parcelable) emiSearchHistoryEntityLIst.get(0)));
-                else
+                if (emiSearchHistoryEntityLIst != null && emiSearchHistoryEntityLIst.size() > 0) {
+                    startActivity(new Intent(getActivity(), SerachHistoryACtivity.class)
+                            .putExtra("TYPE", Constants.EMI_CALCULATOR)
+                            .putParcelableArrayListExtra("LIST", (ArrayList<? extends Parcelable>) emiSearchHistoryEntityLIst));
+                } else {
                     startActivity(new Intent(getActivity(), EmiCalculatorActivity.class));
+                }
 
                 break;
             case Constants.COMPARE_LOAN:
@@ -167,6 +170,8 @@ public class DashBoardFragment extends Fragment {
 
         }
     }
+
+
 
     @Override
     public void onResume() {

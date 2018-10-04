@@ -42,54 +42,55 @@
     <string name="title_activity_lump_sump_sip">Lumpsum Calculator</string>
 </resources>-->
 <resources>
-<string name="app_name">FinancialCalculator</string>
-<string name="title_activity_main">MainActivity</string>
-<string name="navigation_drawer_open">Open navigation drawer</string>
-<string name="navigation_drawer_close">Close navigation drawer</string>
-<string name="nav_header_title">Android Studio</string>
-<string name="nav_header_subtitle">android.studio@android.com</string>
-<string name="nav_header_desc">Navigation header</string>
-<string name="action_settings">Settings</string>
-<string name="title_activity_emi_calculator">EMI Calculator</string>
-<string name="title_activity_emi_compare">EMI Compare</string>
-<string name="title_activity_fixed_vs_reducing">Flat Vs Reducing Rate</string>
-<string name="title_activity_gst_calculator">GST Calculator</string>
-<string name="title_activity_vat_calculator">VAT Calculator</string>
-<string-array name="gst_type">
-    <item>Add GST</item>
-    <item>Remove GST</item>
-</string-array>
+    <string name="app_name">FinancialCalculator</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_emi_calculator">EMI Calculator</string>
+    <string name="title_activity_emi_compare">EMI Compare</string>
+    <string name="title_activity_fixed_vs_reducing">Flat Vs Reducing Rate</string>
+    <string name="title_activity_gst_calculator">GST Calculator</string>
+    <string name="title_activity_vat_calculator">VAT Calculator</string>
+    <string-array name="gst_type">
+        <item>Add GST</item>
+        <item>Remove GST</item>
+    </string-array>
     <string-array name="vat_type">
         <item>Add VAT</item>
         <item>Remove VAT</item>
     </string-array>
-<string-array name="fd_type">
-    <item>Cumulative</item>
-    <item>Quarterly Payout</item>
-    <item>Monthly Payout</item>
-</string-array>
+    <string-array name="fd_type">
+        <item>Cumulative</item>
+        <item>Quarterly Payout</item>
+        <item>Monthly Payout</item>
+    </string-array>
 
-<string-array name="ppf_frequency">
-    <item>Yearly Deposit</item>
-    <item>Monthly Deposit</item>
-</string-array>
+    <string-array name="ppf_frequency">
+        <item>Yearly Deposit</item>
+        <item>Monthly Deposit</item>
+    </string-array>
 
-<string-array name="ppf_duration">
-    <item>15 Years</item>
-    <item>20 Years</item>
-    <item>25 Years</item>
-    <item>30 Years</item>
-</string-array>
-<string-array name="sip_frequency">
-    <item>Monthly</item>
-    <item>Quarterly</item>
-    <item>Half Yearly</item>
-    <item>Yearly</item>
-</string-array>
-<string name="title_activity_fdcalculator">FD Calculator</string>
-<string name="title_activity_rdcalculator">RD Calculator</string>
-<string name="title_activity_ppfcalculatot">PPF Calculatot</string>
-<string name="title_activity_sipcalculator">"SIP Calculator "</string>
-<string name="title_activity_sipgoal_calculator">SIP Goal Calculator</string>
-<string name="title_activity_lump_sump_sip">Lumpsum Calculator</string>
+    <string-array name="ppf_duration">
+        <item>15 Years</item>
+        <item>20 Years</item>
+        <item>25 Years</item>
+        <item>30 Years</item>
+    </string-array>
+    <string-array name="sip_frequency">
+        <item>Monthly</item>
+        <item>Quarterly</item>
+        <item>Half Yearly</item>
+        <item>Yearly</item>
+    </string-array>
+    <string name="title_activity_fdcalculator">FD Calculator</string>
+    <string name="title_activity_rdcalculator">RD Calculator</string>
+    <string name="title_activity_ppfcalculatot">PPF Calculatot</string>
+    <string name="title_activity_sipcalculator">"SIP Calculator "</string>
+    <string name="title_activity_sipgoal_calculator">SIP Goal Calculator</string>
+    <string name="title_activity_lump_sump_sip">Lumpsum Calculator</string>
+    <string name="title_activity_serach_history_activity">Serach History</string>
 </resources>
