@@ -30,11 +30,15 @@ import com.financialcalculator.sip.LumpSumpSipActivity;
 import com.financialcalculator.sip.SIPCalculatorActivity;
 import com.financialcalculator.sip.SIPGoalCalculatorActivity;
 import com.financialcalculator.utility.Constants;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DashBoardFragment extends Fragment {
+    private AdView mAdView;
     View view;
     RecyclerView rvEmiCAl, rvLoan, rvBanking, rvSip, rvGstVat;
     DashboardItemAdapter dashboardItemAdapter;
@@ -47,7 +51,9 @@ public class DashBoardFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        setUPAdd(view);
         appDatabase = RoomDatabase.getAppDatabase(getActivity().getApplicationContext());
         init_widgets(view);
         init_lists();
@@ -55,12 +61,19 @@ public class DashBoardFragment extends Fragment {
         return view;
     }
 
+    private void setUPAdd(View view) {
+        mAdView = view.findViewById(R.id.adView);
+
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("5C24676FE04113F56F0B0A9566555BCD").build();
+        mAdView.loadAd(adRequest);
+    }
+
     private void init_lists() {
         int i = 0;
         emiCalList = new ArrayList<DashboardEntity>();
 
         emiCalList.add(new DashboardEntity(Constants.EMI_CALCULATOR, "EMI Calculator", R.drawable.emi_cal));
-        emiCalList.add(new DashboardEntity(Constants.COMPARE_LOAN, "Compare Loan", R.drawable.compare_icon));
+        emiCalList.add(new DashboardEntity(Constants.COMPARE_LOAN, "Compare Loan", R.drawable.compare_loan_new));
         emiCalList.add(new DashboardEntity(Constants.FLAT_VS_REDUCING, "Flat Vs \nReducing Rate", R.drawable.compare_icon));
 
 
@@ -72,16 +85,16 @@ public class DashBoardFragment extends Fragment {
 
 
         bankingList = new ArrayList<>();
-        bankingList.add(new DashboardEntity(Constants.FD_CALCULATOR, "FD Calculator", R.drawable.emi_cal));
+        bankingList.add(new DashboardEntity(Constants.FD_CALCULATOR, "FD Calculator", R.drawable.fd));
         bankingList.add(new DashboardEntity(Constants.RD_CALCULATOR, "RD Calculator", R.drawable.emi_cal));
-        bankingList.add(new DashboardEntity(Constants.PPF_CALCULATOR, "PPF Calculator", R.drawable.emi_cal));
+        bankingList.add(new DashboardEntity(Constants.PPF_CALCULATOR, "PPF Calculator", R.drawable.ppf));
         //bankingList.add(new DashboardEntity(Constants.SI_CI_CALCULATOR, "Simple & Compound\n Interest", R.drawable.emi_cal));
 
         sipList = new ArrayList<>();
-        sipList.add(new DashboardEntity(Constants.SIP_CALCULATOR, "Systematic \nInvestment Plan", R.drawable.emi_cal));
-        sipList.add(new DashboardEntity(Constants.ADVANCE_SIP_CALCULATOR, "GOAL SIP \nCalculator", R.drawable.emi_cal));
+        sipList.add(new DashboardEntity(Constants.SIP_CALCULATOR, "Systematic \nInvestment Plan", R.drawable.sip_icons));
+        sipList.add(new DashboardEntity(Constants.ADVANCE_SIP_CALCULATOR, "GOAL SIP \nCalculator", R.drawable.goal));
         //sipList.add(new DashboardEntity(Constants.SYSTEMATIC_WITHDRAWAL_PLAN, "Systematic \nWithdrawal Plan", R.drawable.emi_cal));
-        sipList.add(new DashboardEntity(Constants.LUMPSUMP_CALCULATOR, "Lumpsum SIP\nCalculator", R.drawable.emi_cal));
+        sipList.add(new DashboardEntity(Constants.LUMPSUMP_CALCULATOR, "Lumpsum SIP\nCalculator", R.drawable.lumpsum));
 
 
         gstList = new ArrayList<>();
@@ -170,7 +183,6 @@ public class DashBoardFragment extends Fragment {
 
         }
     }
-
 
 
     @Override
