@@ -1,5 +1,8 @@
 package com.financialcalculator.home;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_camera);
+        navigationView.setCheckedItem(R.id.nav_home);
 
         showDashboard();
     }
@@ -116,10 +119,20 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         switch (item.getItemId()) {
 
-            /*case R.id.nav_camera:
+            case R.id.nav_home:
                 getSupportActionBar().setTitle("HOME");
                 fragment = new DashBoardFragment();
-                break;*/
+                break;
+            case R.id.nav_about:
+                getSupportActionBar().setTitle("HOME");
+                fragment = new DashBoardFragment();
+                break;
+            case R.id.nav_share:
+                launchMarket();
+                break;
+            case R.id.nav_rate:
+                launchMarket();
+                break;
 
         }
 
@@ -131,6 +144,16 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         return false;
+    }
+
+    private void launchMarket() {
+        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+        Intent myAppLinkToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            startActivity(myAppLinkToMarket);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, " unable to find market app", Toast.LENGTH_LONG).show();
+        }
     }
 
 }

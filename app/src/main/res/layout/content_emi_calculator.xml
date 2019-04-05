@@ -99,15 +99,15 @@
                         android:layout_weight="1"
                         android:checkedButton="@id/rbYear"
                         android:orientation="horizontal"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp">
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
 
                         <RadioButton
                             android:id="@+id/rbYear"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Yearly"
+                            android:text="Years"
                             android:textColor="@color/uvv_black" />
 
                         <RadioButton
@@ -115,17 +115,34 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Monthly"
+                            android:text="Months"
                             android:textColor="@color/uvv_black" />
                     </RadioGroup>
                 </LinearLayout>
 
+                <android.support.design.widget.TextInputLayout
+                    style="@style/CustomTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Date Of first Installment"
+                    app:hintTextAppearance="@style/MyTextInputLayout">
+
+                    <EditText
+                        android:id="@+id/etDateFirstInstallment"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/corner_shape"
+                        android:focusable="false"
+                        android:maxLength="15"
+                        android:imeOptions="actionNext"
+                        android:maxLines="1" />
+                </android.support.design.widget.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginBottom="8dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -283,8 +300,8 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/progressInterest"
                             android:gravity="center"
-                            android:paddingBottom="10dp"
                             android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:text="Total Interest Payable"
                             android:textColor="@color/uvv_black" />
 
@@ -355,8 +372,8 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/progressInterest"
                             android:gravity="center"
-                            android:paddingBottom="10dp"
                             android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:text="Total Principal"
                             android:textColor="@color/uvv_black" />
 
@@ -405,8 +422,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:background="@color/divider" />
 
                 <LinearLayout
@@ -420,8 +437,8 @@
                         android:layout_weight="1"
                         android:background="@drawable/border_gray"
                         android:gravity="center"
-                        android:paddingBottom="8dp"
                         android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:text="Year"
                         android:textColor="@color/uvv_black"
                         android:textStyle="bold" />
@@ -432,8 +449,8 @@
                         android:layout_weight="1"
                         android:background="@drawable/border_green"
                         android:gravity="center"
-                        android:paddingBottom="8dp"
                         android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:text="Principal"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
@@ -444,8 +461,8 @@
                         android:layout_weight="1"
                         android:background="@drawable/border_yellow"
                         android:gravity="center"
-                        android:paddingBottom="8dp"
                         android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:text="Interest"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
@@ -456,8 +473,8 @@
                         android:layout_weight="1"
                         android:background="@drawable/border_red"
                         android:gravity="center"
-                        android:paddingBottom="8dp"
                         android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:text="Balance"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
