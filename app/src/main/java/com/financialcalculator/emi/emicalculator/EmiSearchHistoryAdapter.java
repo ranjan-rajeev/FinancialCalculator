@@ -13,6 +13,7 @@ import com.financialcalculator.R;
 import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
 import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.Constants;
+import com.financialcalculator.utility.Util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,7 +23,6 @@ import java.util.List;
 public class EmiSearchHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context mContext;
     List<EMISearchHistoryEntity> detailsEntityList;
-    SimpleDateFormat ddmyyyyyy = new SimpleDateFormat("dd/MM/yyyy");
 
     public EmiSearchHistoryAdapter(Context context, List<EMISearchHistoryEntity> list) {
         mContext = context;
@@ -66,7 +66,7 @@ public class EmiSearchHistoryAdapter extends RecyclerView.Adapter<RecyclerView.V
                 ((EmiDetailsHolder) holder).llItem_details.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lightGrey));
             }*/
             ((EmiDetailsHolder) holder).tvPrincipal.setText("" + detailsEntity.getPrincipalAmt() + " " + Constants.CURRENCY);
-            ((EmiDetailsHolder) holder).tvDate.setText("" + getFormatedDAte(detailsEntity.getUpdatedTime()));
+            ((EmiDetailsHolder) holder).tvDate.setText(Util.getDatefromLong(detailsEntity.getUpdatedTime()));
             ((EmiDetailsHolder) holder).tvRate.setText("" + detailsEntity.getRoi() + "%");
             ((EmiDetailsHolder) holder).tvTerm.setText("" + detailsEntity.getLoanTenure() + " " + detailsEntity.getLoanTenureTYpe());
             ((EmiDetailsHolder) holder).llItem_details.setOnClickListener(new View.OnClickListener() {
@@ -89,8 +89,4 @@ public class EmiSearchHistoryAdapter extends RecyclerView.Adapter<RecyclerView.V
         return detailsEntityList.size();
     }
 
-    public String getFormatedDAte(Long milliSEc) {
-        Date result = new Date(milliSEc);
-        return ddmyyyyyy.format(result);
-    }
 }

@@ -34,10 +34,10 @@ public class EMISearchHistoryEntity implements Parcelable {
 
 
 
-    public EMISearchHistoryEntity(int type, String principalAmt, String roi, String loanTenure, String loanTenureTYpe) {
-        this.historyID = Calendar.getInstance().getTimeInMillis();
+    public EMISearchHistoryEntity(int type, String principalAmt, String roi, String loanTenure, String loanTenureTYpe,long updatedTime) {
+        this.historyID = updatedTime;
         this.type = type;
-        this.updatedTime = this.historyID;
+        this.updatedTime = updatedTime;
         this.principalAmt = principalAmt;
         this.roi = roi;
         this.loanTenure = loanTenure;

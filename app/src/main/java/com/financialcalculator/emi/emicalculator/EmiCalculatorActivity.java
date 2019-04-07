@@ -1,6 +1,7 @@
 package com.financialcalculator.emi.emicalculator;
 
 import android.animation.ObjectAnimator;
+import android.app.DatePickerDialog;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,9 +13,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -29,10 +34,14 @@ import com.financialcalculator.roomdb.RoomDatabase;
 import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
+import com.financialcalculator.utility.Util;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -46,7 +55,8 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
     NestedScrollView scrollView;
     CardView cvInput, cvDetails, cvResult;
     LinearLayout llEmiCAl;
-    EditText etTenure, etInterest, etPrincipal;
+    EditText etTenure, etInterest, etPrincipal, etDateFirstInstallment;
+    private DatePickerDialog mDatePickerDialog;
     RecyclerView rvEMiDEtails;
     EmiAdapter emiAdapter;
     YearEmiAdapter yearEmiAdapter;
@@ -80,6 +90,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         init();
         init_views();
         setListener();
+        setDatePicker();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +113,33 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
 
     }
 
+    private void setDatePicker() {
+
+        etDateFirstInstallment.setText(Util.getDatefromLong(Calendar.getInstance().getTimeInMillis()));
+
+
+        Calendar newCalendar = Calendar.getInstance();
+        mDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, monthOfYear, dayOfMonth);
+                etDateFirstInstallment.setText(Util.getDatefromLong(calendar.getTimeInMillis()));
+
+            }
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+
+        etDateFirstInstallment.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mDatePickerDialog.show();
+                return false;
+            }
+        });
+    }
+
+
     private void bindValues(EMISearchHistoryEntity emiSearchHistoryEntity) {
         rgYearMonth.setOnCheckedChangeListener(null);
         if (emiSearchHistoryEntity.getLoanTenureTYpe().equals("YEARS")) {
@@ -112,6 +150,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         etInterest.setText("" + emiSearchHistoryEntity.getRoi());
         etPrincipal.setText("" + emiSearchHistoryEntity.getPrincipalAmt());
         etTenure.setText("" + emiSearchHistoryEntity.getLoanTenure());
+        etDateFirstInstallment.setText(Util.getDatefromLong(emiSearchHistoryEntity.getUpdatedTime()));
         rgYearMonth.setOnCheckedChangeListener(onCheckedChangeListener);
         tvDetails.performClick();
         hideKeyBoard(etInterest, this);
@@ -195,6 +234,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         etPrincipal = findViewById(R.id.etPrincipal);
         etInterest = findViewById(R.id.etInterest);
         etTenure = findViewById(R.id.etTenure);
+        etDateFirstInstallment = findViewById(R.id.etDateFirstInstallment);
 
         cvDetails = findViewById(R.id.cvDetails);
         cvInput = findViewById(R.id.cvInput);
@@ -241,7 +281,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
                     if (!isEdit) {
 
                         emiSearchHistoryEntity = new EMISearchHistoryEntity(Constants.EMI_CALCULATOR,
-                                etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString(), "MONTHS");
+                                etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString(), "MONTHS", Util.getLongDate(etDateFirstInstallment.getText().toString()));
 
                         if (rbYear.isChecked()) {
                             emiSearchHistoryEntity.setLoanTenureTYpe("YEARS");
@@ -258,8 +298,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
 
                         emiSearchHistoryEntity.setPrincipalAmt(etPrincipal.getText().toString());
                         emiSearchHistoryEntity.setRoi(etInterest.getText().toString());
-                        emiSearchHistoryEntity.setUpdatedTime(Calendar.getInstance().getTimeInMillis());
-                        new UpdateEMiHistory().execute();
+                        emiSearchHistoryEntity.setUpdatedTime(Util.getLongDate(etDateFirstInstallment.getText().toString()));                        new UpdateEMiHistory().execute();
                     }
                     showLayouts();
                     new AsyncCalculateEMiDetails().execute();
@@ -334,6 +373,11 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         int currYear = calendar.get(Calendar.YEAR);
         int currMonth = calendar.get(Calendar.MONTH);
 
+        String dateString = etDateFirstInstallment.getText().toString();
+        if (dateString != null && !dateString.equals("")) {
+            currMonth = Util.getYearMonthDate(dateString, Calendar.MONTH);
+            currYear = Util.getYearMonthDate(dateString, Calendar.YEAR);
+        }
 
         List<DetailsEntity> detailsEntities = new ArrayList<>();
 
@@ -479,4 +523,5 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
             return null;
         }
     }
+
 }
