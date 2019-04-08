@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
 import com.financialcalculator.banking.fd.FDCalculatorActivity;
 import com.financialcalculator.banking.ppf.PPFCalculatotActivity;
@@ -62,10 +63,16 @@ public class DashBoardFragment extends Fragment {
     }
 
     private void setUPAdd(View view) {
-        mAdView = view.findViewById(R.id.adView);
 
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("5C24676FE04113F56F0B0A9566555BCD").build();
-        mAdView.loadAd(adRequest);
+        mAdView = view.findViewById(R.id.adView);
+        if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("5C24676FE04113F56F0B0A9566555BCD").build();
+            mAdView.loadAd(adRequest);
+        } else {
+
+            mAdView.setVisibility(View.GONE);
+        }
+
     }
 
     private void init_lists() {
@@ -141,13 +148,14 @@ public class DashBoardFragment extends Fragment {
     public void redirectToResACtivity(DashboardEntity dashboardEntity) {
         switch (dashboardEntity.getId()) {
             case Constants.EMI_CALCULATOR:
-                if (emiSearchHistoryEntityLIst != null && emiSearchHistoryEntityLIst.size() > 0) {
+                startActivity(new Intent(getActivity(), EmiCalculatorActivity.class));
+               /* if (emiSearchHistoryEntityLIst != null && emiSearchHistoryEntityLIst.size() > 0) {
                     startActivity(new Intent(getActivity(), SerachHistoryACtivity.class)
                             .putExtra("TYPE", Constants.EMI_CALCULATOR)
                             .putParcelableArrayListExtra("LIST", (ArrayList<? extends Parcelable>) emiSearchHistoryEntityLIst));
                 } else {
                     startActivity(new Intent(getActivity(), EmiCalculatorActivity.class));
-                }
+                }*/
 
                 break;
             case Constants.COMPARE_LOAN:
