@@ -1,5 +1,7 @@
 package com.financialcalculator.banking.fd;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +10,9 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -19,10 +24,20 @@ import android.widget.Toast;
 import com.financialcalculator.R;
 import com.financialcalculator.model.FDDetailsEntity;
 import com.financialcalculator.model.FDEntity;
+import com.financialcalculator.roomdb.RoomDatabase;
+import com.financialcalculator.roomdb.dao.GenericSearchHistoryDao;
+import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
+import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
+import com.financialcalculator.utility.Constants;
+import com.financialcalculator.utility.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -48,12 +63,17 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
 
     Spinner spFdTYpe;
     ArrayAdapter<String> fdType;
+
+    RoomDatabase roomDatabase;
+    GenericSearchHistoryEntity genericSearchHistoryEntity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fdcalculator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        roomDatabase = RoomDatabase.getAppDatabase(this);
         //region floating button
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -70,11 +90,41 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
         init_views();
         setAdapter();
         setListeners();
+
+        if (getIntent().hasExtra("DATA")) {
+            genericSearchHistoryEntity = getIntent().getExtras().getParcelable("DATA");
+            bindValues(genericSearchHistoryEntity);
+        }
+
+
     }
+
+    private void bindValues(GenericSearchHistoryEntity genericSearchHistoryEntity) {
+        try {
+
+            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
+            Logger.d(obj.toString());
+            etPrincipal.setText(obj.getString("amount"));
+            etInterest.setText(obj.getString("rate"));
+            etYear.setText(obj.getString("year"));
+            etMonth.setText(obj.getString("month"));
+            etDay.setText(obj.getString("day"));
+            spFdTYpe.setSelection(obj.getInt("fdtype"));
+            tvCalculate.performClick();
+            hideKeyBoard(etInterest, this);
+            scrollToRow(scrollView, llEmiCAl, cvInput);
+        } catch (Throwable t) {
+            Log.e("Financial", "Could not parse malformed JSON: \"" + genericSearchHistoryEntity.getListKeyValues() + "\"");
+        }
+
+
+    }
+
     private void setAdapter() {
         fdType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.fd_type));
         spFdTYpe.setAdapter(fdType);
     }
+
     private void init_views() {
         cvInput.setVisibility(View.VISIBLE);
         cvResult.setVisibility(GONE);
@@ -125,10 +175,12 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
                     showLayouts();
                     new AsyncCalculateEMiDetails().execute();
                     bindDeposits();
+                    updateGenericHistory();
                 }
                 break;
         }
     }
+
 
     private void calculateFixedDeposit() {
         if (!etPrincipal.getText().toString().equals(""))
@@ -162,7 +214,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
         maturityAmt = (amount * (Math.pow((1 + (r / n)), (n * t))));
         totalINterest = maturityAmt - amount;
 
-        switch (spFdTYpe.getSelectedItemPosition()){
+        switch (spFdTYpe.getSelectedItemPosition()) {
             case 0:
                 getListDetailsYearly(amount, rate, year, month, day);
                 break;
@@ -258,7 +310,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
 
     public List<FDDetailsEntity> getListDetailsYearlyMonthly(double amount, double rate, double year, double month, double day) {
 
-        totalINterest=0;
+        totalINterest = 0;
         fdDetailsEntityList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         int currYear = calendar.get(Calendar.YEAR);
@@ -276,7 +328,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
         double balance = amount;
         double prevBalance = amount;
         double balanceToShow = amount;
-        double interest = 0,  yearlyInterest = 0, interestToShow = 0;
+        double interest = 0, yearlyInterest = 0, interestToShow = 0;
 
         double timeInMonth = getTimeINMOnth();
 
@@ -297,7 +349,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
 
             yearlyInterest = yearlyInterest + interest;
             interestToShow = interestToShow + interest;
-            totalINterest =totalINterest+interest;
+            totalINterest = totalINterest + interest;
             if (i % 3 == 0 || i == timeInMonth) {
                 balanceToShow = balance;
 
@@ -338,7 +390,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
 
     public List<FDDetailsEntity> getListDetailsYearlyQuartely(double amount, double rate, double year, double month, double day) {
 
-        totalINterest=0;
+        totalINterest = 0;
         fdDetailsEntityList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         int currYear = calendar.get(Calendar.YEAR);
@@ -376,7 +428,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
 
             yearlyInterest = yearlyInterest + interest;
             interestToShow = interestToShow + interest;
-            totalINterest=totalINterest+interest;
+            totalINterest = totalINterest + interest;
 
             if (i % 3 == 0 || i == timeInMonth) {
                 balanceToShow = balance;
@@ -385,7 +437,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
                 fdEntity.setInterestTotal(getFormattedDouble(interestToShow));
                 fdEntities.add(fdEntity);
                 interestToShow = 0;
-                prevBalance=amount;
+                prevBalance = amount;
 
             } else {
                 FDEntity fdEntity = new FDEntity(monthName[currMonth], "" + currYear, getFormattedDouble(amount), getFormattedDouble(interest));
@@ -413,7 +465,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
 
         }
 
-        maturityAmt=amount;
+        maturityAmt = amount;
         return fdDetailsEntityList;
     }
 
@@ -529,4 +581,97 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
             }
         }, delay);
     }
+
+
+    private void updateGenericHistory() {
+
+
+        if (genericSearchHistoryEntity == null) {
+            genericSearchHistoryEntity = new GenericSearchHistoryEntity();
+            genericSearchHistoryEntity.setUpdatedTime(Calendar.getInstance().getTimeInMillis());
+            genericSearchHistoryEntity.setType(Constants.FD_CALCULATOR);
+            genericSearchHistoryEntity.setListKeyValues(getListKeyVAlues());
+            new InsertHistory().execute(genericSearchHistoryEntity);
+
+        } else {
+            genericSearchHistoryEntity.setUpdatedTime(Calendar.getInstance().getTimeInMillis());
+            genericSearchHistoryEntity.setType(Constants.FD_CALCULATOR);
+            genericSearchHistoryEntity.setListKeyValues(getListKeyVAlues());
+
+            new UpdateHistory().execute(genericSearchHistoryEntity);
+        }
+    }
+
+    private String getListKeyVAlues() {
+        String keyValues = "";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("amount", "" + etPrincipal.getText().toString());
+            jsonObject.put("rate", "" + etInterest.getText().toString());
+            jsonObject.put("year", "" + etYear.getText().toString());
+            jsonObject.put("month", "" + etMonth.getText().toString());
+            jsonObject.put("day", "" + etDay.getText().toString());
+            jsonObject.put("fdtype", spFdTYpe.getSelectedItemPosition());
+            keyValues = jsonObject.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return keyValues;
+    }
+
+    private class InsertHistory extends AsyncTask<GenericSearchHistoryEntity, Void, Void> {
+        @Override
+        protected Void doInBackground(GenericSearchHistoryEntity... voids) {
+            roomDatabase.genericSearchHistoryDao().insertAll(voids);
+            return null;
+        }
+    }
+
+    private class UpdateHistory extends AsyncTask<GenericSearchHistoryEntity, Void, Void> {
+        @Override
+        protected Void doInBackground(GenericSearchHistoryEntity... voids) {
+            roomDatabase.genericSearchHistoryDao().update(voids);
+            return null;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.history, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_history:
+                startActivityForResult(new Intent(this, SerachHistoryACtivity.class)
+                        .putExtra("TYPE", Constants.FD_CALCULATOR), SerachHistoryACtivity.REQUEST_CODE);
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == SerachHistoryACtivity.REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                genericSearchHistoryEntity = data.getExtras().getParcelable("DATA");
+                if (genericSearchHistoryEntity != null)
+                    bindValues(genericSearchHistoryEntity);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+
+            }
+        }
+    }
+
 }

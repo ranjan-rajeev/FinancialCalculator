@@ -1,5 +1,6 @@
 package com.financialcalculator.searchhistory;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.financialcalculator.gst.GstCalculatorActivity;
 import com.financialcalculator.gst.VatCalculatorActivity;
 import com.financialcalculator.roomdb.RoomDatabase;
 import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
+import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
 import com.financialcalculator.sip.LumpSumpSipActivity;
 import com.financialcalculator.sip.SIPCalculatorActivity;
 import com.financialcalculator.sip.SIPGoalCalculatorActivity;
@@ -32,13 +34,18 @@ import java.util.List;
 
 public class SerachHistoryACtivity extends BaseActivity implements View.OnClickListener {
 
+    public static final int REQUEST_CODE = 18;
     FloatingActionButton fab;
     RecyclerView rvSearchList;
     int type = 0;
-    RoomDatabase appDatabase;
+
 
     List<EMISearchHistoryEntity> emiSearchHistoryEntityList;
     EmiSearchHistoryAdapter emiSearchHistoryAdapter;
+
+    RoomDatabase appDatabase;
+    List<GenericSearchHistoryEntity> genericSearchHistoryEntities;
+    GenericSearchHistoryAdapter genericSearchHistoryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +60,9 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
         }
         init_widgets();
         setListeners();
-        init_Adapters();
+        new FilterGenericList().execute();
+
+        //init_Adapters();
     }
 
     @Override
@@ -153,13 +162,19 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
         protected void onPostExecute(Void aVoid) {
             cancelDialog();
             super.onPostExecute(aVoid);
-            emiSearchHistoryAdapter = new EmiSearchHistoryAdapter(SerachHistoryACtivity.this,emiSearchHistoryEntityList);
+            emiSearchHistoryAdapter = new EmiSearchHistoryAdapter(SerachHistoryACtivity.this, emiSearchHistoryEntityList);
             rvSearchList.setAdapter(emiSearchHistoryAdapter);
         }
     }
 
     public void redirectToResACtivity() {
-        switch (type) {
+
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_CANCELED, returnIntent);
+        finish();
+
+
+        /*switch (type) {
             case Constants.EMI_CALCULATOR:
                 startActivity(new Intent(this, EmiCalculatorActivity.class));
                 break;
@@ -194,6 +209,116 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
                 startActivity(new Intent(this, LumpSumpSipActivity.class));
                 break;
 
+        }*/
+    }
+
+    public void redirectToResACtivity(GenericSearchHistoryEntity genericSearchHistoryEntity) {
+        Intent returnIntent = new Intent(this, FDCalculatorActivity.class);
+        returnIntent.putExtra("DATA", genericSearchHistoryEntity);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+
+
+        /*switch (type) {
+            case Constants.EMI_CALCULATOR:
+                startActivity(new Intent(this, EmiCalculatorActivity.class)
+                        .putExtra("DATA", genericSearchHistoryEntity));
+                break;
+            case Constants.COMPARE_LOAN:
+                startActivity(new Intent(this, EmiCompareActivity.class)
+                        .putExtra("DATA", genericSearchHistoryEntity));
+                break;
+            case Constants.FLAT_VS_REDUCING:
+                startActivity(new Intent(this, FixedVsReducingActivity.class)
+                        .putExtra("DATA", genericSearchHistoryEntity));
+                break;
+            case Constants.GST_CALCULATOR:
+                startActivity(new Intent(this, GstCalculatorActivity.class)
+                        .putExtra("DATA", genericSearchHistoryEntity));
+                break;
+            case Constants.VAT_CALCULATOR:
+                startActivity(new Intent(this, VatCalculatorActivity.class)
+                        .putExtra("DATA", genericSearchHistoryEntity));
+                break;
+            case Constants.FD_CALCULATOR:
+                startActivity(new Intent(this, FDCalculatorActivity.class)
+                        .putExtra("DATA", genericSearchHistoryEntity));
+                break;
+            case Constants.RD_CALCULATOR:
+                startActivity(new Intent(this, RDCalculatorActivity.class)
+                        .putExtra("DATA", genericSearchHistoryEntity));
+                break;
+            case Constants.PPF_CALCULATOR:
+                startActivity(new Intent(this, PPFCalculatotActivity.class)
+                        .putExtra("DATA", genericSearchHistoryEntity));
+                break;
+            case Constants.SIP_CALCULATOR:
+                startActivity(new Intent(this, SIPCalculatorActivity.class)
+                        .putExtra("DATA", genericSearchHistoryEntity));
+                break;
+            case Constants.ADVANCE_SIP_CALCULATOR:
+                startActivity(new Intent(this, SIPGoalCalculatorActivity.class)
+                        .putExtra("DATA", genericSearchHistoryEntity));
+                break;
+            case Constants.LUMPSUMP_CALCULATOR:
+                startActivity(new Intent(this, LumpSumpSipActivity.class)
+                        .putExtra("DATA", genericSearchHistoryEntity));
+                break;
+
+        }*/
+    }
+
+    private class FilterGenericList extends AsyncTask<Void, Void, List<GenericSearchHistoryEntity>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showDialog("Fetching Search history...");
         }
+
+        @Override
+        protected List<GenericSearchHistoryEntity> doInBackground(Void... voids) {
+            return appDatabase.genericSearchHistoryDao().getListByType(type);
+        }
+
+        @Override
+        protected void onPostExecute(List<GenericSearchHistoryEntity> list) {
+            super.onPostExecute(list);
+            genericSearchHistoryEntities = list;
+            genericSearchHistoryAdapter = new GenericSearchHistoryAdapter(SerachHistoryACtivity.this, list);
+            rvSearchList.setAdapter(genericSearchHistoryAdapter);
+            cancelDialog();
+        }
+    }
+
+    private class DeleteGenericList extends AsyncTask<Void, Void, Void> {
+        GenericSearchHistoryEntity genericSearchHistoryEntity;
+
+        DeleteGenericList(GenericSearchHistoryEntity genericSearchHistoryEntity) {
+            this.genericSearchHistoryEntity = genericSearchHistoryEntity;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showDialog("Deleting history...");
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            genericSearchHistoryEntities.remove(genericSearchHistoryEntity);
+            appDatabase.genericSearchHistoryDao().delete(genericSearchHistoryEntity);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            genericSearchHistoryAdapter.notifyDataSetChanged();
+            cancelDialog();
+        }
+    }
+
+    public void deleteSearchItem(GenericSearchHistoryEntity genericSearchHistoryEntity) {
+        new DeleteGenericList(genericSearchHistoryEntity).execute();
     }
 }

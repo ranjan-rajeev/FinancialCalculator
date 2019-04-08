@@ -42,7 +42,7 @@
     <string name="title_activity_lump_sump_sip">Lumpsum Calculator</string>
 </resources>-->
 <resources>
-    <string name="app_name">FinancialCalculator</string>
+    <!-- <string name="app_name">FinancialCalculator</string>-->
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -95,5 +95,6 @@
     <string name="title_activity_sipgoal_calculator">SIP Goal Calculator</string>
     <string name="title_activity_lump_sump_sip">Lumpsum Calculator</string>
     <string name="title_activity_serach_history_activity">Serach History</string>
-    <string name="title_activity_about_us">AboutUs</string>
+    <string name="title_activity_about_us">About Us</string>
+    <string name="string_about_us">One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.</string>
 </resources>

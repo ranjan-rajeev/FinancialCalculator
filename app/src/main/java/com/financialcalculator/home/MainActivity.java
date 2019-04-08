@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.financialcalculator.R;
+import com.financialcalculator.about.AboutFragment;
 import com.financialcalculator.dashboard.DashBoardFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -111,39 +112,36 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(final MenuItem item) {
+
         // Handle navigation view item clicks here.
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-        Fragment fragment = null;
-        switch (item.getItemId()) {
+                switch (item.getItemId()) {
+                    case R.id.nav_home:
+                        getSupportActionBar().setTitle("HOME");
+                        loadFragment(new DashBoardFragment());
+                        break;
+                    case R.id.nav_about:
+                        getSupportActionBar().setTitle("About");
+                        loadFragment(new AboutFragment());
+                        break;
+                    case R.id.nav_share:
+                        launchMarket();
+                        break;
+                    case R.id.nav_rate:
+                        launchMarket();
+                        break;
+                }
+            }
+        }, 200);
 
-            case R.id.nav_home:
-                getSupportActionBar().setTitle("HOME");
-                fragment = new DashBoardFragment();
-                break;
-            case R.id.nav_about:
-                getSupportActionBar().setTitle("HOME");
-                fragment = new DashBoardFragment();
-                break;
-            case R.id.nav_share:
-                launchMarket();
-                break;
-            case R.id.nav_rate:
-                launchMarket();
-                break;
 
-        }
-
-        if (fragment != null) {
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame, fragment);
-            fragmentTransaction.commit();
-
-            return true;
-        }
-        return false;
+        return true;
     }
 
     private void launchMarket() {
@@ -154,6 +152,17 @@ public class MainActivity extends AppCompatActivity
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, " unable to find market app", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public boolean loadFragment(Fragment fragment) {
+
+        if (fragment != null) {
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame, fragment);
+            fragmentTransaction.commit();
+            return true;
+        }
+        return false;
     }
 
 }

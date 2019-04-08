@@ -1,6 +1,9 @@
 package com.financialcalculator.utility;
 
 public class Constants {
+
+    public static final int APP_TYPE = 0; // (0 = free ,1 = paid)
+
     public static final int EMI_CALCULATOR = 1;
     public static final int COMPARE_LOAN = 2;
     public static final int FLAT_VS_REDUCING = 3;

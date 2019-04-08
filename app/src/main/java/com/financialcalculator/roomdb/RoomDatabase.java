@@ -7,11 +7,15 @@ import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 
 import com.financialcalculator.roomdb.dao.EMISearchHistoryDao;
+import com.financialcalculator.roomdb.dao.GenericSearchHistoryDao;
 import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
+import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
 
-@Database(entities = {EMISearchHistoryEntity.class}, version = 1)
+@Database(entities = {EMISearchHistoryEntity.class, GenericSearchHistoryEntity.class}, version = 1)
 public abstract class RoomDatabase extends android.arch.persistence.room.RoomDatabase {
     public abstract EMISearchHistoryDao emiSearchHistoryDao();
+
+    public abstract GenericSearchHistoryDao genericSearchHistoryDao();
 
     public static final RoomDatabase APP_DATABASE = null;
 

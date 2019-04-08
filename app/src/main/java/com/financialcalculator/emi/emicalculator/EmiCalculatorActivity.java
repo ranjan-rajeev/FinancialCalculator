@@ -298,7 +298,8 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
 
                         emiSearchHistoryEntity.setPrincipalAmt(etPrincipal.getText().toString());
                         emiSearchHistoryEntity.setRoi(etInterest.getText().toString());
-                        emiSearchHistoryEntity.setUpdatedTime(Util.getLongDate(etDateFirstInstallment.getText().toString()));                        new UpdateEMiHistory().execute();
+                        emiSearchHistoryEntity.setUpdatedTime(Util.getLongDate(etDateFirstInstallment.getText().toString()));
+                        new UpdateEMiHistory().execute();
                     }
                     showLayouts();
                     new AsyncCalculateEMiDetails().execute();
