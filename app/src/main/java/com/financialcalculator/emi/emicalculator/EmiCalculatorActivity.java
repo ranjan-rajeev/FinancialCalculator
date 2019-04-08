@@ -1,7 +1,9 @@
 package com.financialcalculator.emi.emicalculator;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,16 +34,19 @@ import com.financialcalculator.model.DetailsEntity;
 import com.financialcalculator.model.YearsDetailsEntity;
 import com.financialcalculator.roomdb.RoomDatabase;
 import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
+import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
+import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
+import com.financialcalculator.utility.Logger;
 import com.financialcalculator.utility.Util;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -73,8 +78,10 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
 
     List<EMISearchHistoryEntity> emiSearchHistoryEntities;
     boolean isEdit = false;
-    RoomDatabase roomDatabase;
     EMISearchHistoryEntity emiSearchHistoryEntity;
+
+    RoomDatabase roomDatabase;
+    GenericSearchHistoryEntity genericSearchHistoryEntity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +163,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         hideKeyBoard(etInterest, this);
         scrollToRow(scrollView, llEmiCAl, cvInput);
     }
+
 
     private void init_views() {
         cvInput.setVisibility(View.VISIBLE);
@@ -287,7 +295,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
                             emiSearchHistoryEntity.setLoanTenureTYpe("YEARS");
                         }
                         isEdit = true;
-                        new InsertEMiHistory().execute();
+                        //new InsertEMiHistory().execute();
                     } else {
                         if (rbYear.isChecked()) {
                             emiSearchHistoryEntity.setLoanTenureTYpe("YEARS");
@@ -299,11 +307,12 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
                         emiSearchHistoryEntity.setPrincipalAmt(etPrincipal.getText().toString());
                         emiSearchHistoryEntity.setRoi(etInterest.getText().toString());
                         emiSearchHistoryEntity.setUpdatedTime(Util.getLongDate(etDateFirstInstallment.getText().toString()));
-                        new UpdateEMiHistory().execute();
+                        // new UpdateEMiHistory().execute();
                     }
                     showLayouts();
                     new AsyncCalculateEMiDetails().execute();
                     calculateEmi(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
+                    updateGenericHistory();
                     break;
                 }
 
@@ -509,19 +518,120 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    private class InsertEMiHistory extends AsyncTask<Void, Void, Void> {
+    private void updateGenericHistory() {
+
+
+        if (genericSearchHistoryEntity == null) {
+            genericSearchHistoryEntity = new GenericSearchHistoryEntity();
+            genericSearchHistoryEntity.setUpdatedTime(Calendar.getInstance().getTimeInMillis());
+            genericSearchHistoryEntity.setType(Constants.EMI_CALCULATOR);
+            genericSearchHistoryEntity.setListKeyValues(getListKeyVAlues());
+            new InsertHistory().execute(genericSearchHistoryEntity);
+
+        } else {
+            genericSearchHistoryEntity.setUpdatedTime(Calendar.getInstance().getTimeInMillis());
+            genericSearchHistoryEntity.setType(Constants.EMI_CALCULATOR);
+            genericSearchHistoryEntity.setListKeyValues(getListKeyVAlues());
+
+            new UpdateHistory().execute(genericSearchHistoryEntity);
+        }
+    }
+
+    private String getListKeyVAlues() {
+        String keyValues = "";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("amount", "" + etPrincipal.getText().toString());
+            jsonObject.put("rate", "" + etInterest.getText().toString());
+            if (rbYear.isChecked()) {
+                jsonObject.put("tenuretype", "YEARS");
+            } else {
+                jsonObject.put("tenuretype", "MONTHS");
+            }
+            jsonObject.put("tenure", "" + etTenure.getText().toString());
+            jsonObject.put("date", "" + etDateFirstInstallment.getText().toString());
+            keyValues = jsonObject.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return keyValues;
+    }
+
+    private void bindValues(GenericSearchHistoryEntity genericSearchHistoryEntity) {
+
+        try {
+            rgYearMonth.setOnCheckedChangeListener(null);
+            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
+            if (obj.getString("tenuretype").equals("YEARS")) {
+                rbYear.setChecked(true);
+            } else {
+                rbMonth.setChecked(true);
+            }
+            Logger.d(obj.toString());
+            etPrincipal.setText(obj.getString("amount"));
+            etInterest.setText(obj.getString("rate"));
+            etDateFirstInstallment.setText(obj.getString("date"));
+            etTenure.setText(obj.getString("tenure"));
+            rgYearMonth.setOnCheckedChangeListener(onCheckedChangeListener);
+            tvDetails.performClick();
+            hideKeyBoard(etInterest, this);
+            scrollToRow(scrollView, llEmiCAl, cvInput);
+        } catch (Throwable t) {
+            Log.e("Financial", "Could not parse malformed JSON: \"" + genericSearchHistoryEntity.getListKeyValues() + "\"");
+        }
+    }
+
+    private class InsertHistory extends AsyncTask<GenericSearchHistoryEntity, Void, Void> {
         @Override
-        protected Void doInBackground(Void... voids) {
-            roomDatabase.emiSearchHistoryDao().insertAll(emiSearchHistoryEntity);
+        protected Void doInBackground(GenericSearchHistoryEntity... voids) {
+            roomDatabase.genericSearchHistoryDao().insertAll(voids);
             return null;
         }
     }
 
-    private class UpdateEMiHistory extends AsyncTask<Void, Void, Void> {
+    private class UpdateHistory extends AsyncTask<GenericSearchHistoryEntity, Void, Void> {
         @Override
-        protected Void doInBackground(Void... voids) {
-            roomDatabase.emiSearchHistoryDao().update(emiSearchHistoryEntity);
+        protected Void doInBackground(GenericSearchHistoryEntity... voids) {
+            roomDatabase.genericSearchHistoryDao().update(voids);
             return null;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.history, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_history:
+                startActivityForResult(new Intent(this, SerachHistoryACtivity.class)
+                        .putExtra("TYPE", Constants.EMI_CALCULATOR), SerachHistoryACtivity.REQUEST_CODE);
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == SerachHistoryACtivity.REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                genericSearchHistoryEntity = data.getExtras().getParcelable("DATA");
+                if (genericSearchHistoryEntity != null)
+                    bindValues(genericSearchHistoryEntity);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
         }
     }
 

@@ -1,13 +1,19 @@
 package com.financialcalculator.emi.emicompare;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
@@ -15,10 +21,19 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.R;
+import com.financialcalculator.roomdb.RoomDatabase;
+import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
+import com.financialcalculator.searchhistory.SerachHistoryACtivity;
+import com.financialcalculator.utility.BaseActivity;
+import com.financialcalculator.utility.Constants;
+import com.financialcalculator.utility.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.Calendar;
 
 public class EmiCompareActivity extends BaseActivity implements View.OnClickListener {
 
@@ -36,6 +51,9 @@ public class EmiCompareActivity extends BaseActivity implements View.OnClickList
 
     ProgressBar progressInterest, progressInterestFull, progressInterestLoan2, progressInterestFullLoan2;
 
+    RoomDatabase roomDatabase;
+    GenericSearchHistoryEntity genericSearchHistoryEntity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +61,7 @@ public class EmiCompareActivity extends BaseActivity implements View.OnClickList
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        roomDatabase = RoomDatabase.getAppDatabase(this);
         init();
         init_views();
         setListener();
@@ -127,7 +145,7 @@ public class EmiCompareActivity extends BaseActivity implements View.OnClickList
                     scrollToRow(scrollView, llEmiCAl, cvResult);
                     calculateEmi(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
                     calculateEmiLoan2(etPrincipalLoan2.getText().toString(), etInterestLoan2.getText().toString(), etTenureLoan2.getText().toString());
-
+                    updateGenericHistory();
                 }
                 break;
         }
@@ -232,4 +250,122 @@ public class EmiCompareActivity extends BaseActivity implements View.OnClickList
             }
         }, delay);
     }
+
+
+    private void updateGenericHistory() {
+
+
+        if (genericSearchHistoryEntity == null) {
+            genericSearchHistoryEntity = new GenericSearchHistoryEntity();
+            genericSearchHistoryEntity.setUpdatedTime(Calendar.getInstance().getTimeInMillis());
+            genericSearchHistoryEntity.setType(Constants.COMPARE_LOAN);
+            genericSearchHistoryEntity.setListKeyValues(getListKeyVAlues());
+            new InsertHistory().execute(genericSearchHistoryEntity);
+
+        } else {
+            genericSearchHistoryEntity.setUpdatedTime(Calendar.getInstance().getTimeInMillis());
+            genericSearchHistoryEntity.setType(Constants.COMPARE_LOAN);
+            genericSearchHistoryEntity.setListKeyValues(getListKeyVAlues());
+
+            new UpdateHistory().execute(genericSearchHistoryEntity);
+        }
+    }
+
+    private String getListKeyVAlues() {
+        String keyValues = "";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("amount", "" + etPrincipal.getText().toString());
+            jsonObject.put("rate", "" + etInterest.getText().toString());
+            jsonObject.put("tenure", "" + etTenure.getText().toString());
+
+            jsonObject.put("amount2", "" + etPrincipalLoan2.getText().toString());
+            jsonObject.put("rate2", "" + etInterestLoan2.getText().toString());
+            jsonObject.put("tenure2", "" + etTenureLoan2.getText().toString());
+
+
+            keyValues = jsonObject.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return keyValues;
+    }
+
+    private void bindValues(GenericSearchHistoryEntity genericSearchHistoryEntity) {
+
+        try {
+            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
+            Logger.d(obj.toString());
+            etPrincipal.setText(obj.getString("amount"));
+            etInterest.setText(obj.getString("rate"));
+            etTenure.setText(obj.getString("tenure"));
+
+            etPrincipalLoan2.setText(obj.getString("amount"));
+            etInterestLoan2.setText(obj.getString("rate"));
+            etTenureLoan2.setText(obj.getString("tenure"));
+
+
+            tvDetails.performClick();
+            hideKeyBoard(etInterest, this);
+            scrollToRow(scrollView, llEmiCAl, cvInput);
+        } catch (Throwable t) {
+            Log.e("Financial", "Could not parse malformed JSON: \"" + genericSearchHistoryEntity.getListKeyValues() + "\"");
+        }
+    }
+
+    private class InsertHistory extends AsyncTask<GenericSearchHistoryEntity, Void, Void> {
+        @Override
+        protected Void doInBackground(GenericSearchHistoryEntity... voids) {
+            roomDatabase.genericSearchHistoryDao().insertAll(voids);
+            return null;
+        }
+    }
+
+    private class UpdateHistory extends AsyncTask<GenericSearchHistoryEntity, Void, Void> {
+        @Override
+        protected Void doInBackground(GenericSearchHistoryEntity... voids) {
+            roomDatabase.genericSearchHistoryDao().update(voids);
+            return null;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.history, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_history:
+                startActivityForResult(new Intent(this, SerachHistoryACtivity.class)
+                        .putExtra("TYPE", Constants.COMPARE_LOAN), SerachHistoryACtivity.REQUEST_CODE);
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == SerachHistoryACtivity.REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                genericSearchHistoryEntity = data.getExtras().getParcelable("DATA");
+                if (genericSearchHistoryEntity != null)
+                    bindValues(genericSearchHistoryEntity);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
+
+
 }
