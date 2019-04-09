@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -65,6 +66,7 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
     LinearLayout llEmiCAl;
     EditText etTenure, etInterest, etPrincipal, etDateFirstInstallment, etProfileName;
     Spinner spLoanType;
+    ArrayAdapter<String> loanType;
     private DatePickerDialog mDatePickerDialog;
     RecyclerView rvEMiDEtails;
     EmiAdapter emiAdapter;
@@ -101,6 +103,7 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
         init_views();
         setListener();
         setDatePicker();
+        setAdapter();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +122,11 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
             bindValues(emiSearchHistoryEntity);
 
         }
+    }
+
+    private void setAdapter() {
+        loanType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.loan_type));
+        spLoanType.setAdapter(loanType);
     }
 
     private void setDatePicker() {
@@ -230,6 +238,10 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
     //endregion
 
     private void init() {
+        etProfileName = findViewById(R.id.etProfileName);
+        spLoanType = findViewById(R.id.spLoanType);
+
+
         rgYearMonth = findViewById(R.id.rgYearMonth);
         rbYear = findViewById(R.id.rbYear);
         rbMonth = findViewById(R.id.rbMonth);
@@ -328,6 +340,11 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
 
 
     public boolean isValidInput() {
+        if (etProfileName.getText().toString().equals("")) {
+            etProfileName.requestFocus();
+            etProfileName.setError("Enter Profile name");
+            return false;
+        }
         if (etPrincipal.getText().toString().equals("")) {
             etPrincipal.requestFocus();
             etPrincipal.setError("Enter Principal");
@@ -550,6 +567,8 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
                 jsonObject.put("tenuretype", "MONTHS");
             }
             jsonObject.put("tenure", "" + etTenure.getText().toString());
+            jsonObject.put("profilename", "" + etProfileName.getText().toString());
+            jsonObject.put("loantype", spLoanType.getSelectedItemPosition());
             jsonObject.put("date", "" + etDateFirstInstallment.getText().toString());
             keyValues = jsonObject.toString();
         } catch (JSONException e) {
@@ -570,6 +589,8 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
                 rbMonth.setChecked(true);
             }
             Logger.d(obj.toString());
+            etProfileName.setText(obj.getString("profilename"));
+            spLoanType.setSelection(obj.getInt("loantype"));
             etPrincipal.setText(obj.getString("amount"));
             etInterest.setText(obj.getString("rate"));
             etDateFirstInstallment.setText(obj.getString("date"));

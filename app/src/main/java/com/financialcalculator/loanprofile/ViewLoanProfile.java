@@ -1,16 +1,31 @@
 package com.financialcalculator.loanprofile;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
+import com.financialcalculator.roomdb.RoomDatabase;
+import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
+import com.financialcalculator.utility.BaseActivity;
+import com.financialcalculator.utility.Constants;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
+import java.util.List;
 
 
-public class ViewLoanProfile extends AppCompatActivity {
+public class ViewLoanProfile extends BaseActivity {
+
+    private AdView mAdView;
+    RecyclerView rvDashboard;
+    List<GenericSearchHistoryEntity> genericSearchHistoryEntities;
+    LoanProfileAdapter loanProfileAdapter;
+    RoomDatabase appDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,16 +33,51 @@ public class ViewLoanProfile extends AppCompatActivity {
         setContentView(R.layout.activity_view_loan_profile);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        appDatabase = RoomDatabase.getAppDatabase(this);
+        setUPAdd();
+        init_widgets();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        new FilterGenericList().execute();
     }
 
+    private void setUPAdd() {
+
+        mAdView = findViewById(R.id.adView);
+        if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("5C24676FE04113F56F0B0A9566555BCD").build();
+            mAdView.loadAd(adRequest);
+        } else {
+
+            mAdView.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void init_widgets() {
+        rvDashboard = findViewById(R.id.rvDashboard);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        rvDashboard.setLayoutManager(layoutManager);
+    }
+
+    private class FilterGenericList extends AsyncTask<Void, Void, List<GenericSearchHistoryEntity>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showDialog("Fetching Search history...");
+        }
+
+        @Override
+        protected List<GenericSearchHistoryEntity> doInBackground(Void... voids) {
+            return appDatabase.genericSearchHistoryDao().getListByType(Constants.LOAN_PROFILE);
+        }
+
+        @Override
+        protected void onPostExecute(List<GenericSearchHistoryEntity> list) {
+            super.onPostExecute(list);
+            genericSearchHistoryEntities = list;
+            loanProfileAdapter = new LoanProfileAdapter(ViewLoanProfile.this, list);
+            rvDashboard.setAdapter(loanProfileAdapter);
+            cancelDialog();
+        }
+    }
 }

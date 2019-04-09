@@ -4,10 +4,8 @@ package com.financialcalculator.dashboard;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,15 +26,11 @@ import com.financialcalculator.loanprofile.CreateLoanProfileActivity;
 import com.financialcalculator.loanprofile.ViewLoanProfile;
 import com.financialcalculator.model.DashBoardRowEntity;
 import com.financialcalculator.model.DashboardEntity;
-import com.financialcalculator.roomdb.RoomDatabase;
-import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
-import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.sip.LumpSumpSipActivity;
 import com.financialcalculator.sip.SIPCalculatorActivity;
 import com.financialcalculator.sip.SIPGoalCalculatorActivity;
 import com.financialcalculator.utility.Constants;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
@@ -66,7 +60,7 @@ public class DashBoardFragment extends Fragment {
 
     private void setUPAdd(View view) {
 
-        mAdView = viHew.findViewById(R.id.adView);
+        mAdView = view.findViewById(R.id.adView);
         if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
             AdRequest adRequest = new AdRequest.Builder().addTestDevice("5C24676FE04113F56F0B0A9566555BCD").build();
             mAdView.loadAd(adRequest);
@@ -120,11 +114,13 @@ public class DashBoardFragment extends Fragment {
         emiCalList.add(new DashboardEntity(Constants.EMI_CALCULATOR, "EMI Calculator", R.drawable.ic_menu_send));*/
 
         dashBoardRowEntities = new ArrayList<>();
+
         dashBoardRowEntities.add(new DashBoardRowEntity(++i, "EMI Calculators", emiCalList));
-        dashBoardRowEntities.add(new DashBoardRowEntity(++i, "Banking Calculations", bankingList));
-        dashBoardRowEntities.add(new DashBoardRowEntity(++i, "Mutual Funds & SIP", sipList));
-        dashBoardRowEntities.add(new DashBoardRowEntity(++i, "GST", gstList));
         dashBoardRowEntities.add(new DashBoardRowEntity(++i, "Loan Profile", loanProfile));
+        dashBoardRowEntities.add(new DashBoardRowEntity(++i, "Mutual Funds & SIP", sipList));
+        dashBoardRowEntities.add(new DashBoardRowEntity(++i, "Banking Calculations", bankingList));
+        dashBoardRowEntities.add(new DashBoardRowEntity(++i, "GST", gstList));
+
 
     }
 
