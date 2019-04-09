@@ -71,6 +71,14 @@
         <item>Monthly Payout</item>
     </string-array>
 
+    <string-array name="loan_type">
+        <item>Home Loan</item>
+        <item>Personal Loan</item>
+        <item>Business Loan</item>
+        <item>Business Loan</item>
+        <item>Business Loan</item>
+    </string-array>
+
     <string-array name="ppf_frequency">
         <item>Yearly Deposit</item>
         <item>Monthly Deposit</item>
@@ -97,4 +105,6 @@
     <string name="title_activity_serach_history_activity">Search History</string>
     <string name="title_activity_about_us">About Us</string>
     <string name="string_about_us">One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.</string>
+    <string name="title_activity_create_loan_profile">Create Loan Profile</string>
+    <string name="title_activity_view_loan_profile">Loan Profile</string>
 </resources>

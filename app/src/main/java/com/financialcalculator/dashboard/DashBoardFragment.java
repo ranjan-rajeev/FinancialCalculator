@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,9 @@ import com.financialcalculator.emi.emicompare.EmiCompareActivity;
 import com.financialcalculator.emi.emifixedvsreducing.FixedVsReducingActivity;
 import com.financialcalculator.gst.GstCalculatorActivity;
 import com.financialcalculator.gst.VatCalculatorActivity;
+import com.financialcalculator.loanprofile.CreateLoanProfileActivity;
+import com.financialcalculator.loanprofile.ViewLoanProfile;
+import com.financialcalculator.model.DashBoardRowEntity;
 import com.financialcalculator.model.DashboardEntity;
 import com.financialcalculator.roomdb.RoomDatabase;
 import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
@@ -39,15 +43,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DashBoardFragment extends Fragment {
-    private AdView mAdView;
+
     View view;
-    RecyclerView rvEmiCAl, rvLoan, rvBanking, rvSip, rvGstVat;
-    DashboardItemAdapter dashboardItemAdapter;
-    List<DashboardEntity> emiCalList, loanList, bankingList, sipList, gstList;
-    RoomDatabase appDatabase;
-
-
-    List<EMISearchHistoryEntity> emiSearchHistoryEntityLIst;
+    private AdView mAdView;
+    RecyclerView rvDashboard;
+    List<DashBoardRowEntity> dashBoardRowEntities;
+    DashboardRowAdapter dashboardRowAdapter;
+    List<DashboardEntity> emiCalList, loanList, bankingList, sipList, gstList, loanProfile;
 
     @Nullable
     @Override
@@ -55,16 +57,16 @@ public class DashBoardFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         setUPAdd(view);
-        appDatabase = RoomDatabase.getAppDatabase(getActivity().getApplicationContext());
+        //appDatabase = RoomDatabase.getAppDatabase(getActivity().getApplicationContext());
         init_widgets(view);
-        init_lists();
-        setAdapters();
+        new InitList().execute();
+        // setAdapters();
         return view;
     }
 
     private void setUPAdd(View view) {
 
-        mAdView = view.findViewById(R.id.adView);
+        mAdView = viHew.findViewById(R.id.adView);
         if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
             AdRequest adRequest = new AdRequest.Builder().addTestDevice("5C24676FE04113F56F0B0A9566555BCD").build();
             mAdView.loadAd(adRequest);
@@ -108,41 +110,28 @@ public class DashBoardFragment extends Fragment {
         gstList.add(new DashboardEntity(Constants.GST_CALCULATOR, "GST Calculator", R.drawable.emi_cal));
         gstList.add(new DashboardEntity(Constants.VAT_CALCULATOR, "VAT Calculator", R.drawable.emi_cal));
 
+
+        loanProfile = new ArrayList<>();
+        loanProfile.add(new DashboardEntity(Constants.LOAN_PROFILE, "Create Loan Profile", R.drawable.emi_cal));
+        loanProfile.add(new DashboardEntity(Constants.LOAN_PROFILE_VIEW, "View Loan Profile", R.drawable.emi_cal));
        /* emiCalList.add(new DashboardEntity(Constants.EMI_CALCULATOR, "EMI Calculator", R.drawable.ic_menu_camera));
         emiCalList.add(new DashboardEntity(Constants.EMI_CALCULATOR, "Pro EMI Calculator", R.drawable.ic_menu_share));
         emiCalList.add(new DashboardEntity(Constants.EMI_CALCULATOR, "Compare Loan", R.drawable.ic_menu_manage));
         emiCalList.add(new DashboardEntity(Constants.EMI_CALCULATOR, "EMI Calculator", R.drawable.ic_menu_send));*/
 
-    }
+        dashBoardRowEntities = new ArrayList<>();
+        dashBoardRowEntities.add(new DashBoardRowEntity(++i, "EMI Calculators", emiCalList));
+        dashBoardRowEntities.add(new DashBoardRowEntity(++i, "Banking Calculations", bankingList));
+        dashBoardRowEntities.add(new DashBoardRowEntity(++i, "Mutual Funds & SIP", sipList));
+        dashBoardRowEntities.add(new DashBoardRowEntity(++i, "GST", gstList));
+        dashBoardRowEntities.add(new DashBoardRowEntity(++i, "Loan Profile", loanProfile));
 
-    private void setAdapters() {
-        rvEmiCAl.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
-        dashboardItemAdapter = new DashboardItemAdapter(this, emiCalList);
-        rvEmiCAl.setAdapter(dashboardItemAdapter);
-
-        rvBanking.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
-        dashboardItemAdapter = new DashboardItemAdapter(this, bankingList);
-        rvBanking.setAdapter(dashboardItemAdapter);
-
-        rvGstVat.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
-        dashboardItemAdapter = new DashboardItemAdapter(this, gstList);
-        rvGstVat.setAdapter(dashboardItemAdapter);
-
-        rvLoan.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
-        dashboardItemAdapter = new DashboardItemAdapter(this, loanList);
-        rvLoan.setAdapter(dashboardItemAdapter);
-
-        rvSip.setLayoutManager(new GridLayoutManager(this.getActivity(), 3));
-        dashboardItemAdapter = new DashboardItemAdapter(this, sipList);
-        rvSip.setAdapter(dashboardItemAdapter);
     }
 
     private void init_widgets(View view) {
-        rvEmiCAl = view.findViewById(R.id.rvEmiCAl);
-        rvLoan = view.findViewById(R.id.rvLoan);
-        rvBanking = view.findViewById(R.id.rvBanking);
-        rvSip = view.findViewById(R.id.rvSip);
-        rvGstVat = view.findViewById(R.id.rvGstVat);
+        rvDashboard = view.findViewById(R.id.rvDashboard);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        rvDashboard.setLayoutManager(layoutManager);
     }
 
     public void redirectToResACtivity(DashboardEntity dashboardEntity) {
@@ -189,21 +178,31 @@ public class DashBoardFragment extends Fragment {
                 startActivity(new Intent(getActivity(), LumpSumpSipActivity.class));
                 break;
 
+            case Constants.LOAN_PROFILE:
+                startActivity(new Intent(getActivity(), CreateLoanProfileActivity.class));
+                break;
+            case Constants.LOAN_PROFILE_VIEW:
+                startActivity(new Intent(getActivity(), ViewLoanProfile.class));
+                break;
+
         }
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        new FetchAsyncList().execute();
-    }
-
-    private class FetchAsyncList extends AsyncTask<Void, Void, Void> {
+    private class InitList extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
-            emiSearchHistoryEntityLIst = appDatabase.emiSearchHistoryDao().getAll();
+            init_lists();
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (dashBoardRowEntities != null) {
+                dashboardRowAdapter = new DashboardRowAdapter(DashBoardFragment.this, dashBoardRowEntities);
+                rvDashboard.setAdapter(dashboardRowAdapter);
+            }
+
         }
     }
 }

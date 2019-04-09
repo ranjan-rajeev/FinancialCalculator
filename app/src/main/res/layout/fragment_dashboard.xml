@@ -5,146 +5,19 @@
     android:layout_height="match_parent"
     android:background="@color/bg_light">
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_above="@+id/adView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvDashboard"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/adView" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextViewStyle.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:text="EMI Calculators"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold" />
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="8dp"
-                app:cardCornerRadius="8dp">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvEmiCAl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-            </android.support.v7.widget.CardView>
-
-            <TextView
-                style="@style/TextViewStyle.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Loan"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="8dp"
-                android:visibility="gone"
-                app:cardCornerRadius="8dp">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvLoan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-            </android.support.v7.widget.CardView>
-
-            <TextView
-                style="@style/TextViewStyle.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Banking Calculations"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold" />
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="8dp"
-                app:cardCornerRadius="8dp">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvBanking"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-            </android.support.v7.widget.CardView>
-
-            <TextView
-                style="@style/TextViewStyle.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Mutual Funds &amp; SIP"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold" />
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="8dp"
-                app:cardCornerRadius="8dp">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvSip"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-            </android.support.v7.widget.CardView>
-
-            <TextView
-                style="@style/TextViewStyle.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:text="GST"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold" />
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:elevation="8dp"
-                app:cardCornerRadius="8dp">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvGstVat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-
-    <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id"
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        />
+        android:visibility="visible"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id" />
 </RelativeLayout>

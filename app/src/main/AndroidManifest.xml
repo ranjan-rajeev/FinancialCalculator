@@ -13,7 +13,7 @@
         <activity
             android:name=".SplashActivity"
             android:noHistory="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".home.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -134,6 +134,24 @@
         <activity
             android:name=".searchhistory.SerachHistoryACtivity"
             android:label="@string/title_activity_serach_history_activity"
+            android:parentActivityName=".home.MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.financialcalculator.home.MainActivity" />
+        </activity>
+        <activity
+            android:name=".loanprofile.CreateLoanProfileActivity"
+            android:label="@string/title_activity_create_loan_profile"
+            android:parentActivityName=".home.MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.financialcalculator.home.MainActivity" />
+        </activity>
+        <activity
+            android:name=".loanprofile.ViewLoanProfile"
+            android:label="@string/title_activity_view_loan_profile"
             android:parentActivityName=".home.MainActivity"
             android:theme="@style/AppTheme">
             <meta-data
