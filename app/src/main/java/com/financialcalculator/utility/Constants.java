@@ -25,6 +25,10 @@ public class Constants {
 
     public static final int GST_CALCULATOR = 16;
     public static final int VAT_CALCULATOR = 17;
+
+
+    public static final int LOAN_PROFILE = 18;
+    public static final int LOAN_PROFILE_VIEW = 19;
     public static final String CURRENCY = "\u20B9";
 
 
