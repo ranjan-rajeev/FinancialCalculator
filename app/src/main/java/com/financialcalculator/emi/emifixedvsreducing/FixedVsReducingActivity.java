@@ -1,13 +1,19 @@
 package com.financialcalculator.emi.emifixedvsreducing;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
@@ -15,10 +21,19 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.R;
+import com.financialcalculator.roomdb.RoomDatabase;
+import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
+import com.financialcalculator.searchhistory.SerachHistoryACtivity;
+import com.financialcalculator.utility.BaseActivity;
+import com.financialcalculator.utility.Constants;
+import com.financialcalculator.utility.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.Calendar;
 
 public class FixedVsReducingActivity extends BaseActivity implements View.OnClickListener {
 
@@ -35,6 +50,9 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
     LinearLayout llEmiCAl;
     CardView cvInput, cvResult;
 
+    RoomDatabase roomDatabase;
+    GenericSearchHistoryEntity genericSearchHistoryEntity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +60,7 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        roomDatabase = RoomDatabase.getAppDatabase(this);
 
         //region floating button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -126,7 +145,7 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
                     scrollToRow(scrollView, llEmiCAl, cvResult);
                     calculateEmi(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
                     calculateEmiLoan2(etPrincipalLoan2.getText().toString(), etInterestLoan2.getText().toString(), etTenureLoan2.getText().toString());
-
+                    updateGenericHistory();
                 }
                 break;
         }
@@ -139,9 +158,9 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
         double timeInMonth = Double.parseDouble(tenure);
 
 
-        double totalInterestPayable  =  (principal * interestPercent *timeInMonth)/100 ;
+        double totalInterestPayable = (principal * interestPercent * timeInMonth) / 100;
         double totalAmountPayable = (principal + totalInterestPayable);
-        double emi = (totalAmountPayable/(timeInMonth*12));
+        double emi = (totalAmountPayable / (timeInMonth * 12));
 
 
        /* double effectiveROI = interestPercent / 1200;
@@ -239,4 +258,118 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
         }, delay);
     }
 
+    private void updateGenericHistory() {
+
+
+        if (genericSearchHistoryEntity == null) {
+            genericSearchHistoryEntity = new GenericSearchHistoryEntity();
+            genericSearchHistoryEntity.setUpdatedTime(Calendar.getInstance().getTimeInMillis());
+            genericSearchHistoryEntity.setType(Constants.FLAT_VS_REDUCING);
+            genericSearchHistoryEntity.setListKeyValues(getListKeyVAlues());
+            new InsertHistory().execute(genericSearchHistoryEntity);
+
+        } else {
+            genericSearchHistoryEntity.setUpdatedTime(Calendar.getInstance().getTimeInMillis());
+            genericSearchHistoryEntity.setType(Constants.FLAT_VS_REDUCING);
+            genericSearchHistoryEntity.setListKeyValues(getListKeyVAlues());
+
+            new UpdateHistory().execute(genericSearchHistoryEntity);
+        }
+    }
+
+    private String getListKeyVAlues() {
+        String keyValues = "";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("amount", "" + etPrincipal.getText().toString());
+            jsonObject.put("rate", "" + etInterest.getText().toString());
+            jsonObject.put("tenure", "" + etTenure.getText().toString());
+
+            jsonObject.put("amount2", "" + etPrincipalLoan2.getText().toString());
+            jsonObject.put("rate2", "" + etInterestLoan2.getText().toString());
+            jsonObject.put("tenure2", "" + etTenureLoan2.getText().toString());
+
+
+            keyValues = jsonObject.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return keyValues;
+    }
+
+    private void bindValues(GenericSearchHistoryEntity genericSearchHistoryEntity) {
+
+        try {
+            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
+            Logger.d(obj.toString());
+            etPrincipal.setText(obj.getString("amount"));
+            etInterest.setText(obj.getString("rate"));
+            etTenure.setText(obj.getString("tenure"));
+
+            etPrincipalLoan2.setText(obj.getString("amount"));
+            etInterestLoan2.setText(obj.getString("rate"));
+            etTenureLoan2.setText(obj.getString("tenure"));
+
+
+            tvDetails.performClick();
+            hideKeyBoard(etInterest, this);
+            scrollToRow(scrollView, llEmiCAl, cvInput);
+        } catch (Throwable t) {
+            Log.e("Financial", "Could not parse malformed JSON: \"" + genericSearchHistoryEntity.getListKeyValues() + "\"");
+        }
+    }
+
+    private class InsertHistory extends AsyncTask<GenericSearchHistoryEntity, Void, Void> {
+        @Override
+        protected Void doInBackground(GenericSearchHistoryEntity... voids) {
+            roomDatabase.genericSearchHistoryDao().insertAll(voids);
+            return null;
+        }
+    }
+
+    private class UpdateHistory extends AsyncTask<GenericSearchHistoryEntity, Void, Void> {
+        @Override
+        protected Void doInBackground(GenericSearchHistoryEntity... voids) {
+            roomDatabase.genericSearchHistoryDao().update(voids);
+            return null;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.history, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_history:
+                startActivityForResult(new Intent(this, SerachHistoryACtivity.class)
+                        .putExtra("TYPE", Constants.FLAT_VS_REDUCING), SerachHistoryACtivity.REQUEST_CODE);
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == SerachHistoryACtivity.REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                genericSearchHistoryEntity = data.getExtras().getParcelable("DATA");
+                if (genericSearchHistoryEntity != null)
+                    bindValues(genericSearchHistoryEntity);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
 }

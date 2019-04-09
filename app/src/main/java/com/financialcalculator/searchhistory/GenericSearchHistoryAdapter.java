@@ -10,10 +10,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.financialcalculator.R;
-import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
 import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
 import com.financialcalculator.utility.Constants;
-import com.financialcalculator.utility.Util;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -63,10 +64,24 @@ public class GenericSearchHistoryAdapter extends RecyclerView.Adapter<RecyclerVi
             } else {
                 ((EmiDetailsHolder) holder).llItem_details.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lightGrey));
             }*/
-            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + detailsEntity.getId() + " " + Constants.CURRENCY);
+
+            switch (detailsEntity.getType()) {
+                case Constants.EMI_CALCULATOR:
+                    bindEmiCalculator(holder, detailsEntity);
+                    break;
+                case Constants.COMPARE_LOAN:
+                    bindCompareLoan(holder, detailsEntity);
+                    break;
+            }
+
+            /*((EmiDetailsHolder) holder).tvPrincipal.setText("" + detailsEntity.getId() + " " + Constants.CURRENCY);
             ((EmiDetailsHolder) holder).tvDate.setText(Util.getDatefromLong(detailsEntity.getUpdatedTime()));
             ((EmiDetailsHolder) holder).tvRate.setText("" + detailsEntity.getType() + "%");
-            ((EmiDetailsHolder) holder).tvTerm.setText("" + detailsEntity.getId() + " " + detailsEntity.getType());
+
+
+            ((EmiDetailsHolder) holder).tvTerm.setText("" + detailsEntity.getId() + " " + detailsEntity.getType());*/
+
+
             ((EmiDetailsHolder) holder).llItem_details.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -79,6 +94,42 @@ public class GenericSearchHistoryAdapter extends RecyclerView.Adapter<RecyclerVi
                     ((SerachHistoryACtivity) mContext).deleteSearchItem(detailsEntity);
                 }
             });
+        }
+    }
+
+    private void bindEmiCalculator(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
+        try {
+            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
+            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + obj.getString("amount") + " " + Constants.CURRENCY);
+            ((EmiDetailsHolder) holder).tvDate.setText("" + obj.getString("date"));
+            ((EmiDetailsHolder) holder).tvRate.setText("" + obj.getString("rate") + "%");
+
+            if (obj.getString("tenuretype").equals("YEARS")) {
+                ((EmiDetailsHolder) holder).tvTerm.setText("" + obj.getString("tenure") + " Years");
+            } else {
+                ((EmiDetailsHolder) holder).tvTerm.setText("" + obj.getString("tenure") + " Months");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void bindCompareLoan(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
+        try {
+            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
+            ((EmiDetailsHolder) holder).tvRate.setVisibility(View.GONE);
+            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + obj.getString("amount") + " " + Constants.CURRENCY +
+                    "" + obj.getString("amount2") + " " + Constants.CURRENCY);
+            ((EmiDetailsHolder) holder).tvDate.setText("" + obj.getString("rate") + "%" + "" + obj.getString("rate2") + "%");
+
+
+            if (obj.getString("tenuretype").equals("YEARS")) {
+                ((EmiDetailsHolder) holder).tvTerm.setText("" + obj.getString("tenure") + " Years" + "" + obj.getString("tenure2") + " Years");
+            } else {
+                ((EmiDetailsHolder) holder).tvTerm.setText("" + obj.getString("tenure") + " Months" + "" + obj.getString("tenure2") + " Months");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

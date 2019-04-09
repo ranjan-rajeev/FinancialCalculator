@@ -19,13 +19,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.financialcalculator.R;
 import com.financialcalculator.model.FDDetailsEntity;
 import com.financialcalculator.model.FDEntity;
 import com.financialcalculator.roomdb.RoomDatabase;
-import com.financialcalculator.roomdb.dao.GenericSearchHistoryDao;
 import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
 import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
@@ -37,7 +35,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -669,7 +666,6 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
-
             }
         }
     }

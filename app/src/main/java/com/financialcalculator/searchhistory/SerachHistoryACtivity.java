@@ -65,7 +65,7 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
         //init_Adapters();
     }
 
-    @Override
+    /*@Override
     protected void onRestart() {
         super.onRestart();
         switch (type) {
@@ -73,7 +73,7 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
                 new GetAllEmi().execute();
                 break;
         }
-    }
+    }*/
 
     private void init_widgets() {
         fab = (FloatingActionButton) findViewById(R.id.fab);
