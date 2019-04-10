@@ -16,10 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
             <TextView
-                android:id="@+id/tvshortName"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/tvShortName"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="@drawable/circle_green"
                 android:gravity="center"
                 android:text="R"
@@ -30,58 +31,43 @@
             <TextView
                 android:id="@+id/tvfullName"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/tvshortName"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/tvShortName"
                 android:gravity="left|center"
                 android:text="RAJEEV"
                 android:textColor="@color/uvv_black"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                android:textSize="15dp" />
 
-
-            <TextView
-                android:id="@+id/tvEmi"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
-                android:layout_toRightOf="@+id/tvfullName"
-                android:gravity="right|center"
-                android:text="12385 /month"
-                android:textColor="@color/uvv_black"
-                android:textSize="12dp" />
-
+                android:src="@drawable/ic_action_arrow_forward" />
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/blue" />
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/lightGrey"
+            android:visibility="visible" />
 
-        <TextView
-            android:id="@+id/tv"
-            style="@style/TextViewStyle.Large"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_margin="10dp"
-            android:layout_marginRight="5dp"
-            android:gravity="center"
-            android:text="Your loan is expected to\nfinish on 12/12/2023"
-            android:textColor="@color/uvv_black" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="15">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="4"
                 android:orientation="vertical">
 
                 <TextView
@@ -108,9 +94,9 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:orientation="vertical">
 
                 <TextView
@@ -119,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5dp"
-                    android:gravity="center|left"
+                    android:gravity="center"
                     android:text="Amount Left"
                     android:textColor="@color/uvv_black" />
 
@@ -130,8 +116,37 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5dp"
-                    android:gravity="center|left"
+                    android:gravity="center"
                     android:text="134,567"
+                    android:textColor="@color/blue_descent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextViewStyle.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:text="Expected End"
+                    android:textColor="@color/uvv_black" />
+
+                <TextView
+                    android:id="@+id/tvEnd"
+                    style="@style/TextViewStyle.Large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:text="12/12/2019"
                     android:textColor="@color/blue_descent" />
 
             </LinearLayout>
