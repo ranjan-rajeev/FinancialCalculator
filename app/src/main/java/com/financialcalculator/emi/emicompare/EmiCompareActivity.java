@@ -334,7 +334,7 @@ public class EmiCompareActivity extends BaseActivity implements View.OnClickList
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.history, menu);
-        return true;
+        return false;
     }
 
     @Override

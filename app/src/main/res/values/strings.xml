@@ -56,7 +56,9 @@
     <string name="title_activity_fixed_vs_reducing">Flat Vs Reducing Rate</string>
     <string name="title_activity_gst_calculator">GST Calculator</string>
     <string name="title_activity_vat_calculator">VAT Calculator</string>
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id">ca-app-pub-5208898531645791/6385709791</string>
+    <string name="ad_app_id">ca-app-pub-5208898531645791~9738631448</string>
+
     <string-array name="gst_type">
         <item>Add GST</item>
         <item>Remove GST</item>

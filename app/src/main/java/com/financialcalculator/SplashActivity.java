@@ -10,8 +10,9 @@ import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 
-import com.financialcalculator.R;
 import com.financialcalculator.home.MainActivity;
+import com.financialcalculator.utility.Constants;
+import com.google.android.gms.ads.MobileAds;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -25,7 +26,9 @@ public class SplashActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
-
+        if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
+            MobileAds.initialize(this, "ca-app-pub-5208898531645791~9738631448");
+        }
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
         ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, 500); // see this max value coming back here,// we animate towards that value
         animation.setDuration(SPLASH_DISPLAY_LENGTH); // in milliseconds

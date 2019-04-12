@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.financialcalculator.R;
 import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
 import com.financialcalculator.utility.Constants;
+import com.financialcalculator.utility.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,13 +65,28 @@ public class GenericSearchHistoryAdapter extends RecyclerView.Adapter<RecyclerVi
             } else {
                 ((EmiDetailsHolder) holder).llItem_details.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lightGrey));
             }*/
-
+            ((EmiDetailsHolder) holder).tvRate.setBackgroundResource(Util.getFixedBackground(position));
             switch (detailsEntity.getType()) {
                 case Constants.EMI_CALCULATOR:
                     bindEmiCalculator(holder, detailsEntity);
                     break;
-                case Constants.COMPARE_LOAN:
-                    bindCompareLoan(holder, detailsEntity);
+                case Constants.SIP_CALCULATOR:
+                    bindSIPCalculator(holder, detailsEntity);
+                    break;
+                case Constants.ADVANCE_SIP_CALCULATOR:
+                    bindGOALSIPCalculator(holder, detailsEntity);
+                    break;
+                case Constants.LUMPSUMP_CALCULATOR:
+                    bindLUMPSUMCalculator(holder, detailsEntity);
+                    break;
+                case Constants.FD_CALCULATOR:
+                    bindFDCalculator(holder, detailsEntity);
+                    break;
+                case Constants.RD_CALCULATOR:
+                    bindRDCalculator(holder, detailsEntity);
+                    break;
+                case Constants.PPF_CALCULATOR:
+                    bindPPFCalculator(holder, detailsEntity);
                     break;
             }
 
@@ -100,7 +116,8 @@ public class GenericSearchHistoryAdapter extends RecyclerView.Adapter<RecyclerVi
     private void bindEmiCalculator(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
         try {
             JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
-            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + obj.getString("amount") + " " + Constants.CURRENCY);
+            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + Util.getNumberFormatted(obj.getString("amount"))
+                    + " " + Constants.CURRENCY);
             ((EmiDetailsHolder) holder).tvDate.setText("" + obj.getString("date"));
             ((EmiDetailsHolder) holder).tvRate.setText("" + obj.getString("rate") + "%");
 
@@ -111,6 +128,141 @@ public class GenericSearchHistoryAdapter extends RecyclerView.Adapter<RecyclerVi
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void bindSIPCalculator(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
+        try {
+            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
+            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + Util.getNumberFormatted(obj.getString("amount"))
+                    + " " + Constants.CURRENCY);
+            //((EmiDetailsHolder) holder).tvDate.setText("" + obj.getString("tenuretype"));
+            ((EmiDetailsHolder) holder).tvRate.setText("" + obj.getString("rate") + "%");
+            ((EmiDetailsHolder) holder).tvTerm.setText("" + obj.getString("tenure") + " Months");
+            ((EmiDetailsHolder) holder).tvDate.setText("" + getFrequencyType(obj.getInt("tenuretype")));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getFrequencyType(int i) {
+        if (i == 0) {
+            return "Paying Monthly";
+        } else if (i == 1) {
+            return "Paying Quarterly";
+        } else if (i == 2) {
+            return "Paying Half Yearly";
+        } else {
+            return "Paying Yearly";
+        }
+    }
+
+    private String getFDType(int i) {
+        if (i == 0) {
+            return "Cumulative";
+        } else if (i == 1) {
+            return "Quarterly Payout";
+        } else if (i == 2) {
+            return "Monthly Payout";
+        } else {
+            return "";
+        }
+    }
+
+    private void bindGOALSIPCalculator(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
+        try {
+            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
+            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + Util.getNumberFormatted(obj.getString("amount"))
+                    + " " + Constants.CURRENCY);
+            ((EmiDetailsHolder) holder).tvDate.setVisibility(View.GONE);
+            ((EmiDetailsHolder) holder).tvRate.setText("" + obj.getString("rate") + "%");
+            ((EmiDetailsHolder) holder).tvTerm.setText("" + obj.getString("tenure") + " Years");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void bindLUMPSUMCalculator(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
+        try {
+            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
+            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + Util.getNumberFormatted(obj.getString("amount"))
+                    + " " + Constants.CURRENCY);
+            ((EmiDetailsHolder) holder).tvDate.setVisibility(View.GONE);
+            ((EmiDetailsHolder) holder).tvRate.setText("" + obj.getString("rate") + "%");
+            ((EmiDetailsHolder) holder).tvTerm.setText("" + obj.getString("tenure") + " Years");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void bindFDCalculator(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
+        try {
+            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
+            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + Util.getNumberFormatted(obj.getString("amount"))
+                    + " " + Constants.CURRENCY);
+            ((EmiDetailsHolder) holder).tvRate.setText("" + obj.getString("rate") + "%");
+
+            ((EmiDetailsHolder) holder).tvDate.setText("" + getFDType(obj.getInt("fdtype")));
+
+            ((EmiDetailsHolder) holder).tvTerm.setText(""
+                    + obj.getString("year") + " Years, "
+                    + obj.getString("month") + " Months, "
+                    + obj.getString("day") + " Days");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void bindRDCalculator(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
+        try {
+            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
+            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + Util.getNumberFormatted(obj.getString("amount"))
+                    + " " + Constants.CURRENCY);
+            //((EmiDetailsHolder) holder).tvDate.setText("" + obj.getString("tenuretype"));
+            ((EmiDetailsHolder) holder).tvRate.setText("" + obj.getString("rate") + "%");
+            ((EmiDetailsHolder) holder).tvTerm.setText("" + obj.getString("tenure") + " Months");
+            ((EmiDetailsHolder) holder).tvDate.setText("" + getFrequencyType(obj.getInt("tenuretype")));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void bindPPFCalculator(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
+        try {
+            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
+            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + Util.getNumberFormatted(obj.getString("amount"))
+                    + " " + Constants.CURRENCY);
+            ((EmiDetailsHolder) holder).tvRate.setText("" + obj.getString("rate") + "%");
+
+            if (obj.getInt("deposittype") == 0) {
+                ((EmiDetailsHolder) holder).tvDate.setText("Yearly Deposit");
+            } else {
+                ((EmiDetailsHolder) holder).tvDate.setText("Monthly Deposit");
+            }
+
+
+            ((EmiDetailsHolder) holder).tvTerm.setText("" + getPPFType(obj.getInt("term")));
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getPPFType(int i) {
+        if (i == 0) {
+            return "15 Years";
+        } else if (i == 1) {
+            return "20 Years";
+        } else if (i == 2) {
+            return "25 Years";
+        } else {
+            return "30 Years";
         }
     }
 
@@ -137,5 +289,6 @@ public class GenericSearchHistoryAdapter extends RecyclerView.Adapter<RecyclerVi
     public int getItemCount() {
         return detailsEntityList.size();
     }
+
 
 }

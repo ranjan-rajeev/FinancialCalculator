@@ -1,13 +1,12 @@
 package com.financialcalculator.utility;
 
-import android.content.Context;
+import com.financialcalculator.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import android.os.Handler;
+import java.util.Random;
 
 /**
  * Created by Rajeev Ranjan -  ABPB on 05-04-2019.
@@ -54,6 +53,52 @@ public class Util {
             e.printStackTrace();
         }
         return getYearMonthDate(calendar.getTimeInMillis(), type);
+    }
+
+    public static String getNumberFormatted(String number) {
+
+        String s = "";
+        int j = 1;
+        for (int i = number.length() - 1; i >= 0; i--) {
+
+            char c = number.charAt(i);
+            s = c + s;
+            if (j % 3 == 0 && i != 0) {
+                s = "," + s;
+            }
+            j++;
+        }
+        return s;
+    }
+
+    public static int getRandomBackground() {
+        Random rand = new Random();
+        int n = rand.nextInt(2);
+        switch (n) {
+            case 0:
+                return R.drawable.circle_green;
+            case 1:
+                return R.drawable.circle_blue;
+            case 2:
+                return R.drawable.circle_red;
+            default:
+                return R.drawable.circle_green;
+        }
+    }
+
+    public static int getFixedBackground(int position) {
+        Random rand = new Random();
+        int n = rand.nextInt(2);
+        switch (position % 3) {
+            case 0:
+                return R.drawable.circle_green;
+            case 1:
+                return R.drawable.circle_blue;
+            case 2:
+                return R.drawable.circle_red;
+            default:
+                return R.drawable.circle_green;
+        }
     }
 
 }

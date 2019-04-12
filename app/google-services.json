@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "949252090887",
+    "firebase_url": "https://financialcalculator-4a26f.firebaseio.com",
+    "project_id": "financialcalculator-4a26f",
+    "storage_bucket": "financialcalculator-4a26f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949252090887:android:09ce9e5348c466a9",
+        "android_client_info": {
+          "package_name": "com.financialcalculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949252090887-fdipb8tlrgosjn2ta15v3bvbk0vgn064.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.financialcalculator",
+            "certificate_hash": "c8880954a275894a76869efad55e26a2df9c14a7"
+          }
+        },
+        {
+          "client_id": "949252090887-vtvj4dsckqb98a56c8tlsj6kdqjnv4qr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5_O-0bHCgkf8gYPNST4vNBTEmOlmZd6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949252090887-vtvj4dsckqb98a56c8tlsj6kdqjnv4qr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-5208898531645791~9738631448"
+    }
+  ],
+  "configuration_version": "1"
+}
