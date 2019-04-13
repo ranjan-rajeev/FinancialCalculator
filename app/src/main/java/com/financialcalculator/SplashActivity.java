@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
-            MobileAds.initialize(this, "ca-app-pub-5208898531645791~9738631448");
+            MobileAds.initialize(this, getResources().getString(R.string.ad_app_id));
         }
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
         ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, 500); // see this max value coming back here,// we animate towards that value

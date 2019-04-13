@@ -18,9 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
 import com.financialcalculator.about.AboutFragment;
 import com.financialcalculator.dashboard.DashBoardFragment;
+import com.financialcalculator.utility.Constants;
+import com.google.android.gms.ads.MobileAds;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -32,6 +35,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
+            MobileAds.initialize(this, getResources().getString(R.string.ad_app_id));
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

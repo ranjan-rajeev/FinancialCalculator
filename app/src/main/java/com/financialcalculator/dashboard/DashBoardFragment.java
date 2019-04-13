@@ -51,7 +51,7 @@ public class DashBoardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        setUPAdd(view);
+        //setUPAdd(view);
         //appDatabase = RoomDatabase.getAppDatabase(getActivity().getApplicationContext());
         init_widgets(view);
         new InitList().execute();
