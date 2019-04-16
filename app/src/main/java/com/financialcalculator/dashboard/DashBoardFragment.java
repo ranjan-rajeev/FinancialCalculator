@@ -24,6 +24,7 @@ import com.financialcalculator.emi.emifixedvsreducing.FixedVsReducingActivity;
 import com.financialcalculator.gst.GstCalculatorActivity;
 import com.financialcalculator.gst.VatCalculatorActivity;
 import com.financialcalculator.loanprofile.CreateLoanProfileActivity;
+import com.financialcalculator.loanprofile.HomeLoanEligibility;
 import com.financialcalculator.loanprofile.ViewLoanProfile;
 import com.financialcalculator.model.DashBoardRowEntity;
 import com.financialcalculator.model.DashboardEntity;
@@ -149,6 +150,7 @@ public class DashBoardFragment extends Fragment {
         loanProfile = new ArrayList<>();
         loanProfile.add(new DashboardEntity(Constants.LOAN_PROFILE, "Create Loan Profile", R.drawable.emi_cal));
         loanProfile.add(new DashboardEntity(Constants.LOAN_PROFILE_VIEW, "View Loan Profile", R.drawable.emi_cal));
+        loanProfile.add(new DashboardEntity(Constants.HOME_LOAN_ELIGIBLE, "Home Loan Eligibility", R.drawable.emi_cal));
        /* emiCalList.add(new DashboardEntity(Constants.EMI_CALCULATOR, "EMI Calculator", R.drawable.ic_menu_camera));
         emiCalList.add(new DashboardEntity(Constants.EMI_CALCULATOR, "Pro EMI Calculator", R.drawable.ic_menu_share));
         emiCalList.add(new DashboardEntity(Constants.EMI_CALCULATOR, "Compare Loan", R.drawable.ic_menu_manage));
@@ -157,7 +159,7 @@ public class DashBoardFragment extends Fragment {
         dashBoardRowEntities = new ArrayList<>();
 
         dashBoardRowEntities.add(new DashBoardRowEntity(++i, "EMI Calculators", emiCalList));
-        //dashBoardRowEntities.add(new DashBoardRowEntity(++i, "Loan Profile", loanProfile));
+        dashBoardRowEntities.add(new DashBoardRowEntity(++i, "Loan Profile", loanProfile));
         dashBoardRowEntities.add(new DashBoardRowEntity(++i, "Mutual Funds & SIP", sipList));
         dashBoardRowEntities.add(new DashBoardRowEntity(++i, "Banking Calculations", bankingList));
         dashBoardRowEntities.add(new DashBoardRowEntity(++i, "GST", gstList));
@@ -220,6 +222,9 @@ public class DashBoardFragment extends Fragment {
                 break;
             case Constants.LOAN_PROFILE_VIEW:
                 startActivity(new Intent(getActivity(), ViewLoanProfile.class));
+                break;
+            case Constants.HOME_LOAN_ELIGIBLE:
+                startActivity(new Intent(getActivity(), HomeLoanEligibility.class));
                 break;
 
         }

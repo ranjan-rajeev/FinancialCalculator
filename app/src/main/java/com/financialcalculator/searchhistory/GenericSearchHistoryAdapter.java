@@ -88,6 +88,9 @@ public class GenericSearchHistoryAdapter extends RecyclerView.Adapter<RecyclerVi
                 case Constants.PPF_CALCULATOR:
                     bindPPFCalculator(holder, detailsEntity);
                     break;
+                case Constants.HOME_LOAN_ELIGIBLE:
+                    bindHOMELoan(holder, detailsEntity);
+                    break;
             }
 
             /*((EmiDetailsHolder) holder).tvPrincipal.setText("" + detailsEntity.getId() + " " + Constants.CURRENCY);
@@ -218,6 +221,21 @@ public class GenericSearchHistoryAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     private void bindRDCalculator(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
+        try {
+            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
+            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + Util.getNumberFormatted(obj.getString("amount"))
+                    + " " + Constants.CURRENCY);
+            //((EmiDetailsHolder) holder).tvDate.setText("" + obj.getString("tenuretype"));
+            ((EmiDetailsHolder) holder).tvRate.setText("" + obj.getString("rate") + "%");
+            ((EmiDetailsHolder) holder).tvTerm.setText("" + obj.getString("tenure") + " Months");
+            ((EmiDetailsHolder) holder).tvDate.setText("" + getFrequencyType(obj.getInt("tenuretype")));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void bindHOMELoan(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
         try {
             JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
             ((EmiDetailsHolder) holder).tvPrincipal.setText("" + Util.getNumberFormatted(obj.getString("amount"))
