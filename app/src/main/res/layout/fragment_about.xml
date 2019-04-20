@@ -40,7 +40,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:paddingBottom="10dp"
-        android:text="copyright@2019"
+        android:text="copyright@horizonlabs"
         android:textColor="#525252"
         android:textSize="11sp">
 

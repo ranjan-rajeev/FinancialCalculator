@@ -29,6 +29,7 @@ public class Constants {
 
     public static final int LOAN_PROFILE = 18;
     public static final int LOAN_PROFILE_VIEW = 19;
+    public static final int HOME_LOAN_ELIGIBLE = 20;
     public static final String CURRENCY = "\u20B9";
 
 

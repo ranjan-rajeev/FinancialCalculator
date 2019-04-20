@@ -164,9 +164,17 @@ public class MainActivity extends AppCompatActivity
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.setPackage("com.whatsapp");
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.horizonlabs.financialcalculator");
         sendIntent.setType("text/plain");
-        startActivity(sendIntent);
+        if (sendIntent.resolveActivity(getPackageManager()) != null)
+            startActivity(sendIntent);
+        else {
+            sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.horizonlabs.financialcalculator");
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+        }
     }
 
     public boolean loadFragment(Fragment fragment) {

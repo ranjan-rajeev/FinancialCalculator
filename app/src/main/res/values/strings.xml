@@ -109,4 +109,5 @@
     <string name="string_about_us">One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.</string>
     <string name="title_activity_create_loan_profile">Create Loan Profile</string>
     <string name="title_activity_view_loan_profile">Loan Profile</string>
+    <string name="title_activity_home_loan_eligibility">Home Loan Eligibility</string>
 </resources>
