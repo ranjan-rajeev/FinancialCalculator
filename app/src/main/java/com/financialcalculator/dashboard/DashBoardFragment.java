@@ -51,7 +51,7 @@ public class DashBoardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        //setUPAdd(view);
+        setUPAdd(view);
         //appDatabase = RoomDatabase.getAppDatabase(getActivity().getApplicationContext());
         init_widgets(view);
         new InitList().execute();
@@ -64,7 +64,7 @@ public class DashBoardFragment extends Fragment {
         mAdView = view.findViewById(R.id.adView);
         if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
             AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
+                    //.addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
                     .build();
             mAdView.loadAd(adRequest);
         } else {
