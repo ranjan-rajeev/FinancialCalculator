@@ -98,13 +98,14 @@
     </string-array>
     <string name="title_activity_fdcalculator">FD Calculator</string>
     <string name="title_activity_rdcalculator">RD Calculator</string>
-    <string name="title_activity_ppfcalculatot">PPF Calculatot</string>
+    <string name="title_activity_ppfcalculatot">PPF Calculator</string>
     <string name="title_activity_sipcalculator">"SIP Calculator "</string>
     <string name="title_activity_sipgoal_calculator">SIP Goal Calculator</string>
     <string name="title_activity_lump_sump_sip">Lumpsum Calculator</string>
     <string name="title_activity_serach_history_activity">Search History</string>
     <string name="title_activity_about_us">About Us</string>
-    <string name="string_about_us">One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.One stop solution for all your financial calculations.</string>
+    <string name="string_about_us">Finance Calculator is an easy to use calculation tool that helps you to quickly calculate EMI , compare loans , create loan profiles,find home loan eligibility ,and view payment schedule. You can use this app to calculate your EMI (Equated Monthly Instalment), plan your loan repayment in an effective way.
+        This app is the advanced Financial Tool that is useful for day to day life with all useful features like :</string>
     <string name="title_activity_create_loan_profile">Create Loan Profile</string>
     <string name="title_activity_view_loan_profile">Loan Profile</string>
     <string name="title_activity_home_loan_eligibility">Home Loan Eligibility</string>

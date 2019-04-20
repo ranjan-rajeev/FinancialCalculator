@@ -32,6 +32,13 @@
 
     </TextView>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvWhatsNew"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/version"
+        android:layout_below="@+id/desc" />
+
 
     <TextView
         android:id="@+id/version"

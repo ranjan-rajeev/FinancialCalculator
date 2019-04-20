@@ -117,9 +117,9 @@ public class DashBoardFragment extends Fragment {
 
 
         loanProfile = new ArrayList<>();
-        loanProfile.add(new DashboardEntity(Constants.LOAN_PROFILE, "Create Loan Profile", R.drawable.emi_cal));
-        loanProfile.add(new DashboardEntity(Constants.LOAN_PROFILE_VIEW, "View Loan Profile", R.drawable.emi_cal));
-        loanProfile.add(new DashboardEntity(Constants.HOME_LOAN_ELIGIBLE, "Home Loan Eligibility", R.drawable.emi_cal));
+        loanProfile.add(new DashboardEntity(Constants.LOAN_PROFILE, "Create Loan Profile", R.drawable.create_loan_));
+        loanProfile.add(new DashboardEntity(Constants.LOAN_PROFILE_VIEW, "View Loan Profile", R.drawable.view_loan_));
+        loanProfile.add(new DashboardEntity(Constants.HOME_LOAN_ELIGIBLE, "Home Loan Eligibility", R.drawable.home_loan));
        /* emiCalList.add(new DashboardEntity(Constants.EMI_CALCULATOR, "EMI Calculator", R.drawable.ic_menu_camera));
         emiCalList.add(new DashboardEntity(Constants.EMI_CALCULATOR, "Pro EMI Calculator", R.drawable.ic_menu_share));
         emiCalList.add(new DashboardEntity(Constants.EMI_CALCULATOR, "Compare Loan", R.drawable.ic_menu_manage));
