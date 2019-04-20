@@ -5,10 +5,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,9 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
 import com.financialcalculator.banking.fd.FDYearAdapter;
-import com.financialcalculator.banking.rd.RDCalculatorActivity;
 import com.financialcalculator.model.FDDetailsEntity;
 import com.financialcalculator.model.FDEntity;
 import com.financialcalculator.roomdb.RoomDatabase;
@@ -34,6 +31,8 @@ import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +45,7 @@ import static android.view.View.GONE;
 
 public class HomeLoanEligibility extends BaseActivity implements View.OnClickListener {
 
+    private AdView mAdView;
     EditText etPrincipal, etInterest, etYear, etMonth, etDay, etExhistEmi;
     TextView tvCalculate, tvPrincipal, tvTotalInterest, tvMaturity;
 
@@ -75,7 +75,7 @@ public class HomeLoanEligibility extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_home_loan_eligibility);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        setUPAdd();
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +93,29 @@ public class HomeLoanEligibility extends BaseActivity implements View.OnClickLis
         setListeners();
     }
 
+    private void setUPAdd() {
+
+        mAdView = findViewById(R.id.adView);
+
+        if (BuildConfig.DEBUG) {
+
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
+                    .build();
+            mAdView.loadAd(adRequest);
+
+        } else {
+
+            if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+            } else {
+                mAdView.setVisibility(View.GONE);
+            }
+
+        }
+    }
+
     private void setAdapter() {
         fdType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.fd_type));
         spFdTYpe.setAdapter(fdType);
@@ -108,7 +131,7 @@ public class HomeLoanEligibility extends BaseActivity implements View.OnClickLis
 
     private void showLayouts() {
         cvResult.setVisibility(View.VISIBLE);
-        cvDetails.setVisibility(View.VISIBLE);
+        cvDetails.setVisibility(View.GONE);
     }
 
     private void setListeners() {
@@ -233,7 +256,7 @@ public class HomeLoanEligibility extends BaseActivity implements View.OnClickLis
         double balanceToShow = amount;
         double interest = 0, yearlyInterest = 0, interestToShow = 0;
 
-        double timeInMonth = year;
+        double timeInMonth = getTimeINMOnth();
 
 
         for (int i = 1; i <= timeInMonth; i++) {
@@ -637,7 +660,7 @@ public class HomeLoanEligibility extends BaseActivity implements View.OnClickLis
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.history, menu);
-        return true;
+        return false;
     }
 
     @Override

@@ -53,6 +53,7 @@ import static android.view.View.GONE;
 
 public class EmiCalculatorActivity extends BaseActivity implements View.OnClickListener {
 
+
     TextView tvEmi, tvTotalPayable, tvProgressInterestPercent,
             tvProgressInterest, tvTotalPrincipalPercent, tvTotalPrincipalValue;
 

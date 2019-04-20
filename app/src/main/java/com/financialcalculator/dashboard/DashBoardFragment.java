@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
@@ -63,54 +62,24 @@ public class DashBoardFragment extends Fragment {
     private void setUPAdd(View view) {
 
         mAdView = view.findViewById(R.id.adView);
-        if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
+
+        if (BuildConfig.DEBUG) {
+
             AdRequest adRequest = new AdRequest.Builder()
-                    //.addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
+                    .addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
                     .build();
             mAdView.loadAd(adRequest);
+
         } else {
 
-            mAdView.setVisibility(View.GONE);
+            if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+            } else {
+                mAdView.setVisibility(View.GONE);
+            }
+
         }
-
-        mAdView.setAdListener(new com.google.android.gms.ads.AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-                Toast.makeText(getActivity(), "onAdLoaded", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                if (errorCode == AdRequest.ERROR_CODE_INTERNAL_ERROR)
-
-                    Toast.makeText(getActivity(), "onAdFailedToLoad", Toast.LENGTH_SHORT).show();
-
-                // Code to be executed when an ad request fails.
-            }
-
-            @Override
-            public void onAdOpened() {
-                Toast.makeText(getActivity(), "onAdOpened", Toast.LENGTH_SHORT).show();
-
-
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                Toast.makeText(getActivity(), "onAdLeftApplication", Toast.LENGTH_SHORT).show();
-
-
-            }
-
-            @Override
-            public void onAdClosed() {
-                Toast.makeText(getActivity(), "onAdClosed", Toast.LENGTH_SHORT).show();
-
-
-            }
-        });
-
     }
 
     private void init_lists() {

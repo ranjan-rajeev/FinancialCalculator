@@ -18,8 +18,12 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
 import com.financialcalculator.utility.BaseActivity;
+import com.financialcalculator.utility.Constants;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class VatCalculatorActivity extends BaseActivity implements View.OnClickListener {
 
@@ -37,6 +41,7 @@ public class VatCalculatorActivity extends BaseActivity implements View.OnClickL
     ArrayAdapter<String> gstType;
 
     double originalCost = 0, gstApplied = 0, netPrice = 0;
+    private AdView mAdView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,12 +59,33 @@ public class VatCalculatorActivity extends BaseActivity implements View.OnClickL
         });
         //endregion
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        setUPAdd();
         inti_widgets();
         setListeners();
         setAdapter();
     }
+    private void setUPAdd() {
 
+        mAdView = findViewById(R.id.adView);
+
+        if (BuildConfig.DEBUG) {
+
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
+                    .build();
+            mAdView.loadAd(adRequest);
+
+        } else {
+
+            if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+            } else {
+                mAdView.setVisibility(View.GONE);
+            }
+
+        }
+    }
     private void setAdapter() {
         gstType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.vat_type));
         spGstTYpe.setAdapter(gstType);

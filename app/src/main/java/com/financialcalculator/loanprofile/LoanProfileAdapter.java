@@ -1,6 +1,7 @@
 package com.financialcalculator.loanprofile;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +12,12 @@ import android.widget.TextView;
 
 import com.financialcalculator.R;
 import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
-import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 
@@ -30,18 +31,20 @@ public class LoanProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public class EmiDetailsHolder extends RecyclerView.ViewHolder {
-        TextView tvPrincipal, tvDate, tvRate, tvTerm;
+        TextView tvShortName, tvfullName, tvPaid, tvLeft, tvEnd;
         RelativeLayout llItem_details;
         ImageView ivDelete;
+        CardView cvProfile;
 
         public EmiDetailsHolder(View view) {
             super(view);
             llItem_details = view.findViewById(R.id.llItem_details);
-            tvPrincipal = (TextView) view.findViewById(R.id.tvPrincipal);
-            tvDate = (TextView) view.findViewById(R.id.tvDate);
-            tvRate = (TextView) view.findViewById(R.id.tvRate);
-            tvTerm = (TextView) view.findViewById(R.id.tvTerm);
-            ivDelete = view.findViewById(R.id.ivDelete);
+            tvShortName = (TextView) view.findViewById(R.id.tvShortName);
+            tvfullName = (TextView) view.findViewById(R.id.tvfullName);
+            tvPaid = (TextView) view.findViewById(R.id.tvPaid);
+            tvLeft = (TextView) view.findViewById(R.id.tvLeft);
+            tvEnd = (TextView) view.findViewById(R.id.tvEnd);
+            cvProfile = (CardView) view.findViewById(R.id.cvProfile);
         }
     }
 
@@ -65,70 +68,45 @@ public class LoanProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 ((EmiDetailsHolder) holder).llItem_details.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lightGrey));
             }*/
-
-            switch (detailsEntity.getType()) {
-                case Constants.EMI_CALCULATOR:
-                    bindEmiCalculator(holder, detailsEntity);
-                    break;
-                case Constants.COMPARE_LOAN:
-                    bindCompareLoan(holder, detailsEntity);
-                    break;
-            }
-
-            /*((EmiDetailsHolder) holder).tvPrincipal.setText("" + detailsEntity.getId() + " " + Constants.CURRENCY);
-            ((EmiDetailsHolder) holder).tvDate.setText(Util.getDatefromLong(detailsEntity.getUpdatedTime()));
-            ((EmiDetailsHolder) holder).tvRate.setText("" + detailsEntity.getType() + "%");
-
-
-            ((EmiDetailsHolder) holder).tvTerm.setText("" + detailsEntity.getId() + " " + detailsEntity.getType());*/
-
-
-           /* ((EmiDetailsHolder) holder).llItem_details.setOnClickListener(new View.OnClickListener() {
+            ((EmiDetailsHolder) holder).cvProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((SerachHistoryACtivity) mContext).redirectToResACtivity(detailsEntity);
+                    ((ViewLoanProfile) mContext).redirectToCreateLoan(detailsEntity);
                 }
             });
-            ((EmiDetailsHolder) holder).ivDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((SerachHistoryACtivity) mContext).deleteSearchItem(detailsEntity);
-                }
-            });*/
+
+            switch (detailsEntity.getType()) {
+                case Constants.LOAN_PROFILE:
+                    bindLoanProfile(holder, detailsEntity);
+                    break;
+            }
         }
     }
 
-    private void bindEmiCalculator(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
-        try {
-            JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
-            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + obj.getString("amount") + " " + Constants.CURRENCY);
-            ((EmiDetailsHolder) holder).tvDate.setText("" + obj.getString("date"));
-            ((EmiDetailsHolder) holder).tvRate.setText("" + obj.getString("rate") + "%");
-
-            if (obj.getString("tenuretype").equals("YEARS")) {
-                ((EmiDetailsHolder) holder).tvTerm.setText("" + obj.getString("tenure") + " Years");
-            } else {
-                ((EmiDetailsHolder) holder).tvTerm.setText("" + obj.getString("tenure") + " Months");
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+    private String getLoanName(int loanType) {
+        switch (loanType) {
+            case 0:
+                return "Home Loan";
+            case 1:
+                return "Personal Loan";
+            case 2:
+                return "Business Loan";
+            default:
+                return "Other Loan";
         }
     }
 
-    private void bindCompareLoan(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
+    private void bindLoanProfile(RecyclerView.ViewHolder holder, GenericSearchHistoryEntity genericSearchHistoryEntity) {
         try {
             JSONObject obj = new JSONObject(genericSearchHistoryEntity.getListKeyValues());
-            ((EmiDetailsHolder) holder).tvRate.setVisibility(View.GONE);
-            ((EmiDetailsHolder) holder).tvPrincipal.setText("" + obj.getString("amount") + " " + Constants.CURRENCY +
-                    "" + obj.getString("amount2") + " " + Constants.CURRENCY);
-            ((EmiDetailsHolder) holder).tvDate.setText("" + obj.getString("rate") + "%" + "" + obj.getString("rate2") + "%");
+            String fullName = obj.getString("profilename");
+            ((EmiDetailsHolder) holder).tvShortName.setText("" + fullName.charAt(0));
+            ((EmiDetailsHolder) holder).tvfullName.setText("" + fullName + "  -  " + getLoanName(obj.getInt("loantype")));
+            ((EmiDetailsHolder) holder).tvEnd.setText("" + obj.getString("endDate"));
 
+            ((EmiDetailsHolder) holder).tvLeft.setText("" + new DecimalFormat("#").format(obj.getDouble("amountLeft")) + " " + Constants.CURRENCY);
+            ((EmiDetailsHolder) holder).tvPaid.setText("" + new DecimalFormat("#").format(obj.getDouble("principalPaidTillToday")) + " " + Constants.CURRENCY);
 
-            if (obj.getString("tenuretype").equals("YEARS")) {
-                ((EmiDetailsHolder) holder).tvTerm.setText("" + obj.getString("tenure") + " Years" + "" + obj.getString("tenure2") + " Years");
-            } else {
-                ((EmiDetailsHolder) holder).tvTerm.setText("" + obj.getString("tenure") + " Months" + "" + obj.getString("tenure2") + " Months");
-            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

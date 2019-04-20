@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
 import com.financialcalculator.banking.fd.FDCalculatorActivity;
 import com.financialcalculator.banking.ppf.PPFCalculatotActivity;
@@ -29,6 +30,8 @@ import com.financialcalculator.sip.SIPCalculatorActivity;
 import com.financialcalculator.sip.SIPGoalCalculatorActivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.List;
 
@@ -46,13 +49,14 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
     RoomDatabase appDatabase;
     List<GenericSearchHistoryEntity> genericSearchHistoryEntities;
     GenericSearchHistoryAdapter genericSearchHistoryAdapter;
-
+    private AdView mAdView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serach_history_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setUPAdd();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         appDatabase = RoomDatabase.getAppDatabase(this);
         if (getIntent().hasExtra("TYPE")) {
@@ -64,7 +68,28 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
 
         //init_Adapters();
     }
+    private void setUPAdd() {
 
+        mAdView = findViewById(R.id.adView);
+
+        if (BuildConfig.DEBUG) {
+
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
+                    .build();
+            mAdView.loadAd(adRequest);
+
+        } else {
+
+            if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+            } else {
+                mAdView.setVisibility(View.GONE);
+            }
+
+        }
+    }
     /*@Override
     protected void onRestart() {
         super.onRestart();

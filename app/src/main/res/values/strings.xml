@@ -77,8 +77,6 @@
         <item>Home Loan</item>
         <item>Personal Loan</item>
         <item>Business Loan</item>
-        <item>Business Loan</item>
-        <item>Business Loan</item>
     </string-array>
 
     <string-array name="ppf_frequency">

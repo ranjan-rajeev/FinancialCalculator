@@ -30,6 +30,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
 import com.financialcalculator.emi.emicalculator.EmiAdapter;
 import com.financialcalculator.emi.emicalculator.YearEmiAdapter;
@@ -43,6 +44,8 @@ import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
 import com.financialcalculator.utility.Util;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,6 +92,10 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
     RoomDatabase roomDatabase;
     GenericSearchHistoryEntity genericSearchHistoryEntity;
 
+    double principalPaidTillToday, amountLeft, totalAmount;
+    String endDate;
+    private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +104,7 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         roomDatabase = RoomDatabase.getAppDatabase(this);
-
+        setUPAdd();
 
         init();
         init_views();
@@ -116,10 +123,31 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
         animateProgressBar(progressInterestFull);
         animateProgressBar(progressPrincipalFull);
 
-        if (getIntent().hasExtra("LIST")) {
-            emiSearchHistoryEntity = getIntent().getExtras().getParcelable("LIST");
-            isEdit = true;
-            bindValues(emiSearchHistoryEntity);
+        if (getIntent().hasExtra("DATA")) {
+            genericSearchHistoryEntity = getIntent().getExtras().getParcelable("DATA");
+            bindValues(genericSearchHistoryEntity);
+        }
+    }
+
+    private void setUPAdd() {
+
+        mAdView = findViewById(R.id.adView);
+
+        if (BuildConfig.DEBUG) {
+
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
+                    .build();
+            mAdView.loadAd(adRequest);
+
+        } else {
+
+            if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+            } else {
+                mAdView.setVisibility(View.GONE);
+            }
 
         }
     }
@@ -324,8 +352,6 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
                     }
                     showLayouts();
                     new AsyncCalculateEMiDetails().execute();
-                    calculateEmi(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
-                    updateGenericHistory();
                     break;
                 }
 
@@ -415,6 +441,7 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
         double interestPercent = Double.parseDouble(Interest);
         double timeInMonth = Double.parseDouble(tenure);
 
+
         if (rbYear.isChecked()) {
             timeInMonth = timeInMonth * 12;
         }
@@ -427,6 +454,12 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
         double totalPrincipalPAid = 0;
         double totalInterestPAid = 0;
         double totalPayment = 0;
+
+
+        Calendar currCalender = Calendar.getInstance();
+        currCalender.set(currYear, currMonth, calendar.get(Calendar.DATE));
+        currCalender.add(Calendar.MONTH, (int) timeInMonth);
+        endDate = Util.getDatefromLong(currCalender.getTimeInMillis());
 
         for (int i = 1; i <= timeInMonth; i++) {
 
@@ -441,6 +474,11 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
             totalPrincipalPAid = totalPrincipalPAid + principalPaid;
             totalInterestPAid = totalInterestPAid + interestPAid;
             totalPayment = totalPayment + emi;
+
+            if (currMonth == calendar.get(Calendar.MONTH) && currYear == calendar.get(Calendar.YEAR)) {
+
+                amountLeft = principal;
+            }
 
             currMonth = currMonth + 1;
 
@@ -500,6 +538,8 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
 
         tvTotalPrincipalValue.setText("" + new DecimalFormat("#").format(principal) + "\u20B9");
         tvProgressInterest.setText("" + new DecimalFormat("#").format(totalInterestPayable) + "\u20B9");
+
+        totalAmount = totalAmountPayable;
         /*Log.d("EMI", "EMI - " + Math.round(emi));
         Log.d("EMI", "Total Payment - " + Math.round(emi * timeInMonth));
         Log.d("EMI", "Total Interest - " + Math.round((emi * timeInMonth) - principal));*/
@@ -530,6 +570,8 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
             // emiAdapter = new EmiAdapter(EmiCalculatorActivity.this, detailsEntityList);
             // rvEMiDEtails.setAdapter(emiAdapter);
 
+            calculateEmi(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
+            updateGenericHistory();
             yearEmiAdapter = new YearEmiAdapter(CreateLoanProfileActivity.this, yearsDetailsEntities);
             rvEMiDEtails.setAdapter(yearEmiAdapter);
             scrollToRow(scrollView, llEmiCAl, cvDetails);
@@ -570,12 +612,26 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
             jsonObject.put("profilename", "" + etProfileName.getText().toString());
             jsonObject.put("loantype", spLoanType.getSelectedItemPosition());
             jsonObject.put("date", "" + etDateFirstInstallment.getText().toString());
+
+            jsonObject.put("principalPaidTillToday", (totalAmount - amountLeft));
+            jsonObject.put("amountLeft", amountLeft);
+
+            jsonObject.put("endDate", endDate);
+
+
             keyValues = jsonObject.toString();
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         return keyValues;
+    }
+
+    private String getEndDate() {
+        YearsDetailsEntity yearsDetailsEntity = yearsDetailsEntities.get(yearsDetailsEntities.size() - 1);
+
+        // endDate =
+        return endDate;
     }
 
     private void bindValues(GenericSearchHistoryEntity genericSearchHistoryEntity) {
@@ -624,7 +680,7 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.history, menu);
-        return true;
+        return false;
     }
 
     @Override

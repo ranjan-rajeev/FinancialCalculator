@@ -1,5 +1,6 @@
 package com.financialcalculator.loanprofile;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,20 +44,38 @@ public class ViewLoanProfile extends BaseActivity {
     private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
-        if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
-            AdRequest adRequest = new AdRequest.Builder().addTestDevice("5C24676FE04113F56F0B0A9566555BCD").build();
+
+        if (BuildConfig.DEBUG) {
+
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
+                    .build();
             mAdView.loadAd(adRequest);
+
         } else {
 
-            mAdView.setVisibility(View.GONE);
-        }
+            if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+            } else {
+                mAdView.setVisibility(View.GONE);
+            }
 
+        }
     }
 
     private void init_widgets() {
         rvDashboard = findViewById(R.id.rvDashboard);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rvDashboard.setLayoutManager(layoutManager);
+    }
+
+    public void redirectToCreateLoan(GenericSearchHistoryEntity detailsEntity) {
+
+        Intent returnIntent = new Intent(this, CreateLoanProfileActivity.class);
+        returnIntent.putExtra("DATA", detailsEntity);
+        startActivity(returnIntent);
+        //finish();
     }
 
     private class FilterGenericList extends AsyncTask<Void, Void, List<GenericSearchHistoryEntity>> {
