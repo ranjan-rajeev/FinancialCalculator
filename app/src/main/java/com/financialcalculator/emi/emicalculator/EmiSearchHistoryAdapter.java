@@ -1,7 +1,7 @@
 package com.financialcalculator.emi.emicalculator;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +15,6 @@ import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Util;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 

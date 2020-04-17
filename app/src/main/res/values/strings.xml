@@ -58,7 +58,7 @@
     <string name="title_activity_vat_calculator">VAT Calculator</string>
     <string name="banner_ad_unit_id">ca-app-pub-5208898531645791/6351256670</string>
     <string name="ad_app_id">ca-app-pub-5208898531645791~1375220024</string>
-
+    <string name="title_activity_generic_activity">Generic Calculator</string>
     <string-array name="gst_type">
         <item>Add GST</item>
         <item>Remove GST</item>
@@ -109,4 +109,13 @@
     <string name="title_activity_create_loan_profile">Create Loan Profile</string>
     <string name="title_activity_view_loan_profile">Loan Profile</string>
     <string name="title_activity_home_loan_eligibility">Home Loan Eligibility</string>
+    <string name="title_activity_generic_calculator">Generic Calculator</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

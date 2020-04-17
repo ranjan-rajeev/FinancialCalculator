@@ -13,6 +13,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
+        <activity
+            android:name=".generic.GenericCalculatorActivity"
+            android:label="@string/title_activity_generic_activity"
+            android:parentActivityName=".home.MainActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateVisible|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.financialcalculator.home.MainActivity" />
+        </activity>
+
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/ad_app_id" />

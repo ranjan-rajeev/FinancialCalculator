@@ -1,13 +1,12 @@
 package com.financialcalculator.roomdb.tables;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Calendar;
-import java.util.HashMap;
 
 /**
  * Created by Rajeev Ranjan -  ABPB on 08-04-2019.

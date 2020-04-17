@@ -4,10 +4,10 @@ package com.financialcalculator.dashboard;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +20,7 @@ import com.financialcalculator.banking.rd.RDCalculatorActivity;
 import com.financialcalculator.emi.emicalculator.EmiCalculatorActivity;
 import com.financialcalculator.emi.emicompare.EmiCompareActivity;
 import com.financialcalculator.emi.emifixedvsreducing.FixedVsReducingActivity;
+import com.financialcalculator.generic.GenericCalculatorActivity;
 import com.financialcalculator.gst.GstCalculatorActivity;
 import com.financialcalculator.gst.VatCalculatorActivity;
 import com.financialcalculator.loanprofile.CreateLoanProfileActivity;
@@ -193,7 +194,7 @@ public class DashBoardFragment extends Fragment {
                 startActivity(new Intent(getActivity(), ViewLoanProfile.class));
                 break;
             case Constants.HOME_LOAN_ELIGIBLE:
-                startActivity(new Intent(getActivity(), HomeLoanEligibility.class));
+                startActivity(new Intent(getActivity(), GenericCalculatorActivity.class));
                 break;
 
         }

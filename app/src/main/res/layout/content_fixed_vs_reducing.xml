@@ -9,7 +9,7 @@
     tools:context=".emi.emifixedvsreducing.FixedVsReducingActivity"
     tools:showIn="@layout/activity_fixed_vs_reducing">
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cvInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                                 android:textColor="@color/white"
                                 android:visibility="visible" />
 
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 style="@style/CustomTextInputLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -77,9 +77,9 @@
                                     android:inputType="number"
                                     android:maxLength="12"
                                     android:maxLines="1" />
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 style="@style/CustomTextInputLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -94,9 +94,9 @@
                                     android:inputType="numberDecimal"
                                     android:maxLength="5"
                                     android:maxLines="1" />
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 style="@style/CustomTextInputLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                                     android:inputType="numberDecimal"
                                     android:maxLength="6"
                                     android:maxLines="1" />
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
                         <LinearLayout
@@ -135,7 +135,7 @@
                                 android:textColor="@color/white"
                                 android:visibility="visible" />
 
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 style="@style/CustomTextInputLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -150,9 +150,9 @@
                                     android:inputType="number"
                                     android:maxLength="12"
                                     android:maxLines="1" />
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 style="@style/CustomTextInputLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -167,9 +167,9 @@
                                     android:inputType="numberDecimal"
                                     android:maxLength="5"
                                     android:maxLines="1" />
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                            <android.support.design.widget.TextInputLayout
+                            <com.google.android.material.textfield.TextInputLayout
                                 style="@style/CustomTextInputLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -185,7 +185,7 @@
                                     android:inputType="numberDecimal"
                                     android:maxLength="6"
                                     android:maxLines="1" />
-                            </android.support.design.widget.TextInputLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                     </LinearLayout>
 
@@ -226,9 +226,9 @@
 
 
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cvResult"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -510,9 +510,9 @@
                     </LinearLayout>
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"

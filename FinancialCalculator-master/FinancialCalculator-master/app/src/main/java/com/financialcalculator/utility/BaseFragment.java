@@ -2,7 +2,7 @@ package com.financialcalculator.utility;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -96,7 +96,7 @@ public class BaseFragment extends Fragment {
 
     public void showAlert(String strBody) {
         try {
-            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getActivity());
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getActivity());
             builder.setTitle("Finmart");
 
             builder.setMessage(strBody);
@@ -109,7 +109,7 @@ public class BaseFragment extends Fragment {
 
                         }
                     });
-            final android.support.v7.app.AlertDialog dialog = builder.create();
+            final androidx.appcompat.app.AlertDialog dialog = builder.create();
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();

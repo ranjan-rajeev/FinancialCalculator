@@ -1,9 +1,9 @@
 package com.financialcalculator.roomdb;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.migration.Migration;
 import android.content.Context;
 
 import com.financialcalculator.roomdb.dao.EMISearchHistoryDao;
@@ -12,7 +12,7 @@ import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
 import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
 
 @Database(entities = {EMISearchHistoryEntity.class, GenericSearchHistoryEntity.class}, version = 1)
-public abstract class RoomDatabase extends android.arch.persistence.room.RoomDatabase {
+public abstract class RoomDatabase extends androidx.room.RoomDatabase {
     public abstract EMISearchHistoryDao emiSearchHistoryDao();
 
     public abstract GenericSearchHistoryDao genericSearchHistoryDao();

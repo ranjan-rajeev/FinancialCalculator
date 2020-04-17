@@ -6,9 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -174,7 +174,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void showAlert(String strBody) {
         try {
-            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(BaseActivity.this);
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(BaseActivity.this);
             builder.setTitle("Finmart");
 
             builder.setMessage(strBody);
@@ -187,7 +187,7 @@ public class BaseActivity extends AppCompatActivity {
 
                         }
                     });
-            final android.support.v7.app.AlertDialog dialog = builder.create();
+            final androidx.appcompat.app.AlertDialog dialog = builder.create();
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
