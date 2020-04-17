@@ -34,7 +34,7 @@
             android:layout_above="@+id/adView">
 
             <LinearLayout
-                android:id="@+id/llEmiCAl"
+                android:id="@+id/llInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -46,156 +46,16 @@
                     android:layout_margin="12dp"
                     android:elevation="8dp"
                     android:visibility="visible"
-
                     app:cardCornerRadius="8dp"
                     app:cardElevation="8dp">
 
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvInputs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/CustomTextInputLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Principal Amount*"
-                            app:hintTextAppearance="@style/MyTextInputLayout">
-
-                            <EditText
-                                android:id="@+id/etPrincipal"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:background="@drawable/corner_shape"
-                                android:inputType="number"
-                                android:maxLength="12"
-                                android:maxLines="1" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/CustomTextInputLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Rate Of Interest*"
-                            app:hintTextAppearance="@style/MyTextInputLayout">
-
-                            <EditText
-                                android:id="@+id/etInterest"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:background="@drawable/corner_shape"
-                                android:inputType="numberDecimal"
-                                android:maxLength="5"
-                                android:maxLines="1" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="bottom"
-                            android:orientation="horizontal">
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                style="@style/CustomTextInputLayout"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:hint="Loan Tenure*"
-                                app:hintTextAppearance="@style/MyTextInputLayout">
-
-                                <EditText
-                                    android:id="@+id/etTenure"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="50dp"
-                                    android:background="@drawable/corner_shape"
-                                    android:inputType="numberDecimal"
-                                    android:maxLength="6"
-                                    android:maxLines="1" />
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                            <RadioGroup
-                                android:id="@+id/rgYearMonth"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:checkedButton="@id/rbYear"
-                                android:orientation="horizontal"
-                                android:paddingTop="8dp"
-                                android:paddingBottom="8dp">
-
-                                <RadioButton
-                                    android:id="@+id/rbYear"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="Years"
-                                    android:textColor="@color/uvv_black" />
-
-                                <RadioButton
-                                    android:id="@+id/rbMonth"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="Months"
-                                    android:textColor="@color/uvv_black" />
-                            </RadioGroup>
-                        </LinearLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/CustomTextInputLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Date Of first Installment"
-                            app:hintTextAppearance="@style/MyTextInputLayout">
-
-                            <EditText
-                                android:id="@+id/etDateFirstInstallment"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:background="@drawable/corner_shape"
-                                android:focusable="false"
-                                android:imeOptions="actionNext"
-                                android:maxLength="15"
-                                android:maxLines="1" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="8dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/tvDetails"
-                                style="@style/TextViewStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="5dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/button_selector"
-                                android:gravity="center"
-                                android:padding="12dp"
-                                android:text="Calculate"
-                                android:textColor="@color/white" />
-
-                            <TextView
-                                android:id="@+id/tvCalculate"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/button_selector"
-                                android:gravity="center"
-                                android:padding="12dp"
-                                android:text="Calculate"
-                                android:textColor="@color/white"
-                                android:visibility="gone" />
-                        </LinearLayout>
+                        android:padding="10dp" />
 
 
-                    </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
