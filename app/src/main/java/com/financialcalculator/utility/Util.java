@@ -1,7 +1,11 @@
 package com.financialcalculator.utility;
 
+import android.support.annotation.NonNull;
+
 import com.financialcalculator.R;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -101,4 +105,48 @@ public class Util {
         }
     }
 
+    public static String getFormattedDouble(double d) {
+        return new DecimalFormat("#").format(d);
+    }
+
+    public static String getCommaSeparated(String number) {
+        String result = "";
+        try {
+            if (number.contains(".")) {
+                result = number.length() > 12 ? bigNumberWithDecimal(new BigDecimal(number))
+                        : numberWithDecimal(Double.parseDouble(number));
+            } else {
+                result = number.length() > 12 ? bigNumWithoutDecimal(new BigDecimal(number))
+                        : numWithoutDecimal(Double.parseDouble(number));
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static String numberWithDecimal(Double price) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###.00");
+        return formatter.format(price);
+    }
+
+    public static String numWithoutDecimal(Double price) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###.##");
+        return formatter.format(price);
+    }
+
+    public static String bigNumberWithDecimal(BigDecimal price) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###.00");
+        return formatter.format(price);
+    }
+
+    public static String bigNumWithoutDecimal(BigDecimal price) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###.##");
+        return formatter.format(price);
+    }
+
+    public static String removeComma(String number) {
+        return number != null ? number.replace(",", "") : "";
+    }
 }

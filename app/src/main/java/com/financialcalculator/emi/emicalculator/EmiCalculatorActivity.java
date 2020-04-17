@@ -14,6 +14,8 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +42,7 @@ import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
+import com.financialcalculator.utility.MultiTextWatcher;
 import com.financialcalculator.utility.Util;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -219,6 +222,10 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         tvCalculate.setOnClickListener(this);
         tvDetails.setOnClickListener(this);
         rgYearMonth.setOnCheckedChangeListener(onCheckedChangeListener);
+
+       /* etPrincipal.setOnFocusChangeListener(onFocusChangeListener);
+        etInterest.setOnFocusChangeListener(onFocusChangeListener);
+        etTenure.setOnFocusChangeListener(onFocusChangeListener);*/
         /*rgYearMonth.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // checkedId is the RadioButton selected
@@ -662,5 +669,15 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
             }
         }
     }
+
+    View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (v instanceof EditText && !hasFocus) {
+                ((EditText) v).setText(Util.getCommaSeparated(Util.removeComma(((EditText) v).getText().toString())));
+            }
+        }
+    };
+
 
 }
