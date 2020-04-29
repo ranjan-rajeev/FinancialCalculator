@@ -1,17 +1,37 @@
 package com.financialcalculator.utility;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.text.TextUtils;
+import android.webkit.URLUtil;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+
 import com.financialcalculator.R;
+import com.financialcalculator.emi.emicalculator.EmiCalculatorActivity;
+import com.financialcalculator.generic.GenericCalculatorActivity;
+import com.financialcalculator.home.MainActivity;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.Stack;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Rajeev Ranjan -  ABPB on 05-04-2019.
@@ -261,4 +281,27 @@ public class Util {
         }
         return new BigDecimal(0);
     }
+
+
+    public static void inAppRedirection(Context context, String redUrl, String webUrl) {
+        if (!TextUtils.isEmpty(redUrl)) {
+            if (!webUrl.startsWith("http")) {
+                // open web view
+            } else {
+                Intent intent = new Intent(context, getClassName(redUrl));
+                context.startActivity(intent);
+            }
+
+        }
+    }
+
+    private static Class<?> getClassName(String redUrl) {
+        switch (redUrl) {
+            case "EmiCalculatorActivity":
+                return EmiCalculatorActivity.class;
+            default:
+                return GenericCalculatorActivity.class;
+        }
+    }
+
 }

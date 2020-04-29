@@ -29,13 +29,13 @@ public class EditTextSpinnerViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setData(Context context, GenericViewTypeModel genericViewTypeModel) {
-        til.setHint(genericViewTypeModel.getViewTitle());
-        if (genericViewTypeModel.getInputType()!=null && genericViewTypeModel.getInputType().equalsIgnoreCase("number")) {
+        til.setHint(genericViewTypeModel.getTitle());
+        /*if (genericViewTypeModel.getInputType()!=null && genericViewTypeModel.getInputType().equalsIgnoreCase("number")) {
             editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(genericViewTypeModel.getMaxLength())});
         }
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, genericViewTypeModel.getData());
-        spinner.setAdapter(arrayAdapter);
+        spinner.setAdapter(arrayAdapter);*/
         //editText.setMaxEms(genericViewTypeModel.getMaxLength());
     }
 }

@@ -7,89 +7,82 @@ import java.util.List;
 
 public class GenericViewTypeModel {
 
-    int viewId;
-    int viewType;
-    String viewTitle;
-    String inputType;
-    String regex;
-    int maxLength;
-    boolean isFocusable = true;
-    List<String> data;
-    int action;
 
-    public int getViewId() {
-        return viewId;
+    /**
+     * calId : 100
+     * data : {"inpType":1,"length":12,"isFocus":1,"regex":""}
+     * firebaseId : -M60nZVPV-9JsM7zHlQk
+     * inpId : 10
+     * key : a
+     * title : Enter First Number
+     * type : 1
+     */
+
+    private int calId;
+    private String data;
+    private String firebaseId;
+    private int inpId;
+    private String key;
+    private String title;
+    private int type;
+
+    public int getCalId() {
+        return calId;
     }
 
-    public void setViewId(int viewId) {
-        this.viewId = viewId;
+    public void setCalId(int calId) {
+        this.calId = calId;
     }
 
-    public int getViewType() {
-        return viewType;
-    }
-
-    public void setViewType(int viewType) {
-        this.viewType = viewType;
-    }
-
-    public String getViewTitle() {
-        return viewTitle;
-    }
-
-    public void setViewTitle(String viewTitle) {
-        this.viewTitle = viewTitle;
-    }
-
-    public String getInputType() {
-        return inputType;
-    }
-
-    public void setInputType(String inputType) {
-        this.inputType = inputType;
-    }
-
-    public String getRegex() {
-        return regex;
-    }
-
-    public void setRegex(String regex) {
-        this.regex = regex;
-    }
-
-    public int getMaxLength() {
-        return maxLength;
-    }
-
-    public void setMaxLength(int maxLength) {
-        this.maxLength = maxLength;
-    }
-
-    public boolean isFocusable() {
-        return isFocusable;
-    }
-
-    public void setFocusable(boolean focusable) {
-        isFocusable = focusable;
-    }
-
-    public List<String> getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(List<String> data) {
+    public void setData(String data) {
         this.data = data;
     }
 
-    public int getAction() {
-        return action;
+    public String getFirebaseId() {
+        return firebaseId;
     }
 
-    public void setAction(int action) {
-        this.action = action;
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
     }
 
-    public List<GenericViewTypeModel> getDummyList() {
+    public int getInpId() {
+        return inpId;
+    }
+
+    public void setInpId(int inpId) {
+        this.inpId = inpId;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+   /* public List<GenericViewTypeModel> getDummyList() {
         List<GenericViewTypeModel> genericViewTypeModels = new ArrayList<>();
 
         GenericViewTypeModel etPrincipal = new GenericViewTypeModel();
@@ -166,7 +159,7 @@ public class GenericViewTypeModel {
         genericViewTypeModels.add(spTitle3);
         genericViewTypeModels.add(buttonCalculate);
 
-       /* genericViewTypeModels.add(etPrincipal);
+       *//* genericViewTypeModels.add(etPrincipal);
         genericViewTypeModels.add(spTitle);
 
         genericViewTypeModels.add(monthlySpinner);
@@ -174,9 +167,9 @@ public class GenericViewTypeModel {
 
         genericViewTypeModels.add(monthlySpinner2);
         genericViewTypeModels.add(spTitle3);
-        genericViewTypeModels.add(buttonCalculate);*/
+        genericViewTypeModels.add(buttonCalculate);*//*
 
 
         return genericViewTypeModels;
-    }
+    }*/
 }

@@ -23,3 +23,7 @@
 
 #proguard for carousal view
 -keep class com.synnapps.carouselview.** { *; }
+
+# Add this global rule
+-keepattributes Signature
+

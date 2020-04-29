@@ -20,7 +20,7 @@ public class ButtonViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setData(Context context, GenericViewTypeModel genericViewTypeModel) {
-        button.setText(genericViewTypeModel.getViewTitle());
+        button.setText(genericViewTypeModel.getTitle());
         button.setOnClickListener(v -> Toast.makeText(context, "", Toast.LENGTH_SHORT).show());
     }
 }

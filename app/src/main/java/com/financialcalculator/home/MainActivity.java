@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.financialcalculator.newdashboard.NewDashBoardFragment;
+import com.financialcalculator.utility.BaseActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -26,7 +29,7 @@ import com.financialcalculator.dashboard.DashBoardFragment;
 import com.financialcalculator.utility.Constants;
 import com.google.android.gms.ads.MobileAds;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     boolean doubleBackToExitPressedOnce = false;
 
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity
 
     private void showDashboard() {
         getSupportActionBar().setTitle("HOME");
-        Fragment fragment = new DashBoardFragment();
+        Fragment fragment = new NewDashBoardFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame, fragment);
         fragmentTransaction.commit();
@@ -131,7 +134,7 @@ public class MainActivity extends AppCompatActivity
                 switch (item.getItemId()) {
                     case R.id.nav_home:
                         getSupportActionBar().setTitle("HOME");
-                        loadFragment(new DashBoardFragment());
+                        loadFragment(new NewDashBoardFragment());
                         break;
                     case R.id.nav_about:
                         getSupportActionBar().setTitle("About");

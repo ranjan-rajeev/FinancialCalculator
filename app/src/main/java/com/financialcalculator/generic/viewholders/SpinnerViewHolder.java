@@ -22,7 +22,7 @@ public class SpinnerViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setData(Context context,GenericViewTypeModel genericViewTypeModel) {
-        arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,genericViewTypeModel.getData());
-        spinner.setAdapter(arrayAdapter);
+     /*   arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,genericViewTypeModel.getData());
+        spinner.setAdapter(arrayAdapter);*/
     }
 }

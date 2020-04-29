@@ -2,6 +2,9 @@ package com.financialcalculator.utility;
 
 public class Constants {
 
+    public static final String SHEET_ID = "1oGk-WpNghuMuOK2NSv7QgXhZWIkAvfGRTj2MsjZVlRg";
+
+
     public static final int APP_TYPE = 0; // (0 = free ,1 = paid)
 
     public static final int EMI_CALCULATOR = 1;
@@ -31,6 +34,4 @@ public class Constants {
     public static final int LOAN_PROFILE_VIEW = 19;
     public static final int HOME_LOAN_ELIGIBLE = 20;
     public static final String CURRENCY = "\u20B9";
-
-
 }

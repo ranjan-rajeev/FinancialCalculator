@@ -19,6 +19,6 @@ public class SpinnerTitleViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setData(Context context, GenericViewTypeModel genericViewTypeModel) {
-        spTitle.setText(genericViewTypeModel.getViewTitle());
+        spTitle.setText(genericViewTypeModel.getTitle());
     }
 }
