@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.financialcalculator.R;
 import com.financialcalculator.model.CalculatorEntity;
 import com.financialcalculator.model.CarouselEntity;
 import com.financialcalculator.model.GenericViewTypeModel;
+import com.financialcalculator.utility.Logger;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -81,10 +83,14 @@ public class GenericCalculatorActivity extends AppCompatActivity {
         rvInputs.setAdapter(genericViewTypeAdapter);
     }
 
-    public void setInputHashMap(String  key , BigDecimal value){
-        calculatorEntity.inputHashmap.put(key.charAt(0),value);
+    public void setInputHashMap(Character key, BigDecimal value) {
+        calculatorEntity.inputHashmap.put(key, value);
+        Logger.d("Key : " + key + "  Val : " + calculatorEntity.inputHashmap.get(key));
     }
-    public void setOutputHashMap(String  key , BigDecimal value){
-        calculatorEntity.outputHashmap.put(key.charAt(0),value);
+
+    public void setOutputHashMap(Character key, BigDecimal value) {
+        calculatorEntity.outputHashmap.put(key, value);
+        Logger.d("Key : " + key + "  Val : " + calculatorEntity.inputHashmap.get(key));
     }
+
 }

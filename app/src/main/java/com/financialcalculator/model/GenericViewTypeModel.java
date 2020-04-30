@@ -25,6 +25,15 @@ public class GenericViewTypeModel {
     private String key;
     private String title;
     private int type;
+    private boolean isValid = false;
+
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean valid) {
+        isValid = valid;
+    }
 
     public int getCalId() {
         return calId;

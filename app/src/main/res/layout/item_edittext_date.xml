@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/til"
+    style="@style/CustomTextInputLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Principal Amount*"
+    app:hintTextAppearance="@style/MyTextInputLayout">
+
+    <EditText
+        android:focusable="false"
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/corner_shape"
+        android:maxLines="1" />
+</com.google.android.material.textfield.TextInputLayout>
+

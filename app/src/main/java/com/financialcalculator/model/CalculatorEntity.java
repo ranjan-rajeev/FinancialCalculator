@@ -24,8 +24,8 @@ public class CalculatorEntity implements Serializable {
     private String input;
     private String output;
     private String redUrl;
-    public HashMap<Character, BigDecimal> inputHashmap;
-    public HashMap<Character, BigDecimal> outputHashmap;
+    public HashMap<Character, BigDecimal> inputHashmap = new HashMap<>();
+    public HashMap<Character, BigDecimal> outputHashmap = new HashMap<>();
 
     public HashMap<Character, BigDecimal> getOutputHashmap() {
         return outputHashmap;

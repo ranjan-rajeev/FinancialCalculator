@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.financialcalculator.R;
 import com.financialcalculator.generic.GenericCalculatorActivity;
+import com.financialcalculator.model.EditTextEntity;
 import com.financialcalculator.model.GenericViewTypeModel;
+import com.financialcalculator.utility.Logger;
 import com.financialcalculator.utility.Util;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
@@ -45,7 +47,7 @@ public class EditTextViewHolder extends RecyclerView.ViewHolder {
         this.context = context;
         til.setHint(genericViewTypeModel.getTitle());
         new ConvertAsync().execute();
-        //editText.addTextChangedListener(textWatcher);
+        editText.addTextChangedListener(textWatcher);
         editText.setOnFocusChangeListener(onFocusChangeListener);
         //editText.setMaxEms(genericViewTypeModel.getMaxLength());
     }
@@ -84,7 +86,7 @@ public class EditTextViewHolder extends RecyclerView.ViewHolder {
             if (editTextEntity.getInpType() == TYPE_NUMBER) {
                 editText.setInputType(InputType.TYPE_CLASS_NUMBER);
             } else if (editTextEntity.getInpType() == TYPE_DECIMAL) {
-                editText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
             } else if (editTextEntity.getInpType() == TYPE_TEXT) {
                 editText.setInputType(InputType.TYPE_CLASS_TEXT);
             }
@@ -94,53 +96,6 @@ public class EditTextViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    class EditTextEntity {
-        int inpType;
-        int length;
-        int isFocus;
-        String regex;
-        String data;
-
-        public int getInpType() {
-            return inpType;
-        }
-
-        public void setInpType(int inpType) {
-            this.inpType = inpType;
-        }
-
-        public int getLength() {
-            return length;
-        }
-
-        public void setLength(int length) {
-            this.length = length;
-        }
-
-        public int getIsFocus() {
-            return isFocus;
-        }
-
-        public void setIsFocus(int isFocus) {
-            this.isFocus = isFocus;
-        }
-
-        public String getRegex() {
-            return regex;
-        }
-
-        public void setRegex(String regex) {
-            this.regex = regex;
-        }
-
-        public String getData() {
-            return data;
-        }
-
-        public void setData(String data) {
-            this.data = data;
-        }
-    }
 
     TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -150,12 +105,13 @@ public class EditTextViewHolder extends RecyclerView.ViewHolder {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (editTextEntity.getRegex() != null && !editTextEntity.getRegex().equals("")) {
-                if (s.toString().matches(editTextEntity.getRegex())) {
-
-                }
+            Logger.d("Before  : " + before);
+            if (s.toString().equals("") && before > 0) {
+                genericViewTypeModel.setValid(false);
+                showErrorMessage(true);
             } else {
-
+                setEditextKeyVaue(s.toString());
+                showErrorMessage(false);
             }
         }
 
@@ -164,30 +120,47 @@ public class EditTextViewHolder extends RecyclerView.ViewHolder {
 
         }
     };
+
     View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if (editTextEntity.getRegex() != null) {
-                if (editText.getText().toString().matches(editTextEntity.getRegex())) {
 
-                }
+            if (v instanceof EditText && !hasFocus) {
+                ((EditText) v).setText(Util.getCommaSeparated(Util.removeComma(((EditText) v).getText().toString())));
             }
         }
     };
 
     public void setEditextKeyVaue(String stringValue) {
-        BigDecimal value = null;
-        if (editTextEntity != null) {
-            switch (editTextEntity.getInpType()) {
-                case TYPE_NUMBER:
-                    value = new BigDecimal(stringValue).setScale(0, BigDecimal.ROUND_HALF_UP);
-                    break;
-                case TYPE_DECIMAL:
-                    value = new BigDecimal(stringValue).setScale(2, BigDecimal.ROUND_HALF_UP);
-                    break;
+        try {
+            stringValue = Util.removeComma(stringValue);
+            BigDecimal value = null;
+            if (editTextEntity != null) {
+                switch (editTextEntity.getInpType()) {
+                    case TYPE_NUMBER:
+                        value = new BigDecimal(stringValue).setScale(0, BigDecimal.ROUND_HALF_UP);
+                        break;
+                    case TYPE_DECIMAL:
+                        value = new BigDecimal(stringValue).setScale(2, BigDecimal.ROUND_HALF_UP);
+                        break;
+                }
             }
+            ((GenericCalculatorActivity) context).setInputHashMap(genericViewTypeModel.getKey().charAt(0), value);
+            genericViewTypeModel.setValid(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            genericViewTypeModel.setValid(false);
         }
-        ((GenericCalculatorActivity) context).setInputHashMap(genericViewTypeModel.getKey(), value);
+        Logger.d(genericViewTypeModel.getKey() + " key is " + genericViewTypeModel.isValid());
     }
 
+
+    public void showErrorMessage(boolean isError) {
+        if (isError) {
+            editText.requestFocus();
+            editText.setError("Enter Valid " + Util.removeWord(genericViewTypeModel.getTitle(), "Enter"));
+        } else {
+            editText.setError(null);
+        }
+    }
 }

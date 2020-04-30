@@ -52,7 +52,7 @@ public class GenericViewTypeAdapter extends RecyclerView.Adapter {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_spinner, parent, false);
                 return new SpinnerViewHolder(view);
             case TYPE_DATE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edittext, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edittext_date, parent, false);
                 return new DateViewHolder(view);
             case TYPE_BUTTON:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_button, parent, false);

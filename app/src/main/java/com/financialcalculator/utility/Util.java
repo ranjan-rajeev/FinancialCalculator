@@ -16,6 +16,7 @@ import com.financialcalculator.home.MainActivity;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -303,5 +304,85 @@ public class Util {
                 return GenericCalculatorActivity.class;
         }
     }
+
+    public static String getFormattedDouble(double d) {
+        return new DecimalFormat("#").format(d);
+    }
+
+    public static String getCommaSeparated(String number) {
+        String result = "";
+        try {
+            if (number.contains(".")) {
+                result = number.length() > 12 ? bigNumberWithDecimal(new BigDecimal(number))
+                        : numberWithDecimal(Double.parseDouble(number));
+            } else {
+                result = number.length() > 12 ? bigNumWithoutDecimal(new BigDecimal(number))
+                        : numWithoutDecimal(Double.parseDouble(number));
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static String numberWithDecimal(Double price) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###.00");
+        return formatter.format(price);
+    }
+
+    public static String numWithoutDecimal(Double price) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###.##");
+        return formatter.format(price);
+    }
+
+    public static String bigNumberWithDecimal(BigDecimal price) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###.00");
+        return formatter.format(price);
+    }
+
+    public static String bigNumWithoutDecimal(BigDecimal price) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###.##");
+        return formatter.format(price);
+    }
+
+    public static String removeComma(String number) {
+        return number != null ? number.replace(",", "") : "";
+    }
+
+    public static boolean isValidROI(String number) {
+        try {
+            //number !=null ? (Double.parseDouble(number) <= 100 && Double.parseDouble(number) > 0): false;
+            return number != null && (Double.parseDouble(number) <= 100 && Double.parseDouble(number) > 0);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public static String removeWord(String string, String word) {
+
+        // Check if the word is present in string
+        // If found, remove it using removeAll()
+        if (string.contains(word)) {
+
+            // To cover the case
+            // if the word is at the
+            // beginning of the string
+            // or anywhere in the middle
+            String tempWord = word + " ";
+            string = string.replaceAll(tempWord, "");
+
+            // To cover the edge case
+            // if the word is at the
+            // end of the string
+            tempWord = " " + word;
+            string = string.replaceAll(tempWord, "");
+        }
+
+        // Return the resultant string
+        return string;
+    }
+
 
 }
