@@ -1,6 +1,8 @@
 package com.financialcalculator.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.HashMap;
 
 public class CalculatorEntity implements Serializable {
 
@@ -22,6 +24,24 @@ public class CalculatorEntity implements Serializable {
     private String input;
     private String output;
     private String redUrl;
+    public HashMap<Character, BigDecimal> inputHashmap;
+    public HashMap<Character, BigDecimal> outputHashmap;
+
+    public HashMap<Character, BigDecimal> getOutputHashmap() {
+        return outputHashmap;
+    }
+
+    public void setOutputHashmap(HashMap<Character, BigDecimal> outputHashmap) {
+        this.outputHashmap = outputHashmap;
+    }
+
+    public HashMap<Character, BigDecimal> getInputHashmap() {
+        return inputHashmap;
+    }
+
+    public void setInputHashmap(HashMap<Character, BigDecimal> inputHashmap) {
+        this.inputHashmap = inputHashmap;
+    }
 
     public int getCalId() {
         return calId;

@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,5 +79,12 @@ public class GenericCalculatorActivity extends AppCompatActivity {
     public void bindInputRecycler(List<GenericViewTypeModel> genericViewTypeModels) {
         genericViewTypeAdapter = new GenericViewTypeAdapter(genericViewTypeModels, this);
         rvInputs.setAdapter(genericViewTypeAdapter);
+    }
+
+    public void setInputHashMap(String  key , BigDecimal value){
+        calculatorEntity.inputHashmap.put(key.charAt(0),value);
+    }
+    public void setOutputHashMap(String  key , BigDecimal value){
+        calculatorEntity.outputHashmap.put(key.charAt(0),value);
     }
 }
