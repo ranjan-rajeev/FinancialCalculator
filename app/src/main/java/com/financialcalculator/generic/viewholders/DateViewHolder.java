@@ -11,6 +11,7 @@ import android.widget.EditText;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.financialcalculator.R;
+import com.financialcalculator.generic.GenericCalculatorActivity;
 import com.financialcalculator.model.GenericViewTypeModel;
 import com.financialcalculator.utility.Util;
 import com.google.android.material.textfield.TextInputLayout;
@@ -18,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 public class DateViewHolder extends RecyclerView.ViewHolder {
@@ -49,7 +51,8 @@ public class DateViewHolder extends RecyclerView.ViewHolder {
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, monthOfYear, dayOfMonth);
                 editText.setText(Util.getDatefromLong(calendar.getTimeInMillis()));
-
+                BigDecimal value = new BigDecimal(calendar.getTimeInMillis()).setScale(0, BigDecimal.ROUND_HALF_UP);
+                ((GenericCalculatorActivity) context).setInputHashMap(genericViewTypeModel.getKey().charAt(0), value);
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
         //mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());

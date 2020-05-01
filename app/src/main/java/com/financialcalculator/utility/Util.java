@@ -2,9 +2,11 @@ package com.financialcalculator.utility;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.financialcalculator.R;
 import com.financialcalculator.emi.emicalculator.EmiCalculatorActivity;
 import com.financialcalculator.generic.GenericCalculatorActivity;
+import com.financialcalculator.generic.WebViewActivity;
 import com.financialcalculator.home.MainActivity;
 
 import java.math.BigDecimal;
@@ -288,6 +291,10 @@ public class Util {
         if (!TextUtils.isEmpty(redUrl)) {
             if (!webUrl.startsWith("http")) {
                 // open web view
+                Intent intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra("URL", redUrl);
+                intent.putExtra("TITLE", webUrl);
+                context.startActivity(intent);
             } else {
                 Intent intent = new Intent(context, getClassName(redUrl));
                 context.startActivity(intent);
@@ -384,5 +391,9 @@ public class Util {
         return string;
     }
 
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
 
 }

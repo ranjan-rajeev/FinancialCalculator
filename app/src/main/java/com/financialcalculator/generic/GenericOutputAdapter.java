@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.financialcalculator.R;
+import com.financialcalculator.generic.outputholders.KeyValueViewHolder;
 import com.financialcalculator.generic.viewholders.ButtonViewHolder;
 import com.financialcalculator.generic.viewholders.DateViewHolder;
 import com.financialcalculator.generic.viewholders.EditTextSpinnerViewHolder;
@@ -15,25 +16,20 @@ import com.financialcalculator.generic.viewholders.EditTextViewHolder;
 import com.financialcalculator.generic.viewholders.SpinnerTitleViewHolder;
 import com.financialcalculator.generic.viewholders.SpinnerViewHolder;
 import com.financialcalculator.generic.viewholders.WebViewViewHolder;
+import com.financialcalculator.model.GenericOutputEntity;
 import com.financialcalculator.model.GenericViewTypeModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class GenericViewTypeAdapter extends RecyclerView.Adapter {
+public class GenericOutputAdapter extends RecyclerView.Adapter {
 
-    public static final int TYPE_EDITTEXT = 1;
-    public static final int TYPE_DATE = 2;
-    public static final int TYPE_SPINNER = 3;
-    public static final int TYPE_EDITTEXT_SPINNER = 4;
-    public static final int TYPE_BUTTON = 5;
-    public static final int TYPE_WEBVIEW = 6;
-    public static final int TYPE_SPINNER_TITLE = 7;
+    public static final int TYPE_FORMULAE = 1;
+    ;
 
-    private List<GenericViewTypeModel> list;
+    private List<GenericOutputEntity> list;
     Context mContext;
 
-    public GenericViewTypeAdapter(List<GenericViewTypeModel> data, Context context) {
+    public GenericOutputAdapter(List<GenericOutputEntity> data, Context context) {
         this.list = data;
         this.mContext = context;
     }
@@ -43,10 +39,10 @@ public class GenericViewTypeAdapter extends RecyclerView.Adapter {
 
         View view;
         switch (viewType) {
-            case TYPE_EDITTEXT:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edittext, parent, false);
-                return new EditTextViewHolder(view);
-            case TYPE_SPINNER_TITLE:
+            case TYPE_FORMULAE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_output_key_value, parent, false);
+                return new KeyValueViewHolder(view);
+           /* case TYPE_SPINNER_TITLE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_spinner_title, parent, false);
                 return new SpinnerTitleViewHolder(view);
             case TYPE_SPINNER:
@@ -63,7 +59,7 @@ public class GenericViewTypeAdapter extends RecyclerView.Adapter {
                 return new EditTextSpinnerViewHolder(view);
             case TYPE_WEBVIEW:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_webview, parent, false);
-                return new WebViewViewHolder(view);
+                return new WebViewViewHolder(view);*/
 
         }
         return null;
@@ -77,30 +73,30 @@ public class GenericViewTypeAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
-        GenericViewTypeModel genericViewTypeModel = list.get(position);
+        GenericOutputEntity genericOutputEntity = list.get(position);
 
         switch (holder.getItemViewType()) {
-            case TYPE_EDITTEXT:
-                ((EditTextViewHolder) holder).setData(mContext, genericViewTypeModel);
+            case TYPE_FORMULAE:
+                ((KeyValueViewHolder) holder).setData(mContext, genericOutputEntity);
                 break;
-            case TYPE_SPINNER_TITLE:
-                ((SpinnerTitleViewHolder) holder).setData(mContext, genericViewTypeModel);
-                break;
-            case TYPE_SPINNER:
-                ((SpinnerViewHolder) holder).setData(mContext, genericViewTypeModel);
-                break;
-            case TYPE_DATE:
-                ((DateViewHolder) holder).setData(mContext, genericViewTypeModel);
-                break;
-            case TYPE_BUTTON:
-                ((ButtonViewHolder) holder).setData(mContext, genericViewTypeModel);
-                break;
-            case TYPE_EDITTEXT_SPINNER:
-                ((EditTextSpinnerViewHolder) holder).setData(mContext, genericViewTypeModel);
-                break;
-            case TYPE_WEBVIEW:
-                ((WebViewViewHolder) holder).setData(mContext, genericViewTypeModel);
-                break;
+//            case TYPE_SPINNER_TITLE:
+//                ((SpinnerTitleViewHolder) holder).setData(mContext, genericViewTypeModel);
+//                break;
+//            case TYPE_SPINNER:
+//                ((SpinnerViewHolder) holder).setData(mContext, genericViewTypeModel);
+//                break;
+//            case TYPE_DATE:
+//                ((DateViewHolder) holder).setData(mContext, genericViewTypeModel);
+//                break;
+//            case TYPE_BUTTON:
+//                ((ButtonViewHolder) holder).setData(mContext, genericViewTypeModel);
+//                break;
+//            case TYPE_EDITTEXT_SPINNER:
+//                ((EditTextSpinnerViewHolder) holder).setData(mContext, genericViewTypeModel);
+//                break;
+//            case TYPE_WEBVIEW:
+//                ((WebViewViewHolder) holder).setData(mContext, genericViewTypeModel);
+//                break;
         }
     }
 

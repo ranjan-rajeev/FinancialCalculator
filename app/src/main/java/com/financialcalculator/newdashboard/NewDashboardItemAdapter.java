@@ -65,10 +65,14 @@ public class NewDashboardItemAdapter extends RecyclerView.Adapter<RecyclerView.V
             ((DashboardItemHolder) holder).rl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, GenericCalculatorActivity.class);
-                    intent.putExtra("CALCULATOR", calculatorEntity);
-                    mContext.startActivity(intent);
-                    //Util.inAppRedirection(mContext, calculatorEntity.getRedUrl(), "");
+                    if (calculatorEntity.getRedUrl().equalsIgnoreCase("GenericCalculatorActivity")) {
+                        Intent intent = new Intent(mContext, GenericCalculatorActivity.class);
+                        intent.putExtra("CALCULATOR", calculatorEntity);
+                        mContext.startActivity(intent);
+                    } else {
+                        Util.inAppRedirection(mContext, calculatorEntity.getRedUrl(), calculatorEntity.getCalName());
+                    }
+
                     //((DashBoardFragment) mContext).redirectToResACtivity(dashboardEntity);
                 }
             });
