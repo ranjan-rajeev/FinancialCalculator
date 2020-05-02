@@ -147,10 +147,6 @@ public class GenericCalculatorActivity extends BaseActivity {
         Logger.d("Key : " + key + "  Val : " + calculatorEntity.inputHashmap.get(key));
     }
 
-    public void setOutputHashMap(Character key, BigDecimal value) {
-        calculatorEntity.outputHashmap.put(key, value);
-        Logger.d("Key : " + key + "  Val : " + calculatorEntity.inputHashmap.get(key));
-    }
 
     public void showResult() {
         for (int i = 0; i < genericViewTypeModelList.size(); i++) {

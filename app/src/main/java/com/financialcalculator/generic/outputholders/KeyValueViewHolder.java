@@ -35,7 +35,7 @@ public class KeyValueViewHolder extends RecyclerView.ViewHolder {
         this.context = context;
         this.genericOutputEntity = genericOutputEntity;
         tvTitle.setText(genericOutputEntity.getOutMsg());
-        new CalculateResult().execute();
+        new CalculateResult().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     private class CalculateResult extends AsyncTask<Void, Void, BigDecimal> {
@@ -45,11 +45,11 @@ public class KeyValueViewHolder extends RecyclerView.ViewHolder {
             BigDecimal result = new BigDecimal(0).setScale(0);
             try {
                 result = Util.evaluate(genericOutputEntity.getFormulae(), GenericCalculatorActivity.calculatorEntity.inputHashmap);
-                result =result.setScale(0, BigDecimal.ROUND_HALF_UP);
-                ((GenericCalculatorActivity) context).setOutputHashMap(genericOutputEntity.getOutKey().charAt(0), result);
+                result = result.setScale(0, BigDecimal.ROUND_HALF_UP);
+                ((GenericCalculatorActivity) context).setInputHashMap(genericOutputEntity.getOutKey().charAt(0), result);
             } catch (Exception e) {
                 e.printStackTrace();
-                ((GenericCalculatorActivity) context).setOutputHashMap(genericOutputEntity.getOutKey().charAt(0), result);
+                ((GenericCalculatorActivity) context).setInputHashMap(genericOutputEntity.getOutKey().charAt(0), result);
             }
             return result;
         }
@@ -58,7 +58,7 @@ public class KeyValueViewHolder extends RecyclerView.ViewHolder {
         @Override
         protected void onPostExecute(BigDecimal bigDecimal) {
             super.onPostExecute(bigDecimal);
-            tvValue.setText(context.getString(R.string.currency) +" " +Util.getCommaSeparated(bigDecimal.toPlainString()));
+            tvValue.setText(context.getString(R.string.currency) + " " + Util.getCommaSeparated(bigDecimal.toPlainString()));
         }
     }
 }
