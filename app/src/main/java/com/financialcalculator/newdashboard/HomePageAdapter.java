@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Space;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,9 +13,15 @@ import com.financialcalculator.generic.viewholders.DateViewHolder;
 import com.financialcalculator.generic.viewholders.EditTextSpinnerViewHolder;
 import com.financialcalculator.generic.viewholders.SpinnerTitleViewHolder;
 import com.financialcalculator.generic.viewholders.SpinnerViewHolder;
+import com.financialcalculator.generic.viewholders.WebViewViewHolder;
 import com.financialcalculator.model.HomePageModel;
+import com.financialcalculator.newdashboard.viewholders.AdViewViewHolder;
 import com.financialcalculator.newdashboard.viewholders.CalculatorViewHolder;
 import com.financialcalculator.newdashboard.viewholders.CarouselViewHolder;
+import com.financialcalculator.newdashboard.viewholders.DashboardWebViewViewHolder;
+import com.financialcalculator.newdashboard.viewholders.HeaderViewHolder;
+import com.financialcalculator.newdashboard.viewholders.SpaceViewHolder;
+import com.financialcalculator.newdashboard.viewholders.ViewPagerViewHolder;
 
 import java.util.List;
 
@@ -44,23 +51,23 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_carousel, parent, false);
                 return new CarouselViewHolder(view);
             case TYPE_WEBVIEW:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_spinner_title, parent, false);
-                return new SpinnerTitleViewHolder(view);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_webview, parent, false);
+                return new DashboardWebViewViewHolder(view);
             case TYPE_VIEW_PAGER:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_spinner, parent, false);
-                return new SpinnerViewHolder(view);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_carousel, parent, false);
+                return new ViewPagerViewHolder(view);
             case TYPE_HEADER:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edittext, parent, false);
-                return new DateViewHolder(view);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_header, parent, false);
+                return new HeaderViewHolder(view);
             case TYPE_CALCULATOR_LIST:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_calculator, parent, false);
                 return new CalculatorViewHolder(view);
             case TYPE_SPACE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edittext_spinner, parent, false);
-                return new EditTextSpinnerViewHolder(view);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_space, parent, false);
+                return new SpaceViewHolder(view);
             case TYPE_ADVIEW:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edittext_spinner, parent, false);
-                return new EditTextSpinnerViewHolder(view);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_adview, parent, false);
+                return new AdViewViewHolder(view);
 
         }
         return null;
@@ -83,27 +90,32 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             case TYPE_CALCULATOR_LIST:
                 ((CalculatorViewHolder) holder).setData(mContext, genericViewTypeModel);
                 break;
-           /* case TYPE_WEBVIEW:
-                ((SpinnerTitleViewHolder) holder).setData(mContext, genericViewTypeModel);
+            case TYPE_WEBVIEW:
+                ((DashboardWebViewViewHolder) holder).setData(mContext, genericViewTypeModel);
                 break;
             case TYPE_VIEW_PAGER:
-                ((SpinnerViewHolder) holder).setData(mContext, genericViewTypeModel);
+                ((ViewPagerViewHolder) holder).setData(mContext, genericViewTypeModel);
                 break;
             case TYPE_HEADER:
-                ((DateViewHolder) holder).setData(mContext, genericViewTypeModel);
-                break;*/
+                ((HeaderViewHolder) holder).setData(mContext, genericViewTypeModel);
+                break;
 
-            /*case TYPE_SPACE:
-                ((EditTextSpinnerViewHolder) holder).setData(mContext, genericViewTypeModel);
+            case TYPE_SPACE:
+                ((SpaceViewHolder) holder).setData(mContext, genericViewTypeModel);
                 break;
             case TYPE_ADVIEW:
-                ((EditTextSpinnerViewHolder) holder).setData(mContext, genericViewTypeModel);
-                break;*/
+                ((AdViewViewHolder) holder).setData(mContext, genericViewTypeModel);
+                break;
         }
     }
 
     @Override
     public int getItemCount() {
         return list != null ? list.size() : 0;
+    }
+
+    public void updateList(List<HomePageModel> homePageModels) {
+        this.list = homePageModels;
+        notifyDataSetChanged();
     }
 }

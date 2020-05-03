@@ -1,54 +1,63 @@
-package com.financialcalculator.generic.viewholders;
+package com.financialcalculator.newdashboard.viewholders;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.financialcalculator.R;
-import com.financialcalculator.generic.WebViewActivity;
-import com.financialcalculator.model.EditTextEntity;
 import com.financialcalculator.model.GenericViewTypeModel;
+import com.financialcalculator.model.HomePageModel;
 import com.financialcalculator.utility.Util;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
-public class WebViewViewHolder extends RecyclerView.ViewHolder {
+public class DashboardWebViewViewHolder extends RecyclerView.ViewHolder {
 
     WebView webView;
     Context context;
-    GenericViewTypeModel genericViewTypeModel;
+    HomePageModel homePageModel;
     WebViewEntity webViewEntity;
 
-    public WebViewViewHolder(View itemView) {
+    public DashboardWebViewViewHolder(View itemView) {
         super(itemView);
         this.webView = itemView.findViewById(R.id.webView);
     }
 
-    public void setData(Context context, GenericViewTypeModel genericViewTypeModel) {
+    public void setData(Context context, HomePageModel homePageModel) {
         this.context = context;
-        this.genericViewTypeModel = genericViewTypeModel;
+        this.homePageModel = homePageModel;
+        webView.setBackgroundColor(context.getColor(R.color.bg_light));
         new ConvertAsync().execute();
-        this.genericViewTypeModel.setValid(true);
-        webView.setOnClickListener(v -> Util.inAppRedirection(context, webViewEntity.getRedUrl(), webViewEntity.getTitle()));
+        webView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v.getId() == R.id.webView && event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (webViewEntity.getRedUrl() != null && !webViewEntity.getRedUrl().equalsIgnoreCase(""))
+                        Util.inAppRedirection(context, webViewEntity.getRedUrl(), webViewEntity.getTitle());
+                }
+
+                return false;
+            }
+        });
     }
 
-    private class ConvertAsync extends AsyncTask<Void, Void, WebViewEntity> {
+    private class ConvertAsync extends AsyncTask<Void, Void, List<WebViewEntity>> {
 
         @Override
-        protected WebViewEntity doInBackground(Void... voids) {
+        protected List<WebViewEntity> doInBackground(Void... voids) {
             try {
                 Gson gson = new Gson();
-                Type type = new TypeToken<WebViewEntity>() {
+                Type type = new TypeToken<List<WebViewEntity>>() {
                 }.getType();
-                return gson.fromJson(genericViewTypeModel.getData(), type);
+                return gson.fromJson(homePageModel.getCmpData(), type);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -58,10 +67,10 @@ public class WebViewViewHolder extends RecyclerView.ViewHolder {
 
 
         @Override
-        protected void onPostExecute(WebViewEntity entity) {
+        protected void onPostExecute(List<WebViewEntity> entity) {
             super.onPostExecute(entity);
             if (entity != null) {
-                webViewEntity = entity;
+                webViewEntity = entity.get(0);
                 bindWebView();
             }
 

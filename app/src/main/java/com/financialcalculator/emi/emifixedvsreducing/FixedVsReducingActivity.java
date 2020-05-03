@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.core.widget.NestedScrollView;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,6 +67,7 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         setUPAdd();
         roomDatabase = RoomDatabase.getAppDatabase(this);
 
@@ -368,7 +372,7 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.history, menu);
-        return false;
+        return true;
     }
 
     @Override

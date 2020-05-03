@@ -17,6 +17,7 @@ import com.financialcalculator.dashboard.DashBoardFragment;
 import com.financialcalculator.generic.GenericCalculatorActivity;
 import com.financialcalculator.model.CalculatorEntity;
 import com.financialcalculator.model.DashboardEntity;
+import com.financialcalculator.utility.GenericImageLoader;
 import com.financialcalculator.utility.Util;
 
 import java.util.List;
@@ -77,6 +78,11 @@ public class NewDashboardItemAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
 
+            if (!calculatorEntity.getIconUrl().equals("") ) {
+                GenericImageLoader.loadImage(mContext, ((DashboardItemHolder) holder).ivIcon, calculatorEntity.getIconUrl(), 0);
+            } else {
+                ((DashboardItemHolder) holder).ivIcon.setImageResource(Util.getCalculatorIcon(calculatorEntity.getCalId()));
+            }
         }
     }
 

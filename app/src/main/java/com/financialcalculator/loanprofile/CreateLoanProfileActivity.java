@@ -680,7 +680,7 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.history, menu);
-        return false;
+        return true;
     }
 
     @Override

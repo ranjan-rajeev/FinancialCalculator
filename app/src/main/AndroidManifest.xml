@@ -70,6 +70,7 @@
             -->
         </activity>
         <activity
+            android:windowSoftInputMode="stateVisible|adjustPan"
             android:name=".emi.emicompare.EmiCompareActivity"
             android:label="@string/title_activity_emi_compare"
             android:parentActivityName=".home.MainActivity"

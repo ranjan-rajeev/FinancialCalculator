@@ -12,11 +12,28 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.financialcalculator.R;
+import com.financialcalculator.SplashActivity;
+import com.financialcalculator.banking.fd.FDCalculatorActivity;
+import com.financialcalculator.banking.ppf.PPFCalculatotActivity;
+import com.financialcalculator.banking.rd.RDCalculatorActivity;
 import com.financialcalculator.emi.emicalculator.EmiCalculatorActivity;
+import com.financialcalculator.emi.emicompare.EmiCompareActivity;
+import com.financialcalculator.emi.emifixedvsreducing.FixedVsReducingActivity;
 import com.financialcalculator.generic.GenericCalculatorActivity;
 import com.financialcalculator.generic.WebViewActivity;
+import com.financialcalculator.gst.GstCalculatorActivity;
+import com.financialcalculator.gst.VatCalculatorActivity;
 import com.financialcalculator.home.MainActivity;
+import com.financialcalculator.loanprofile.CreateLoanProfileActivity;
+import com.financialcalculator.loanprofile.HomeLoanEligibility;
+import com.financialcalculator.loanprofile.ViewLoanProfile;
+import com.financialcalculator.searchhistory.SerachHistoryACtivity;
+import com.financialcalculator.sip.LumpSumpSipActivity;
+import com.financialcalculator.sip.SIPCalculatorActivity;
+import com.financialcalculator.sip.SIPGoalCalculatorActivity;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -287,28 +304,78 @@ public class Util {
     }
 
 
-    public static void inAppRedirection(Context context, String redUrl, String webUrl) {
+    public static void inAppRedirection(Context context, String redUrl, String title) {
         if (!TextUtils.isEmpty(redUrl)) {
-            if (!webUrl.startsWith("http")) {
+            if (redUrl.startsWith("http")) {
                 // open web view
                 Intent intent = new Intent(context, WebViewActivity.class);
                 intent.putExtra("URL", redUrl);
-                intent.putExtra("TITLE", webUrl);
+                intent.putExtra("TITLE", title);
                 context.startActivity(intent);
             } else {
-                Intent intent = new Intent(context, getClassName(redUrl));
-                context.startActivity(intent);
+                Class<?> className = getClassName(redUrl);
+                if (context instanceof MainActivity && redUrl.equalsIgnoreCase("MainActivity")) {
+                    return;
+                } else if (context instanceof WebViewActivity && redUrl.equalsIgnoreCase("WebViewActivity")) {
+                    return;
+                } else if (redUrl.equalsIgnoreCase("WebViewActivity")) {
+                    Intent intent = new Intent(context, WebViewActivity.class);
+                    intent.putExtra("URL", redUrl);
+                    intent.putExtra("TITLE", title);
+                    context.startActivity(intent);
+                } else {
+                    Intent intent = new Intent(context, className);
+                    context.startActivity(intent);
+                }
             }
 
         }
+
     }
 
     private static Class<?> getClassName(String redUrl) {
         switch (redUrl) {
+            case "WebViewActivity":
+                return WebViewActivity.class;
+            case "GenericCalculatorActivity":
+                return GenericCalculatorActivity.class;
+            case "SplashActivity":
+                return SplashActivity.class;
+            case "MainActivity":
+                return MainActivity.class;
             case "EmiCalculatorActivity":
                 return EmiCalculatorActivity.class;
+            case "EmiCompareActivity":
+                return EmiCompareActivity.class;
+            case "FixedVsReducingActivity":
+                return FixedVsReducingActivity.class;
+            case "GstCalculatorActivity":
+                return GstCalculatorActivity.class;
+            case "VatCalculatorActivity":
+                return VatCalculatorActivity.class;
+            case "FDCalculatorActivity":
+                return FDCalculatorActivity.class;
+            case "RDCalculatorActivity":
+                return RDCalculatorActivity.class;
+            case "PPFCalculatotActivity":
+                return PPFCalculatotActivity.class;
+            case "SIPCalculatorActivity":
+                return SIPCalculatorActivity.class;
+            case "SIPGoalCalculatorActivity":
+                return SIPGoalCalculatorActivity.class;
+            case "LumpSumpSipActivity":
+                return LumpSumpSipActivity.class;
+            case "SerachHistoryACtivity":
+                return SerachHistoryACtivity.class;
+            case "CreateLoanProfileActivity":
+                return CreateLoanProfileActivity.class;
+            case "ViewLoanProfile":
+                return ViewLoanProfile.class;
+            case "HomeLoanEligibility":
+                return HomeLoanEligibility.class;
+
             default:
-                return GenericCalculatorActivity.class;
+                return MainActivity.class;
         }
     }
 
@@ -394,6 +461,71 @@ public class Util {
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
+    }
+
+    public static int getCalculatorIcon(int calculatorId) {
+        switch (calculatorId) {
+            case Constants.EMI_CALCULATOR:
+                return R.drawable.emi_cal;
+            case Constants.COMPARE_LOAN:
+                return R.drawable.compare_loan_new;
+            case Constants.FLAT_VS_REDUCING:
+                return R.drawable.compare_icon;
+
+            case Constants.HOME_LOAN_CALCULATOR:
+                return R.drawable.emi_cal;
+            case Constants.PERSONAL_LOAN_CALCULATOR:
+                return R.drawable.emi_cal;
+            case Constants.LAON_AGAINST_PROPERTY:
+                return R.drawable.emi_cal;
+            case Constants.GOLD_LOAN_CALCULATOR:
+                return R.drawable.emi_cal;
+
+            case Constants.FD_CALCULATOR:
+                return R.drawable.fd;
+            case Constants.RD_CALCULATOR:
+                return R.drawable.emi_cal;
+            case Constants.PPF_CALCULATOR:
+                return R.drawable.ppf;
+
+            case Constants.SIP_CALCULATOR:
+                return R.drawable.sip_icons;
+            case Constants.ADVANCE_SIP_CALCULATOR:
+                return R.drawable.goal;
+            case Constants.LUMPSUMP_CALCULATOR:
+                return R.drawable.lumpsum;
+
+            case Constants.GST_CALCULATOR:
+                return R.drawable.gst;
+            case Constants.VAT_CALCULATOR:
+                return R.drawable.vat;
+
+            case Constants.LOAN_PROFILE:
+                return R.drawable.create_loan_;
+            case Constants.LOAN_PROFILE_VIEW:
+                return R.drawable.view_loan_;
+            case Constants.HOME_LOAN_ELIGIBLE:
+                return R.drawable.home_loan;
+
+            default:
+                return 0;
+        }
+    }
+
+    public static String loadJSONFromAsset(Context context) {
+        String json = null;
+        try {
+            InputStream is = context.getAssets().open("dashboard.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 
 }

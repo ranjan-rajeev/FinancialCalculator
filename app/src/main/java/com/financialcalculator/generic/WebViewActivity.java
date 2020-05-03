@@ -34,7 +34,8 @@ public class WebViewActivity extends BaseActivity {
         setContentView(R.layout.activity_web_view);
         url = getIntent().getStringExtra("URL");
         title = getIntent().getStringExtra("TITLE");
-
+        swipe = findViewById(R.id.swipeContainer);
+        webView = findViewById(R.id.webView);
         // check for notification data
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -45,10 +46,12 @@ public class WebViewActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(title);
-        if (Util.isNetworkConnected(this)) {
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (url != null && Util.isNetworkConnected(this)) {
             openWebView();
         } else {
-            Snackbar.make(webView, "No Internet connection", Snackbar.LENGTH_LONG)
+            Snackbar.make(webView, "No Internet connection", Snackbar.LENGTH_INDEFINITE)
                     .setAction("Retry", v -> openWebView()).show();
         }
 
@@ -62,7 +65,7 @@ public class WebViewActivity extends BaseActivity {
 
 
     private void openWebView() {
-        if (Util.isNetworkConnected(this)) {
+        if (url != null && Util.isNetworkConnected(this)) {
             WebSettings settings = webView.getSettings();
             settings.setCacheMode(WebSettings.LOAD_DEFAULT);
             settings.setUserAgentString("kurlz");
@@ -120,7 +123,7 @@ public class WebViewActivity extends BaseActivity {
                 webView.loadUrl(url);
             }
         } else {
-            Snackbar.make(webView, "No Internet connection", Snackbar.LENGTH_LONG)
+            Snackbar.make(webView, "No Internet connection", Snackbar.LENGTH_INDEFINITE)
                     .setAction("Retry", v -> openWebView()).show();
         }
         //webView.loadUrl(url);
