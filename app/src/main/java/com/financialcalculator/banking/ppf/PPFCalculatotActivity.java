@@ -31,8 +31,7 @@ import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,14 +68,14 @@ public class PPFCalculatotActivity extends BaseActivity implements View.OnClickL
 
     RoomDatabase roomDatabase;
     GenericSearchHistoryEntity genericSearchHistoryEntity;
-    private AdView mAdView;
+    //private AdView mAdView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ppfcalculatot);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setUPAdd();
+        //setUPAdd();
         roomDatabase = RoomDatabase.getAppDatabase(this);
         //region floating button
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -95,7 +94,7 @@ public class PPFCalculatotActivity extends BaseActivity implements View.OnClickL
         setAdapter();
         setListeners();
     }
-    private void setUPAdd() {
+   /* private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
 
@@ -116,7 +115,7 @@ public class PPFCalculatotActivity extends BaseActivity implements View.OnClickL
             }
 
         }
-    }
+    }*/
     private void setAdapter() {
         fdType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.ppf_frequency));
         spFdTYpe.setAdapter(fdType);

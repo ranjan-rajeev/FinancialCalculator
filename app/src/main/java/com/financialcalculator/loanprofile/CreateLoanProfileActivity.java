@@ -47,8 +47,7 @@ import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
 import com.financialcalculator.utility.Util;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -97,7 +96,7 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
 
     double principalPaidTillToday, amountLeft, totalAmount;
     String endDate;
-    private AdView mAdView;
+    //private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +106,7 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         roomDatabase = RoomDatabase.getAppDatabase(this);
-        setUPAdd();
+        //setUPAdd();
 
         init();
         init_views();
@@ -132,7 +131,7 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
         }
     }
 
-    private void setUPAdd() {
+   /* private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
 
@@ -153,7 +152,7 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
             }
 
         }
-    }
+    }*/
 
     private void setAdapter() {
         loanType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.loan_type));

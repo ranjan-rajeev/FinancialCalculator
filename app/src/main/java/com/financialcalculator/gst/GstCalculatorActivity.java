@@ -25,8 +25,7 @@ import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 
 public class GstCalculatorActivity extends BaseActivity implements View.OnClickListener {
 
@@ -44,7 +43,7 @@ public class GstCalculatorActivity extends BaseActivity implements View.OnClickL
     ArrayAdapter<String> gstType;
 
     double originalCost = 0, gstApplied = 0, netPrice = 0;
-    private AdView mAdView;
+    //private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +51,7 @@ public class GstCalculatorActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_gst_calculator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setUPAdd();
+        //setUPAdd();
         //region floating action button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +69,7 @@ public class GstCalculatorActivity extends BaseActivity implements View.OnClickL
         setAdapter();
     }
 
-    private void setUPAdd() {
+   /* private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
 
@@ -91,7 +90,7 @@ public class GstCalculatorActivity extends BaseActivity implements View.OnClickL
             }
 
         }
-    }
+    }*/
 
     private void setAdapter() {
         gstType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.gst_type));

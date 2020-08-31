@@ -7,7 +7,7 @@ import androidx.multidex.MultiDexApplication;
 
 import com.financialcalculator.roomdb.RoomDatabase;
 import com.financialcalculator.utility.Constants;
-import com.google.android.gms.ads.MobileAds;
+
 
 public class FinanceCalculatorApplication extends MultiDexApplication {
     private static FinanceCalculatorApplication mInstance;

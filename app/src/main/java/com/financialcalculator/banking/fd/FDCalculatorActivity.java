@@ -5,13 +5,6 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.core.widget.NestedScrollView;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +14,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
@@ -32,8 +31,7 @@ import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,7 +66,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
 
     RoomDatabase roomDatabase;
     GenericSearchHistoryEntity genericSearchHistoryEntity;
-    private AdView mAdView;
+    //private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +74,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_fdcalculator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setUPAdd();
+        //setUPAdd();
         roomDatabase = RoomDatabase.getAppDatabase(this);
         //region floating button
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -103,7 +101,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
 
     }
 
-    private void setUPAdd() {
+    /*private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
 
@@ -124,7 +122,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
             }
 
         }
-    }
+    }*/
 
     private void bindValues(GenericSearchHistoryEntity genericSearchHistoryEntity) {
         try {

@@ -14,15 +14,14 @@ import com.financialcalculator.roomdb.RoomDatabase;
 import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 
 import java.util.List;
 
 
 public class ViewLoanProfile extends BaseActivity {
 
-    private AdView mAdView;
+    //private AdView mAdView;
     RecyclerView rvDashboard;
     List<GenericSearchHistoryEntity> genericSearchHistoryEntities;
     LoanProfileAdapter loanProfileAdapter;
@@ -35,13 +34,13 @@ public class ViewLoanProfile extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         appDatabase = RoomDatabase.getAppDatabase(this);
-        setUPAdd();
+        //setUPAdd();
         init_widgets();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         new FilterGenericList().execute();
     }
 
-    private void setUPAdd() {
+    /*private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
 
@@ -62,7 +61,7 @@ public class ViewLoanProfile extends BaseActivity {
             }
 
         }
-    }
+    }*/
 
     private void init_widgets() {
         rvDashboard = findViewById(R.id.rvDashboard);

@@ -33,8 +33,7 @@ import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,7 +69,7 @@ public class RDCalculatorActivity extends BaseActivity implements View.OnClickLi
     RoomDatabase roomDatabase;
     GenericSearchHistoryEntity genericSearchHistoryEntity;
 
-    private AdView mAdView;
+    //private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +77,7 @@ public class RDCalculatorActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_rdcalculator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setUPAdd();
+        //setUPAdd();
         roomDatabase = RoomDatabase.getAppDatabase(this);
         //region floating button
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -98,7 +97,7 @@ public class RDCalculatorActivity extends BaseActivity implements View.OnClickLi
         setListeners();
     }
 
-    private void setUPAdd() {
+    /*private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
 
@@ -119,7 +118,7 @@ public class RDCalculatorActivity extends BaseActivity implements View.OnClickLi
             }
 
         }
-    }
+    }*/
 
     private void setAdapter() {
         fdType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.fd_type));

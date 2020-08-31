@@ -45,8 +45,7 @@ import com.financialcalculator.sip.SIPGoalCalculatorActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
 import com.financialcalculator.utility.Util;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -63,7 +62,7 @@ public class NewDashBoardFragment extends Fragment {
 
     public static final String TAG = "NewDashBoard";
     View view;
-    private AdView mAdView;
+    //private AdView mAdView;
     RecyclerView rvDashboard;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     int localVersion = 0, serverVersion = 0;

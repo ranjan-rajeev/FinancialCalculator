@@ -31,8 +31,7 @@ import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,7 +66,7 @@ public class SIPGoalCalculatorActivity extends BaseActivity implements View.OnCl
 
     RoomDatabase roomDatabase;
     GenericSearchHistoryEntity genericSearchHistoryEntity;
-    private AdView mAdView;
+    //private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +74,7 @@ public class SIPGoalCalculatorActivity extends BaseActivity implements View.OnCl
         setContentView(R.layout.activity_sipgoal_calculator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setUPAdd();
+        //setUPAdd();
         roomDatabase = RoomDatabase.getAppDatabase(this);
         //region floating button
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -95,7 +94,7 @@ public class SIPGoalCalculatorActivity extends BaseActivity implements View.OnCl
         setListeners();
     }
 
-    private void setUPAdd() {
+    /*private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
 
@@ -116,7 +115,7 @@ public class SIPGoalCalculatorActivity extends BaseActivity implements View.OnCl
             }
 
         }
-    }
+    }*/
 
     private void setAdapter() {
         fdType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.sip_frequency));

@@ -31,8 +31,7 @@ import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,7 +65,7 @@ public class LumpSumpSipActivity extends BaseActivity implements View.OnClickLis
     ArrayAdapter<String> fdType;
     RoomDatabase roomDatabase;
     GenericSearchHistoryEntity genericSearchHistoryEntity;
-    private AdView mAdView;
+    //private AdView mAdView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,13 +85,13 @@ public class LumpSumpSipActivity extends BaseActivity implements View.OnClickLis
         });*/
         //endregion
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setUPAdd();
+        //setUPAdd();
         init_widgets();
         init_views();
         setAdapter();
         setListeners();
     }
-    private void setUPAdd() {
+    /*private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
 
@@ -113,7 +112,7 @@ public class LumpSumpSipActivity extends BaseActivity implements View.OnClickLis
             }
 
         }
-    }
+    }*/
     private void setAdapter() {
         fdType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.sip_frequency));
         spFdTYpe.setAdapter(fdType);

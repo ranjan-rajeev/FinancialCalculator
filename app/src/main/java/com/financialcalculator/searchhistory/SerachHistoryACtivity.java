@@ -21,8 +21,7 @@ import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
 import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 
 import java.util.List;
 
@@ -40,14 +39,14 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
     RoomDatabase appDatabase;
     List<GenericSearchHistoryEntity> genericSearchHistoryEntities;
     GenericSearchHistoryAdapter genericSearchHistoryAdapter;
-    private AdView mAdView;
+    //private AdView mAdView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serach_history_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setUPAdd();
+        //setUPAdd();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         appDatabase = RoomDatabase.getAppDatabase(this);
         if (getIntent().hasExtra("TYPE")) {
@@ -59,7 +58,7 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
 
         //init_Adapters();
     }
-    private void setUPAdd() {
+    /*private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
 
@@ -80,7 +79,7 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
             }
 
         }
-    }
+    }*/
     /*@Override
     protected void onRestart() {
         super.onRestart();

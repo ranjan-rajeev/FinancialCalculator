@@ -44,8 +44,7 @@ import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
 import com.financialcalculator.utility.Util;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,7 +88,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
 
     RoomDatabase roomDatabase;
     GenericSearchHistoryEntity genericSearchHistoryEntity;
-    private AdView mAdView;
+    //private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +99,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         roomDatabase = RoomDatabase.getAppDatabase(this);
-        setUPAdd();
+        //setUPAdd();
 
         init();
         init_views();
@@ -128,7 +127,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
 
     }
 
-    private void setUPAdd() {
+    /*private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
 
@@ -149,7 +148,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
             }
 
         }
-    }
+    }*/
 
     private void setDatePicker() {
 

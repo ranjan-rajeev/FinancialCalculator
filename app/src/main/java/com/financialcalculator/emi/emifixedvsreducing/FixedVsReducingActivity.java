@@ -33,8 +33,7 @@ import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,7 +58,7 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
 
     RoomDatabase roomDatabase;
     GenericSearchHistoryEntity genericSearchHistoryEntity;
-    private AdView mAdView;
+    //private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +68,7 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        setUPAdd();
+        //setUPAdd();
         roomDatabase = RoomDatabase.getAppDatabase(this);
 
         //region floating button
@@ -91,7 +90,7 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
 
     }
 
-    private void setUPAdd() {
+    /*private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
 
@@ -112,7 +111,7 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
             }
 
         }
-    }
+    }*/
 
     private void init() {
 

@@ -33,8 +33,7 @@ import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +46,7 @@ import static android.view.View.GONE;
 
 public class HomeLoanEligibility extends BaseActivity implements View.OnClickListener {
 
-    private AdView mAdView;
+    //private AdView mAdView;
     EditText etPrincipal, etInterest, etYear, etMonth, etDay, etExhistEmi;
     TextView tvCalculate, tvPrincipal, tvTotalInterest, tvMaturity;
 
@@ -77,7 +76,7 @@ public class HomeLoanEligibility extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_home_loan_eligibility);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setUPAdd();
+        //setUPAdd();
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +94,7 @@ public class HomeLoanEligibility extends BaseActivity implements View.OnClickLis
         setListeners();
     }
 
-    private void setUPAdd() {
+    /*private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
 
@@ -117,7 +116,7 @@ public class HomeLoanEligibility extends BaseActivity implements View.OnClickLis
 
         }
     }
-
+*/
     private void setAdapter() {
         fdType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.fd_type));
         spFdTYpe.setAdapter(fdType);
