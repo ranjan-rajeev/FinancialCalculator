@@ -20,6 +20,15 @@ public class GenericOutputEntity {
     private String outMsg;
     private int type;
     private String data;
+    private String curr;
+
+    public String getCurr() {
+        return curr;
+    }
+
+    public void setCurr(String curr) {
+        this.curr = curr;
+    }
 
     public String getData() {
         return data;

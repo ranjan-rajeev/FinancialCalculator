@@ -134,6 +134,7 @@ public class LumpSumpSipActivity extends BaseActivity implements View.OnClickLis
 
     private void setListeners() {
         tvCalculate.setOnClickListener(this);
+        applyCommaTextChange(etPrincipal,  etYear);
     }
 
     private void init_widgets() {
@@ -177,27 +178,27 @@ public class LumpSumpSipActivity extends BaseActivity implements View.OnClickLis
 
     private void calculateFixedDeposit() {
         if (!etPrincipal.getText().toString().equals(""))
-            amount = Double.parseDouble(etPrincipal.getText().toString());
+            amount = Double.parseDouble(getCommaRemovedText(etPrincipal));
         else
             amount = 0;
 
         if (!etInterest.getText().toString().equals(""))
-            rate = Double.parseDouble(etInterest.getText().toString());
+            rate = Double.parseDouble(getCommaRemovedText(etInterest));
         else
             rate = 0;
 
         if (!etYear.getText().toString().equals(""))
-            year = Double.parseDouble(etYear.getText().toString());
+            year = Double.parseDouble(getCommaRemovedText(etYear));
         else
             year = 0;
 
         if (!etMonth.getText().toString().equals(""))
-            month = Double.parseDouble(etMonth.getText().toString());
+            month = Double.parseDouble(getCommaRemovedText(etMonth));
         else
             month = 0;
 
         if (!etDay.getText().toString().equals(""))
-            day = Double.parseDouble(etDay.getText().toString());
+            day = Double.parseDouble(getCommaRemovedText(etDay));
         else
             day = 0;
 
@@ -317,16 +318,16 @@ public class LumpSumpSipActivity extends BaseActivity implements View.OnClickLis
         double timeinMonth = 0;
 
         if (!etYear.getText().toString().equals(""))
-            year = Double.parseDouble(etYear.getText().toString());
+            year = Double.parseDouble(getCommaRemovedText(etYear));
         else
             year = 0;
         if (!etMonth.getText().toString().equals(""))
-            month = Double.parseDouble(etMonth.getText().toString());
+            month = Double.parseDouble(getCommaRemovedText(etMonth));
         else
             month = 0;
 
         if (!etDay.getText().toString().equals(""))
-            day = Double.parseDouble(etDay.getText().toString());
+            day = Double.parseDouble(getCommaRemovedText(etDay));
         else
             day = 0;
 
@@ -359,7 +360,7 @@ public class LumpSumpSipActivity extends BaseActivity implements View.OnClickLis
             return false;
         }
         if (!etMonth.getText().toString().equals("")) {
-            int month = Integer.parseInt(etMonth.getText().toString());
+            int month = Integer.parseInt(getCommaRemovedText(etMonth));
             if (month > 12) {
                 etMonth.requestFocus();
                 etMonth.setError("Month b/w 1 to 12");
@@ -367,7 +368,7 @@ public class LumpSumpSipActivity extends BaseActivity implements View.OnClickLis
             }
         }
         if (!etDay.getText().toString().equals("")) {
-            int month = Integer.parseInt(etDay.getText().toString());
+            int month = Integer.parseInt(getCommaRemovedText(etDay));
             if (month > 31) {
                 etDay.requestFocus();
                 etDay.setError("Day b/w 1 to 31");
@@ -449,9 +450,9 @@ public class LumpSumpSipActivity extends BaseActivity implements View.OnClickLis
         String keyValues = "";
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("amount", "" + etPrincipal.getText().toString());
-            jsonObject.put("rate", "" + etInterest.getText().toString());
-            jsonObject.put("tenure", "" + etYear.getText().toString());
+            jsonObject.put("amount", "" + getCommaRemovedText(etPrincipal));
+            jsonObject.put("rate", "" + getCommaRemovedText(etInterest));
+            jsonObject.put("tenure", "" + getCommaRemovedText(etYear));
             keyValues = jsonObject.toString();
         } catch (JSONException e) {
             e.printStackTrace();

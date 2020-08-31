@@ -1,6 +1,7 @@
 package com.financialcalculator.newdashboard.viewholders;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -25,5 +26,6 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
         this.context = context;
         this.homePageModel = homePageModel;
         this.title.setText(homePageModel.getCmpData());
+        this.title.setSelected(true);
     }
 }

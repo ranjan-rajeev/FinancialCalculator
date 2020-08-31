@@ -6,9 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -66,9 +70,12 @@ public class BaseActivity extends AppCompatActivity {
     public static String getFormattedDouble(double d) {
         return new DecimalFormat("#").format(d);
     }
+
     public static String getFormattedDoubleUpToDecimal(double d) {
-        return new DecimalFormat("#.##").format(d);
+        return Util.getCommaSeparated("" + d);
+        //return new DecimalFormat("##,###.##").format(d);
     }
+
     //region all neccessary functions
     @Override
     protected void onResume() {
@@ -197,5 +204,37 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     //endregion
+
+    public void applyCommaTextChange(EditText... editTexts) {
+        for (EditText editText : editTexts) {
+            TextWatcher commaTextWatcher = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    editText.removeTextChangedListener(this);
+                    editText.setText(Util.getCommaSeparated(Util.removeComma(s.toString())));
+                    editText.setSelection(editText.getText().toString().length());
+                    editText.addTextChangedListener(this);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            };
+            editText.addTextChangedListener(commaTextWatcher);
+        }
+    }
+
+    public String getCommaRemovedText(EditText editText) {
+        if (!editText.getText().toString().equals("")) {
+            return Util.removeComma(editText.getText().toString());
+        }
+        return "";
+    }
 }
 

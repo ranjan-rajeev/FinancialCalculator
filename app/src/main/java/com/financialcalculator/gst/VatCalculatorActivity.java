@@ -2,13 +2,16 @@ package com.financialcalculator.gst;
 
 import android.graphics.Rect;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+
 import androidx.core.widget.NestedScrollView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -42,6 +45,7 @@ public class VatCalculatorActivity extends BaseActivity implements View.OnClickL
 
     double originalCost = 0, gstApplied = 0, netPrice = 0;
     private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +68,7 @@ public class VatCalculatorActivity extends BaseActivity implements View.OnClickL
         setListeners();
         setAdapter();
     }
+
     private void setUPAdd() {
 
         mAdView = findViewById(R.id.adView);
@@ -86,6 +91,7 @@ public class VatCalculatorActivity extends BaseActivity implements View.OnClickL
 
         }
     }
+
     private void setAdapter() {
         gstType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.vat_type));
         spGstTYpe.setAdapter(gstType);
@@ -95,6 +101,7 @@ public class VatCalculatorActivity extends BaseActivity implements View.OnClickL
         tvCalculate.setOnClickListener(this);
         rgFirstRAte.setOnCheckedChangeListener(listener1);
         rgSecondRate.setOnCheckedChangeListener(listener2);
+        applyCommaTextChange(etPrincipal);
     }
 
     private RadioGroup.OnCheckedChangeListener listener1 = new RadioGroup.OnCheckedChangeListener() {
@@ -182,7 +189,7 @@ public class VatCalculatorActivity extends BaseActivity implements View.OnClickL
                 return 12.5;
             case R.id.rb5:
                 if (!etCustomRAte.getText().toString().equals(""))
-                    rate = Double.parseDouble(etCustomRAte.getText().toString());
+                    rate = Double.parseDouble(getCommaRemovedText(etCustomRAte));
                 return rate;
 
             default:
@@ -214,7 +221,7 @@ public class VatCalculatorActivity extends BaseActivity implements View.OnClickL
     private void calculateGst() {
         double principal = 0, rate = 0;
         if (!etPrincipal.getText().toString().equals(""))
-            principal = Double.parseDouble(etPrincipal.getText().toString());
+            principal = Double.parseDouble(getCommaRemovedText(etPrincipal));
 
         rate = getCheckedPercent();
 

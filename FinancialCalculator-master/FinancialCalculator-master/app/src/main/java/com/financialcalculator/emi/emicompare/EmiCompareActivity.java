@@ -153,10 +153,10 @@ public class EmiCompareActivity extends BaseActivity implements View.OnClickList
 
         animateProgressBar(progressInterest, (int) InterestPayablePercentage);
 
-        tvEmi.setText("" + new DecimalFormat("#").format(emi) + "\u20B9");
-        tvTotalPayable.setText("" + new DecimalFormat("#").format(totalAmountPayable) + "\u20B9");
-        tvProgressInterestPercent.setText("" + new DecimalFormat("#").format(InterestPayablePercentage) + "%");
-        tvProgressInterest.setText("" + new DecimalFormat("#").format(totalInterestPayable) + "\u20B9");
+        tvEmi.setText("" + Util.getCommaSeparated("" + emi) + "\u20B9");
+        tvTotalPayable.setText("" + Util.getCommaSeparated("" + totalAmountPayable) + "\u20B9");
+        tvProgressInterestPercent.setText("" + Util.getCommaSeparated("" + InterestPayablePercentage) + "%");
+        tvProgressInterest.setText("" + Util.getCommaSeparated("" + totalInterestPayable) + "\u20B9");
 
     }
 
@@ -180,10 +180,10 @@ public class EmiCompareActivity extends BaseActivity implements View.OnClickList
 
         animateProgressBar(progressInterestLoan2, (int) InterestPayablePercentage);
 
-        tvEmiLoan2.setText("" + new DecimalFormat("#").format(emi) + "\u20B9");
-        tvTotalPayableLoan2.setText("" + new DecimalFormat("#").format(totalAmountPayable) + "\u20B9");
-        tvProgressInterestPercentLoan2.setText("" + new DecimalFormat("#").format(InterestPayablePercentage) + "%");
-        tvProgressInterestLoan2.setText("" + new DecimalFormat("#").format(totalInterestPayable) + "\u20B9");
+        tvEmiLoan2.setText("" + Util.getCommaSeparated("" + emi) + "\u20B9");
+        tvTotalPayableLoan2.setText("" + Util.getCommaSeparated("" + totalAmountPayable) + "\u20B9");
+        tvProgressInterestPercentLoan2.setText("" + Util.getCommaSeparated("" + InterestPayablePercentage) + "%");
+        tvProgressInterestLoan2.setText("" + Util.getCommaSeparated("" + totalInterestPayable) + "\u20B9");
 
     }
 

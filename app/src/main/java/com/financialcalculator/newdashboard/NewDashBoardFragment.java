@@ -112,6 +112,7 @@ public class NewDashBoardFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
+                homePageModels.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     try {
                         HomePageModel homePageModel = snapshot.getValue(HomePageModel.class);
@@ -178,7 +179,6 @@ public class NewDashBoardFragment extends Fragment {
         homePageAdapter = new HomePageAdapter(homePageModels, activity);
         rvDashboard.setAdapter(homePageAdapter);
     }
-
 
     private class StoreDefaultList extends AsyncTask<Void, Void, Void> {
         List<HomePageModel> homePageModels;

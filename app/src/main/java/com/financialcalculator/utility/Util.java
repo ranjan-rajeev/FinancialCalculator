@@ -298,11 +298,11 @@ public class Util {
             case '/':
                 return a.divide(b, PRECISION, RoundingMode.HALF_UP);
             case '^':
-                return a.pow(b.intValue()).setScale(PRECISION, RoundingMode.HALF_UP);
+                return new BigDecimal(Math.pow(a.doubleValue(), b.doubleValue())).setScale(PRECISION, RoundingMode.HALF_UP);
+//            return a.pow(b).setScale(PRECISION, RoundingMode.HALF_UP);
         }
         return new BigDecimal(0);
     }
-
 
     public static void inAppRedirection(Context context, String redUrl, String title) {
         if (!TextUtils.isEmpty(redUrl)) {
@@ -401,22 +401,22 @@ public class Util {
     }
 
     public static String numberWithDecimal(Double price) {
-        DecimalFormat formatter = new DecimalFormat("###,###,###.00");
+        DecimalFormat formatter = new DecimalFormat("##,##,###.00");
         return formatter.format(price);
     }
 
     public static String numWithoutDecimal(Double price) {
-        DecimalFormat formatter = new DecimalFormat("###,###,###.##");
+        DecimalFormat formatter = new DecimalFormat("##,##,###.##");
         return formatter.format(price);
     }
 
     public static String bigNumberWithDecimal(BigDecimal price) {
-        DecimalFormat formatter = new DecimalFormat("###,###,###.00");
+        DecimalFormat formatter = new DecimalFormat("##,##,###.00");
         return formatter.format(price);
     }
 
     public static String bigNumWithoutDecimal(BigDecimal price) {
-        DecimalFormat formatter = new DecimalFormat("###,###,###.##");
+        DecimalFormat formatter = new DecimalFormat("##,##,###.##");
         return formatter.format(price);
     }
 

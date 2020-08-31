@@ -1,35 +1,23 @@
 package com.financialcalculator.generic;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-
 import com.financialcalculator.R;
-import com.financialcalculator.generic.viewholders.ButtonViewHolder;
-import com.financialcalculator.generic.viewholders.DateViewHolder;
 import com.financialcalculator.generic.viewholders.EditTextSpinnerViewHolder;
 import com.financialcalculator.generic.viewholders.EditTextViewHolder;
-import com.financialcalculator.generic.viewholders.SpinnerTitleViewHolder;
-import com.financialcalculator.generic.viewholders.SpinnerViewHolder;
-import com.financialcalculator.generic.viewholders.WebViewViewHolder;
 import com.financialcalculator.model.CalculatorEntity;
-import com.financialcalculator.model.CarouselEntity;
 import com.financialcalculator.model.GenericOutputEntity;
 import com.financialcalculator.model.GenericViewTypeModel;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Logger;
-import com.financialcalculator.utility.Util;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,9 +26,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.widget.LinearLayout.HORIZONTAL;
-
-public class GenericCalculatorActivity extends BaseActivity {
+public class GenericInfoActivity extends BaseActivity {
 
     RecyclerView rvInputs;
     GenericViewTypeAdapter genericViewTypeAdapter;

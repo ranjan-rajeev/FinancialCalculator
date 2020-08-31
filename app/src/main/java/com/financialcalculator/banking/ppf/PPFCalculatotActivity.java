@@ -140,6 +140,7 @@ public class PPFCalculatotActivity extends BaseActivity implements View.OnClickL
 
     private void setListeners() {
         tvCalculate.setOnClickListener(this);
+        applyCommaTextChange(etPrincipal);
     }
 
     private void init_widgets() {
@@ -183,12 +184,12 @@ public class PPFCalculatotActivity extends BaseActivity implements View.OnClickL
 
     private void calculateFixedDeposit() {
         if (!etPrincipal.getText().toString().equals(""))
-            amount = Double.parseDouble(etPrincipal.getText().toString());
+            amount = Double.parseDouble(getCommaRemovedText(etPrincipal));
         else
             amount = 0;
 
         if (!etInterest.getText().toString().equals(""))
-            rate = Double.parseDouble(etInterest.getText().toString());
+            rate = Double.parseDouble(getCommaRemovedText(etInterest));
         else
             rate = 0;
 
@@ -590,8 +591,8 @@ public class PPFCalculatotActivity extends BaseActivity implements View.OnClickL
         String keyValues = "";
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("amount", "" + etPrincipal.getText().toString());
-            jsonObject.put("rate", "" + etInterest.getText().toString());
+            jsonObject.put("amount", "" + getCommaRemovedText(etPrincipal));
+            jsonObject.put("rate", "" + getCommaRemovedText(etInterest));
             jsonObject.put("term", "" + spPPFDuration.getSelectedItemPosition());
             jsonObject.put("deposittype", spFdTYpe.getSelectedItemPosition());
             keyValues = jsonObject.toString();

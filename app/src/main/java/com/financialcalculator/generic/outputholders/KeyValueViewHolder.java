@@ -58,7 +58,12 @@ public class KeyValueViewHolder extends RecyclerView.ViewHolder {
         @Override
         protected void onPostExecute(BigDecimal bigDecimal) {
             super.onPostExecute(bigDecimal);
-            tvValue.setText(context.getString(R.string.currency) + " " + Util.getCommaSeparated(bigDecimal.toPlainString()));
+            if (genericOutputEntity.getCurr() != null && !genericOutputEntity.getCurr().equals("")) {
+                tvValue.setText(Util.getCommaSeparated(bigDecimal.toPlainString()) + " " + genericOutputEntity.getCurr());
+            } else {
+                tvValue.setText(Util.getCommaSeparated(bigDecimal.toPlainString()));
+            }
+
         }
     }
 }

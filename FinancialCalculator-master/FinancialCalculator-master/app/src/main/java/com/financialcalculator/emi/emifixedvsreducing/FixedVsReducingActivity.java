@@ -3,11 +3,14 @@ package com.financialcalculator.emi.emifixedvsreducing;
 import android.animation.ObjectAnimator;
 import android.graphics.Rect;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.core.widget.NestedScrollView;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
@@ -139,9 +142,9 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
         double timeInMonth = Double.parseDouble(tenure);
 
 
-        double totalInterestPayable  =  (principal * interestPercent *timeInMonth)/100 ;
+        double totalInterestPayable = (principal * interestPercent * timeInMonth) / 100;
         double totalAmountPayable = (principal + totalInterestPayable);
-        double emi = (totalAmountPayable/(timeInMonth*12));
+        double emi = (totalAmountPayable / (timeInMonth * 12));
 
 
        /* double effectiveROI = interestPercent / 1200;
@@ -159,10 +162,10 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
 
         animateProgressBar(progressInterest, (int) InterestPayablePercentage);
 
-        tvEmi.setText("" + new DecimalFormat("#").format(emi) + "\u20B9");
-        tvTotalPayable.setText("" + new DecimalFormat("#").format(totalAmountPayable) + "\u20B9");
-        tvProgressInterestPercent.setText("" + new DecimalFormat("#").format(InterestPayablePercentage) + "%");
-        tvProgressInterest.setText("" + new DecimalFormat("#").format(totalInterestPayable) + "\u20B9");
+        tvEmi.setText("" + Util.getCommaSeparated("" + emi) + "\u20B9");
+        tvTotalPayable.setText("" + Util.getCommaSeparated("" + totalAmountPayable) + "\u20B9");
+        tvProgressInterestPercent.setText("" + Util.getCommaSeparated("" + InterestPayablePercentage) + "%");
+        tvProgressInterest.setText("" + Util.getCommaSeparated("" + totalInterestPayable) + "\u20B9");
 
     }
 
@@ -186,10 +189,10 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
 
         animateProgressBar(progressInterestLoan2, (int) InterestPayablePercentage);
 
-        tvEmiLoan2.setText("" + new DecimalFormat("#").format(emi) + "\u20B9");
-        tvTotalPayableLoan2.setText("" + new DecimalFormat("#").format(totalAmountPayable) + "\u20B9");
-        tvProgressInterestPercentLoan2.setText("" + new DecimalFormat("#").format(InterestPayablePercentage) + "%");
-        tvProgressInterestLoan2.setText("" + new DecimalFormat("#").format(totalInterestPayable) + "\u20B9");
+        tvEmiLoan2.setText("" + Util.getCommaSeparated("" + emi) + "\u20B9");
+        tvTotalPayableLoan2.setText("" + Util.getCommaSeparated("" + totalAmountPayable) + "\u20B9");
+        tvProgressInterestPercentLoan2.setText("" + Util.getCommaSeparated("" + InterestPayablePercentage) + "%");
+        tvProgressInterestLoan2.setText("" + Util.getCommaSeparated("" + totalInterestPayable) + "\u20B9");
 
     }
 

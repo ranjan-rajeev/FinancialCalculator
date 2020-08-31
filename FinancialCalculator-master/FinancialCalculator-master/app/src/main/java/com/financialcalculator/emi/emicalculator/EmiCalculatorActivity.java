@@ -344,14 +344,14 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         animateProgressBar(progressInterest, (int) InterestPayablePercentage);
         animateProgressBar(progressPrincipal, (int) principalPercent);
 
-        tvEmi.setText("" + new DecimalFormat("#").format(emi) + "\u20B9");
-        tvTotalPayable.setText("" + new DecimalFormat("#").format(totalAmountPayable) + "\u20B9");
+        tvEmi.setText("" + Util.getCommaSeparated("" + emi) + "\u20B9");
+        tvTotalPayable.setText("" + Util.getCommaSeparated("" + totalAmountPayable) + "\u20B9");
 
-        tvProgressInterestPercent.setText("" + new DecimalFormat("#").format(InterestPayablePercentage) + "%");
-        tvTotalPrincipalPercent.setText("" + new DecimalFormat("#").format(principalPercent) + "%");
+        tvProgressInterestPercent.setText("" + Util.getCommaSeparated("" + InterestPayablePercentage) + "%");
+        tvTotalPrincipalPercent.setText("" + Util.getCommaSeparated("" + principalPercent) + "%");
 
-        tvTotalPrincipalValue.setText("" + new DecimalFormat("#").format(principal) + "\u20B9");
-        tvProgressInterest.setText("" + new DecimalFormat("#").format(totalInterestPayable) + "\u20B9");
+        tvTotalPrincipalValue.setText("" + Util.getCommaSeparated("" + principal) + "\u20B9");
+        tvProgressInterest.setText("" + Util.getCommaSeparated("" + totalInterestPayable) + "\u20B9");
         /*Log.d("EMI", "EMI - " + Math.round(emi));
         Log.d("EMI", "Total Payment - " + Math.round(emi * timeInMonth));
         Log.d("EMI", "Total Interest - " + Math.round((emi * timeInMonth) - principal));*/

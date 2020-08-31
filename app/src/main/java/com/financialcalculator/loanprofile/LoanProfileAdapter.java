@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.financialcalculator.R;
 import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
 import com.financialcalculator.utility.Constants;
+import com.financialcalculator.utility.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -104,8 +105,8 @@ public class LoanProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((EmiDetailsHolder) holder).tvfullName.setText("" + fullName + "  -  " + getLoanName(obj.getInt("loantype")));
             ((EmiDetailsHolder) holder).tvEnd.setText("" + obj.getString("endDate"));
 
-            ((EmiDetailsHolder) holder).tvLeft.setText("" + new DecimalFormat("#").format(obj.getDouble("amountLeft")) + " " + Constants.CURRENCY);
-            ((EmiDetailsHolder) holder).tvPaid.setText("" + new DecimalFormat("#").format(obj.getDouble("principalPaidTillToday")) + " " + Constants.CURRENCY);
+            ((EmiDetailsHolder) holder).tvLeft.setText("" + Util.getCommaSeparated("" + obj.getDouble("amountLeft")) + " " + Constants.CURRENCY);
+            ((EmiDetailsHolder) holder).tvPaid.setText("" + Util.getCommaSeparated("" + obj.getDouble("principalPaidTillToday")) + " " + Constants.CURRENCY);
 
         } catch (JSONException e) {
             e.printStackTrace();

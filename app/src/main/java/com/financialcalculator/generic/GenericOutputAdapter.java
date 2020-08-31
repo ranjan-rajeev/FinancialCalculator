@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.financialcalculator.R;
+import com.financialcalculator.generic.outputholders.GraphViewHolder;
 import com.financialcalculator.generic.outputholders.KeyValueViewHolder;
 import com.financialcalculator.generic.viewholders.ButtonViewHolder;
 import com.financialcalculator.generic.viewholders.DateViewHolder;
@@ -24,8 +25,8 @@ import java.util.List;
 public class GenericOutputAdapter extends RecyclerView.Adapter {
 
     public static final int TYPE_FORMULAE = 1;
-    ;
-
+    public static final int TYPE_GRAPH = 4;
+    public static final int TYPE_DIVIDER = 5;
     private List<GenericOutputEntity> list;
     Context mContext;
 
@@ -42,13 +43,13 @@ public class GenericOutputAdapter extends RecyclerView.Adapter {
             case TYPE_FORMULAE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_output_key_value, parent, false);
                 return new KeyValueViewHolder(view);
-           /* case TYPE_SPINNER_TITLE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_spinner_title, parent, false);
-                return new SpinnerTitleViewHolder(view);
-            case TYPE_SPINNER:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_spinner, parent, false);
-                return new SpinnerViewHolder(view);
-            case TYPE_DATE:
+            case TYPE_GRAPH:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_output_graph, parent, false);
+                return new GraphViewHolder(view);
+            case TYPE_DIVIDER:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_divider, parent, false);
+                return new KeyValueViewHolder(view);
+             /*case TYPE_DATE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edittext_date, parent, false);
                 return new DateViewHolder(view);
             case TYPE_BUTTON:
@@ -79,9 +80,9 @@ public class GenericOutputAdapter extends RecyclerView.Adapter {
             case TYPE_FORMULAE:
                 ((KeyValueViewHolder) holder).setData(mContext, genericOutputEntity);
                 break;
-//            case TYPE_SPINNER_TITLE:
-//                ((SpinnerTitleViewHolder) holder).setData(mContext, genericViewTypeModel);
-//                break;
+            case TYPE_GRAPH:
+                ((GraphViewHolder) holder).setData(mContext, genericOutputEntity);
+                break;
 //            case TYPE_SPINNER:
 //                ((SpinnerViewHolder) holder).setData(mContext, genericViewTypeModel);
 //                break;

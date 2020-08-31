@@ -7,13 +7,16 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.core.widget.NestedScrollView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -219,6 +222,8 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         tvCalculate.setOnClickListener(this);
         tvDetails.setOnClickListener(this);
         rgYearMonth.setOnCheckedChangeListener(onCheckedChangeListener);
+
+        applyCommaTextChange(etPrincipal, etTenure);
         /*rgYearMonth.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // checkedId is the RadioButton selected
@@ -243,12 +248,12 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
             if (rbMonth.isChecked()) {
                 if (!etTenure.getText().toString().equals("")) {
-                    double year = Double.parseDouble(etTenure.getText().toString());
+                    double year = Double.parseDouble(getCommaRemovedText(etTenure));
                     etTenure.setText("" + Math.round(year * 12));
                 }
             } else if (rbYear.isChecked()) {
                 if (!etTenure.getText().toString().equals("")) {
-                    double month = Double.parseDouble(etTenure.getText().toString());
+                    double month = Double.parseDouble(getCommaRemovedText(etTenure));
                     etTenure.setText("" + (month / 12));
                 }
             }
@@ -309,7 +314,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
             case R.id.tvCalculate:
                 if (isValidInput()) {
                     scrollToRow(scrollView, llEmiCAl, cvResult);
-                    calculateEmi(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
+                    calculateEmi(getCommaRemovedText(etPrincipal), getCommaRemovedText(etInterest), getCommaRemovedText(etTenure));
                 }
                 break;
             case R.id.tvDetails:
@@ -317,7 +322,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
                     if (!isEdit) {
 
                         emiSearchHistoryEntity = new EMISearchHistoryEntity(Constants.EMI_CALCULATOR,
-                                etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString(), "MONTHS", Util.getLongDate(etDateFirstInstallment.getText().toString()));
+                                getCommaRemovedText(etPrincipal), getCommaRemovedText(etInterest), getCommaRemovedText(etTenure), "MONTHS", Util.getLongDate(etDateFirstInstallment.getText().toString()));
 
                         if (rbYear.isChecked()) {
                             emiSearchHistoryEntity.setLoanTenureTYpe("YEARS");
@@ -330,16 +335,16 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
                         } else {
                             emiSearchHistoryEntity.setLoanTenureTYpe("MONTHS");
                         }
-                        emiSearchHistoryEntity.setLoanTenure(etTenure.getText().toString());
+                        emiSearchHistoryEntity.setLoanTenure(getCommaRemovedText(etTenure));
 
-                        emiSearchHistoryEntity.setPrincipalAmt(etPrincipal.getText().toString());
-                        emiSearchHistoryEntity.setRoi(etInterest.getText().toString());
+                        emiSearchHistoryEntity.setPrincipalAmt(getCommaRemovedText(etPrincipal));
+                        emiSearchHistoryEntity.setRoi(getCommaRemovedText(etInterest));
                         emiSearchHistoryEntity.setUpdatedTime(Util.getLongDate(etDateFirstInstallment.getText().toString()));
                         // new UpdateEMiHistory().execute();
                     }
                     showLayouts();
                     new AsyncCalculateEMiDetails().execute();
-                    calculateEmi(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
+                    calculateEmi(getCommaRemovedText(etPrincipal), getCommaRemovedText(etInterest), getCommaRemovedText(etTenure));
                     updateGenericHistory();
                     break;
                 }
@@ -502,14 +507,14 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         animateProgressBar(progressInterest, (int) InterestPayablePercentage);
         animateProgressBar(progressPrincipal, (int) principalPercent);
 
-        tvEmi.setText("" + new DecimalFormat("#").format(emi) + "\u20B9");
-        tvTotalPayable.setText("" + new DecimalFormat("#").format(totalAmountPayable) + "\u20B9");
+        tvEmi.setText("" + Util.getCommaSeparated("" + emi) + "\u20B9");
+        tvTotalPayable.setText("" + Util.getCommaSeparated("" + totalAmountPayable) + "\u20B9");
 
-        tvProgressInterestPercent.setText("" + new DecimalFormat("#").format(InterestPayablePercentage) + "%");
-        tvTotalPrincipalPercent.setText("" + new DecimalFormat("#").format(principalPercent) + "%");
+        tvProgressInterestPercent.setText("" + Util.getCommaSeparated("" + InterestPayablePercentage) + "%");
+        tvTotalPrincipalPercent.setText("" + Util.getCommaSeparated("" + principalPercent) + "%");
 
-        tvTotalPrincipalValue.setText("" + new DecimalFormat("#").format(principal) + "\u20B9");
-        tvProgressInterest.setText("" + new DecimalFormat("#").format(totalInterestPayable) + "\u20B9");
+        tvTotalPrincipalValue.setText("" + Util.getCommaSeparated("" + principal) + "\u20B9");
+        tvProgressInterest.setText("" + Util.getCommaSeparated("" + totalInterestPayable) + "\u20B9");
         /*Log.d("EMI", "EMI - " + Math.round(emi));
         Log.d("EMI", "Total Payment - " + Math.round(emi * timeInMonth));
         Log.d("EMI", "Total Interest - " + Math.round((emi * timeInMonth) - principal));*/
@@ -527,8 +532,8 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         @Override
         protected String doInBackground(Void... voids) {
 
-            //detailsEntityList = getListDetailsMonthly(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
-            yearsDetailsEntities = getListDetailsYearly(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
+            //detailsEntityList = getListDetailsMonthly(etPrincipal, etInterest, etTenure);
+            yearsDetailsEntities = getListDetailsYearly(getCommaRemovedText(etPrincipal), getCommaRemovedText(etInterest), getCommaRemovedText(etTenure));
 
             return "";
         }
@@ -569,15 +574,15 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         String keyValues = "";
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("amount", "" + etPrincipal.getText().toString());
-            jsonObject.put("rate", "" + etInterest.getText().toString());
+            jsonObject.put("amount", "" + getCommaRemovedText(etPrincipal));
+            jsonObject.put("rate", "" + getCommaRemovedText(etInterest));
             if (rbYear.isChecked()) {
                 jsonObject.put("tenuretype", "YEARS");
             } else {
                 jsonObject.put("tenuretype", "MONTHS");
             }
-            jsonObject.put("tenure", "" + etTenure.getText().toString());
-            jsonObject.put("date", "" + etDateFirstInstallment.getText().toString());
+            jsonObject.put("tenure", "" + getCommaRemovedText(etTenure));
+            jsonObject.put("date", "" + etDateFirstInstallment);
             keyValues = jsonObject.toString();
         } catch (JSONException e) {
             e.printStackTrace();

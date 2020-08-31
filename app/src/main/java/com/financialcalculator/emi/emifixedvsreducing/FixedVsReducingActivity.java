@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.financialcalculator.utility.Util;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -152,6 +153,7 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
 
     private void setListener() {
         tvDetails.setOnClickListener(this);
+        applyCommaTextChange(etTenure, etPrincipal, etPrincipalLoan2, etTenureLoan2);
     }
 
     public void animateProgressBar(ProgressBar progressBar, int max) {
@@ -175,8 +177,8 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
             case R.id.tvDetails:
                 if (isValidInput()) {
                     scrollToRow(scrollView, llEmiCAl, cvResult);
-                    calculateEmi(etPrincipal.getText().toString(), etInterest.getText().toString(), etTenure.getText().toString());
-                    calculateEmiLoan2(etPrincipalLoan2.getText().toString(), etInterestLoan2.getText().toString(), etTenureLoan2.getText().toString());
+                    calculateEmi(getCommaRemovedText(etPrincipal), getCommaRemovedText(etInterest), getCommaRemovedText(etTenure));
+                    calculateEmiLoan2(getCommaRemovedText(etPrincipalLoan2), getCommaRemovedText(etInterestLoan2), getCommaRemovedText(etTenureLoan2));
                     updateGenericHistory();
                 }
                 break;
@@ -210,10 +212,10 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
 
         animateProgressBar(progressInterest, (int) InterestPayablePercentage);
 
-        tvEmi.setText("" + new DecimalFormat("#").format(emi) + "\u20B9");
-        tvTotalPayable.setText("" + new DecimalFormat("#").format(totalAmountPayable) + "\u20B9");
-        tvProgressInterestPercent.setText("" + new DecimalFormat("#").format(InterestPayablePercentage) + "%");
-        tvProgressInterest.setText("" + new DecimalFormat("#").format(totalInterestPayable) + "\u20B9");
+        tvEmi.setText("" + Util.getCommaSeparated("" + emi) + "\u20B9");
+        tvTotalPayable.setText("" + Util.getCommaSeparated("" + totalAmountPayable) + "\u20B9");
+        tvProgressInterestPercent.setText("" + Util.getCommaSeparated("" + InterestPayablePercentage) + "%");
+        tvProgressInterest.setText("" + Util.getCommaSeparated("" + totalInterestPayable) + "\u20B9");
 
     }
 
@@ -237,10 +239,10 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
 
         animateProgressBar(progressInterestLoan2, (int) InterestPayablePercentage);
 
-        tvEmiLoan2.setText("" + new DecimalFormat("#").format(emi) + "\u20B9");
-        tvTotalPayableLoan2.setText("" + new DecimalFormat("#").format(totalAmountPayable) + "\u20B9");
-        tvProgressInterestPercentLoan2.setText("" + new DecimalFormat("#").format(InterestPayablePercentage) + "%");
-        tvProgressInterestLoan2.setText("" + new DecimalFormat("#").format(totalInterestPayable) + "\u20B9");
+        tvEmiLoan2.setText("" + Util.getCommaSeparated("" + emi) + "\u20B9");
+        tvTotalPayableLoan2.setText("" + Util.getCommaSeparated("" + totalAmountPayable) + "\u20B9");
+        tvProgressInterestPercentLoan2.setText("" + Util.getCommaSeparated("" + InterestPayablePercentage) + "%");
+        tvProgressInterestLoan2.setText("" + Util.getCommaSeparated("" + totalInterestPayable) + "\u20B9");
 
     }
 
@@ -313,13 +315,13 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
         String keyValues = "";
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("amount", "" + etPrincipal.getText().toString());
-            jsonObject.put("rate", "" + etInterest.getText().toString());
-            jsonObject.put("tenure", "" + etTenure.getText().toString());
+            jsonObject.put("amount", "" + getCommaRemovedText(etPrincipal));
+            jsonObject.put("rate", "" + getCommaRemovedText(etInterest));
+            jsonObject.put("tenure", "" + getCommaRemovedText(etTenure));
 
-            jsonObject.put("amount2", "" + etPrincipalLoan2.getText().toString());
-            jsonObject.put("rate2", "" + etInterestLoan2.getText().toString());
-            jsonObject.put("tenure2", "" + etTenureLoan2.getText().toString());
+            jsonObject.put("amount2", "" + getCommaRemovedText(etPrincipalLoan2));
+            jsonObject.put("rate2", "" + getCommaRemovedText(etInterestLoan2));
+            jsonObject.put("tenure2", "" + getCommaRemovedText(etTenureLoan2));
 
 
             keyValues = jsonObject.toString();

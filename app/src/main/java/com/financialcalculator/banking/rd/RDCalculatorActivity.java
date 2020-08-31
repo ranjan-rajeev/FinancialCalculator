@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import androidx.core.widget.NestedScrollView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -139,6 +141,7 @@ public class RDCalculatorActivity extends BaseActivity implements View.OnClickLi
 
     private void setListeners() {
         tvCalculate.setOnClickListener(this);
+        applyCommaTextChange(etPrincipal, etInterest, etYear);
     }
 
     private void init_widgets() {
@@ -182,27 +185,27 @@ public class RDCalculatorActivity extends BaseActivity implements View.OnClickLi
 
     private void calculateFixedDeposit() {
         if (!etPrincipal.getText().toString().equals(""))
-            amount = Double.parseDouble(etPrincipal.getText().toString());
+            amount = Double.parseDouble(getCommaRemovedText(etPrincipal));
         else
             amount = 0;
 
         if (!etInterest.getText().toString().equals(""))
-            rate = Double.parseDouble(etInterest.getText().toString());
+            rate = Double.parseDouble(getCommaRemovedText(etInterest));
         else
             rate = 0;
 
         if (!etYear.getText().toString().equals(""))
-            year = Double.parseDouble(etYear.getText().toString());
+            year = Double.parseDouble(getCommaRemovedText(etYear));
         else
             year = 0;
 
         if (!etMonth.getText().toString().equals(""))
-            month = Double.parseDouble(etMonth.getText().toString());
+            month = Double.parseDouble(getCommaRemovedText(etMonth));
         else
             month = 0;
 
         if (!etDay.getText().toString().equals(""))
-            day = Double.parseDouble(etDay.getText().toString());
+            day = Double.parseDouble(getCommaRemovedText(etDay));
         else
             day = 0;
 
@@ -472,16 +475,16 @@ public class RDCalculatorActivity extends BaseActivity implements View.OnClickLi
         double timeinMonth = 0;
 
         if (!etYear.getText().toString().equals(""))
-            year = Double.parseDouble(etYear.getText().toString());
+            year = Double.parseDouble(getCommaRemovedText(etYear));
         else
             year = 0;
         if (!etMonth.getText().toString().equals(""))
-            month = Double.parseDouble(etMonth.getText().toString());
+            month = Double.parseDouble(getCommaRemovedText(etMonth));
         else
             month = 0;
 
         if (!etDay.getText().toString().equals(""))
-            day = Double.parseDouble(etDay.getText().toString());
+            day = Double.parseDouble(getCommaRemovedText(etDay));
         else
             day = 0;
 
@@ -603,9 +606,9 @@ public class RDCalculatorActivity extends BaseActivity implements View.OnClickLi
         String keyValues = "";
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("amount", "" + etPrincipal.getText().toString());
-            jsonObject.put("rate", "" + etInterest.getText().toString());
-            jsonObject.put("tenure", "" + etYear.getText().toString());
+            jsonObject.put("amount", "" + getCommaRemovedText(etPrincipal));
+            jsonObject.put("rate", "" + getCommaRemovedText(etInterest));
+            jsonObject.put("tenure", "" + getCommaRemovedText(etYear));
             keyValues = jsonObject.toString();
         } catch (JSONException e) {
             e.printStackTrace();

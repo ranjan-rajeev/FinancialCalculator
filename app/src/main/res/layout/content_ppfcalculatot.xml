@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 android:elevation="8dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp">
 
@@ -50,7 +50,7 @@
                             android:layout_height="50dp"
                             android:background="@drawable/corner_shape"
                             android:inputType="number"
-                            android:maxLength="12"
+                            android:maxLength="15"
                             android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
 
