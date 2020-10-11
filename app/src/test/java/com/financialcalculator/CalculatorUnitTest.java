@@ -14,23 +14,12 @@ import static org.junit.Assert.assertEquals;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
-    }
+public class CalculatorUnitTest {
 
     @Test
-    public void evaluate_correct_expression() throws Exception {
-        HashMap<Character, BigDecimal> decimalHashMap = new HashMap<>();
-        decimalHashMap.put('a', new BigDecimal(111).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP));
-        decimalHashMap.put('b', new BigDecimal(111).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP));
-        String formulae = " ( a + b)";
-        assertEquals(new BigDecimal(222).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP), Util.evaluate(formulae, decimalHashMap));
-    }
+    public void evaluate_atal_pension_calculator() {
 
-    @Test
-    public void evaluate_withvalues_correct_expression() {
+
         HashMap<Character, BigDecimal> decimalHashMap = new HashMap<>();
         //decimalHashMap.put('r', new BigDecimal(0.02833).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP));
         decimalHashMap.put('m', new BigDecimal(850000).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP));
@@ -83,6 +72,8 @@ public class ExampleUnitTest {
 
     @Test
     public void evaluate_NPS_calculator() {
+        //
+
         HashMap<Character, BigDecimal> decimalHashMap = new HashMap<>();
         decimalHashMap.put('p', new BigDecimal(123456789).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP));
         decimalHashMap.put('m', new BigDecimal(1234567890).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP));

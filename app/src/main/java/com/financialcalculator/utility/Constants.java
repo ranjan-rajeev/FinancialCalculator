@@ -37,4 +37,29 @@ public class Constants {
 
 
     public static final String CURRENCY = "\u20B9";
+
+    public static final String PREF_GCM_TOKEN = "PREF_GCM_TOKEN";
+    public static final String DEFAULT_CHANNEL_ID = "MARKETING";
+    public static final String SHD_PRF_USER_DETAILS = "userdetails";
+    public static final String INTENT_PARAM_CAL = "cal";
+
+    //========================================================
+    // INTENT FILTER ACTIONS
+    //========================================================
+    public static class ActionTags {
+        public static final String ACTION_NETWORK = "action_network";
+        public static final String ACTION_VOICE_SEARCH = "action_voice_search";
+        public static final String ACTION_CAMERA_SEARCH = "action_camera_search";
+        public static final String ACTION_NOTIFY = "ACTION_NOTIFY";
+
+        public static final String VIEW_LABEL_COMPONENT = "labelComponent";
+        public static final String VIEW_TEXTBOX_COMPONENT = "textboxComponent";
+        public static final String VIEW_TEXT_AREA_COMPONENT = "textAreaComponent";
+        public static final String VIEW_RADIO_COMPONENT = "radioComponent";
+        public static final String VIEW_CHECKBOX_COMPONENT = "checkboxComponent";
+        public static final String VIEW_ATTACHMENT_COMPONENT = "attachmentComponent";
+
+    }
+
+
 }

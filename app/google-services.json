@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "463292274886",
-    "firebase_url": "https://finance-calculator-d5c33.firebaseio.com",
-    "project_id": "finance-calculator-d5c33",
-    "storage_bucket": "finance-calculator-d5c33.appspot.com"
+    "project_number": "466777292382",
+    "firebase_url": "https://finance-calculator-new.firebaseio.com",
+    "project_id": "finance-calculator-new",
+    "storage_bucket": "finance-calculator-new.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:463292274886:android:002aa6281891eef2fc1fc7",
+        "mobilesdk_app_id": "1:466777292382:android:7e1d60d7251a4698a93ecf",
         "android_client_info": {
           "package_name": "com.horizonlabs.financialcalculator"
         }
       },
       "oauth_client": [
         {
-          "client_id": "463292274886-u1dv56c32rel88hlcin0tob8mk69i4cd.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.horizonlabs.financialcalculator",
-            "certificate_hash": "45ec0c54df9718594591f99407b95cd66bf78603"
-          }
-        },
-        {
-          "client_id": "463292274886-b9vobid1l0qg5jkkj53qgh705qugnq7o.apps.googleusercontent.com",
+          "client_id": "466777292382-0ot1v9lftu33b1mokhefu9740capgqb9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAgL9o28lOOZgavWFby4An2qSyVQCItS2w"
+          "current_key": "AIzaSyAMLikkB3X3Ld9lMphrAmSfyHbfbpByNAw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "463292274886-b9vobid1l0qg5jkkj53qgh705qugnq7o.apps.googleusercontent.com",
+              "client_id": "466777292382-0ot1v9lftu33b1mokhefu9740capgqb9.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

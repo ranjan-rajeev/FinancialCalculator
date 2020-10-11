@@ -14,13 +14,13 @@ import com.financialcalculator.utility.Util;
 
 import java.math.BigDecimal;
 
-public class KeyValueViewHolder extends RecyclerView.ViewHolder {
+public class TextWithValueViewHolder extends RecyclerView.ViewHolder {
 
     TextView tvTitle, tvValue;
     Context context;
     GenericOutputEntity genericOutputEntity;
 
-    public KeyValueViewHolder(View itemView) {
+    public TextWithValueViewHolder(View itemView) {
         super(itemView);
         this.tvTitle = itemView.findViewById(R.id.tvTitle);
         this.tvValue = itemView.findViewById(R.id.tvValue);
@@ -37,6 +37,8 @@ public class KeyValueViewHolder extends RecyclerView.ViewHolder {
 
         @Override
         protected BigDecimal doInBackground(Void... voids) {
+            String exp = genericOutputEntity.getOutMsg();
+
             BigDecimal result = new BigDecimal(0).setScale(0);
             try {
                 GenericCalculatorActivity activity = (GenericCalculatorActivity) context;

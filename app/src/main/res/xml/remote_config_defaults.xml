@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?><!-- START xml_defaults -->
+<defaultsMap>
+
+    <entry>
+        <key>dashboard_list</key>
+        <value>{
+            "-M6P_EIhhfQbEK6kMuJE": {
+            "cmpData": "EMI Calculators",
+            "cmpId": "1",
+            "cmpPos": 100,
+            "cmpType": 4,
+            "firebaseId": "-M6P_EIhhfQbEK6kMuJE"
+            },
+            "-M6Pa5qlUNui5RqRJVyu": {
+            "cmpData": "[{\"calId\":10,\"calName\":\"EMI
+            Calculator\",\"firebaseId\":\"-M6P_YZ3St4395h7-jYJ\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"EmiCalculatorActivity\"},{\"calId\":20,\"calName\":\"Compare
+            Loan\",\"firebaseId\":\"-M6P_iaqHkdILPw7Jh9N\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"EmiCompareActivity\"},{\"calId\":30,\"calName\":\"Flat
+            Vs \n Reducing
+            Rate\",\"firebaseId\":\"-M6P_rB0uKMzdVY1UaJV\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"FixedVsReducingActivity\"}]",
+            "cmpId": "2",
+            "cmpPos": 200,
+            "cmpType": 5,
+            "firebaseId": "-M6Pa5qlUNui5RqRJVyu"
+            },
+            "-M6PgMkYva5NXcSEnyg1": {
+            "cmpData": "10",
+            "cmpId": "3",
+            "cmpPos": 300,
+            "cmpType": 6,
+            "firebaseId": "-M6PgMkYva5NXcSEnyg1"
+            },
+            "-M6PgS6o853Jaa0SjXkJ": {
+            "cmpData": "Loan Profile",
+            "cmpId": "4",
+            "cmpPos": 400,
+            "cmpType": 4,
+            "firebaseId": "-M6PgS6o853Jaa0SjXkJ"
+            },
+            "-M6PkvVJpxR4YoeyqhzQ": {
+            "cmpData": "[{\"calId\":40,\"calName\":\"Create Loan
+            Profile\",\"firebaseId\":\"-M6PjPKbFtw7ji5FZDfY\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"CreateLoanProfileActivity\"},{\"calId\":50,\"calName\":\"View
+            Loan
+            Profile\",\"firebaseId\":\"-M6PjXup8dRSSYiGMnJc\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"ViewLoanProfile\"},{\"calId\":60,\"calName\":\"Home
+            Loan
+            Eligibility\",\"firebaseId\":\"-M6PjbJWPHnoidhUykOm\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"HomeLoanEligibility\"}]",
+            "cmpId": "5",
+            "cmpPos": 500,
+            "cmpType": 5,
+            "firebaseId": "-M6PkvVJpxR4YoeyqhzQ"
+            },
+            "-M6Pl0PhWIjdDGVNNSTf": {
+            "cmpData": "10",
+            "cmpId": "6",
+            "cmpPos": 600,
+            "cmpType": 6,
+            "firebaseId": "-M6Pl0PhWIjdDGVNNSTf"
+            },
+            "-M6Pl6IUN_h-X85nRvsE": {
+            "cmpData": "Mutual Funds &amp; SIP Calculators",
+            "cmpId": "7",
+            "cmpPos": 700,
+            "cmpType": 4,
+            "firebaseId": "-M6Pl6IUN_h-X85nRvsE"
+            },
+            "-M6PlBQ_R_nKSKeS-hvW": {
+            "cmpData": "[{\"calId\":70,\"calName\":\"Systematic \n Investment
+            Plan\",\"firebaseId\":\"-M6PjmI5o6a1p35w6R27\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"SIPCalculatorActivity\"},{\"calId\":80,\"calName\":\"Goal
+            SIP \n
+            Calculatore\",\"firebaseId\":\"-M6Pjt_G9g6byo6Dl_tt\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"SIPGoalCalculatorActivity\"},{\"calId\":90,\"calName\":\"Lumpsum
+            SIP \n
+            Calculator\",\"firebaseId\":\"-M6Pjzy52vAgYRteyZih\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"LumpSumpSipActivity\"}]",
+            "cmpId": "8",
+            "cmpPos": 800,
+            "cmpType": 5,
+            "firebaseId": "-M6PlBQ_R_nKSKeS-hvW"
+            },
+            "-M6PlEbLy1kIwxhua5rF": {
+            "cmpData": "10",
+            "cmpId": "9",
+            "cmpPos": 900,
+            "cmpType": 6,
+            "firebaseId": "-M6PlEbLy1kIwxhua5rF"
+            },
+            "-M6PlKUEqG_bbOIKag-E": {
+            "cmpData": "Banking Calculations",
+            "cmpId": "10",
+            "cmpPos": 1000,
+            "cmpType": 4,
+            "firebaseId": "-M6PlKUEqG_bbOIKag-E"
+            },
+            "-M6PlPTSUeUBuqhXjYZs": {
+            "cmpData": "[{\"calId\":100,\"calName\":\"Fixed Deposit \n
+            Calculator\",\"firebaseId\":\"-M6Pk7TX-6w_Di64NqMz\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"FDCalculatorActivity\"},{\"calId\":110,\"calName\":\"RD
+            Calculator\",\"firebaseId\":\"-M6PkJToETrWvZyYGe_P\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"RDCalculatorActivity\"},{\"calId\":120,\"calName\":\"PPF
+            Calculator\",\"firebaseId\":\"-M6PkQd_oLxm-vpQfNwS\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"PPFCalculatotActivity\"}]",
+            "cmpId": "11",
+            "cmpPos": 1100,
+            "cmpType": 5,
+            "firebaseId": "-M6PlPTSUeUBuqhXjYZs"
+            },
+            "-M6PlS6sL1M26Q-PSI68": {
+            "cmpData": "10",
+            "cmpId": "12",
+            "cmpPos": 1200,
+            "cmpType": 6,
+            "firebaseId": "-M6PlS6sL1M26Q-PSI68"
+            },
+            "-M6PlYWLP2W4b4hbEu2T": {
+            "cmpData": "GST &amp; VAT Calculator",
+            "cmpId": "13",
+            "cmpPos": 1300,
+            "cmpType": 4,
+            "firebaseId": "-M6PlYWLP2W4b4hbEu2T"
+            },
+            "-M6Plfq10wj0x8VNVaSu": {
+            "cmpData": "[{\"calId\":130,\"calName\":\"GST
+            Calculator\",\"firebaseId\":\"-M6PkWUj23V_vybOPfRY\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"GstCalculatorActivity\"},{\"calId\":140,\"calName\":\"VAT
+            Calculator\",\"firebaseId\":\"-M6PkaPbs5OkGu-K-83J\",\"iconUrl\":\"\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"VatCalculatorActivity\"}]",
+            "cmpId": "14",
+            "cmpPos": 1400,
+            "cmpType": 5,
+            "firebaseId": "-M6Plfq10wj0x8VNVaSu"
+            },
+            "-MIYBO4VWsafsDbrCCRE": {
+            "cmpData": "[{\"calId\":2356,\"calName\":\"Test
+            3\",\"firebaseId\":\"-MIYAMFxdh-r33VoP3Lh\",\"iconUrl\":\"nt\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"GenericCalculatorActivity\",\"version\":1}]",
+            "cmpId": "1",
+            "cmpPos": 12345,
+            "cmpType": 5,
+            "firebaseId": "-MIYBO4VWsafsDbrCCRE"
+            }
+            }
+        </value>
+    </entry>
+
+    <entry>
+        <key>banner_list</key>
+        <value>
+            [{"id":1,"url":"https://c1.staticflickr.com/5/4851/45746110222_f877bdfa5e_o.jpg"},{"id":1,"url":"https://c1.staticflickr.com/5/4816/45746112072_23c3e157a4_o.jpg"},{"id":1,"url":"https://c1.staticflickr.com/5/4806/45746111412_486e1a26b5_o.jpg"},{"id":1,"url":"https://c1.staticflickr.com/5/4889/45746110872_5c96e1df01_o.jpg"}]
+        </value>
+    </entry>
+
+    <entry>
+        <key>scroll_msg</key>
+        <value>Dear Parents, this is to inform you that your ward has been promoted in next classes.
+            Study Materials has been provided on school website.
+        </value>
+    </entry>
+
+    <entry>
+        <key>realtime_enabled</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>force_update</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>app_version_code</key>
+        <value>5</value>
+    </entry>
+
+    <entry>
+        <key>calculator_version</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>dashboard_version</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>more_info_version</key>
+        <value>0</value>
+    </entry>
+</defaultsMap><!-- END xml_defaults -->

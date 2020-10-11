@@ -153,4 +153,23 @@ public class SharedPrefManager {
             editor.apply();
         }
     }
+
+    public void putLongValueForKey(String key, Long value) {
+        if (mContext != null) {
+            if (prefs == null) {
+                prefs = mContext.getSharedPreferences(mContext.getResources().getString(R.string.preferences),
+                        Context.MODE_PRIVATE);
+            }
+            editor = prefs.edit();
+            editor.putLong(key, value);
+            editor.apply();
+        }
+    }
+
+    public Long getLongValueForKey(String key, Long defValue) {
+        Long result = 0L;
+        if (prefs != null)
+            result = prefs.getLong(key, defValue);
+        return result;
+    }
 }

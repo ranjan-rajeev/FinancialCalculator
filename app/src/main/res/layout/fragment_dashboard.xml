@@ -1,22 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_light">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_8"
+        android:elevation="@dimen/margin_5"
+        android:visibility="gone"
+        app:cardCornerRadius="@dimen/margin_5"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_cliq_cash_wallet_background"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_8">
+
+            <TextView
+                android:id="@+id/msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_bulb_green"
+                android:drawablePadding="@dimen/margin_8"
+                android:text="Great things in business is never done by one person. They are always done by team."
+                android:textColor="@color/uvv_black" />
+
+            <TextView
+                android:id="@+id/msgBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:drawablePadding="@dimen/margin_8"
+                android:text="- Steve Jobs" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDashboard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/adView" />
+        android:layout_above="@+id/adView"
+        android:layout_below="@+id/cvMsg" />
 
-   <!-- <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id"/>-->
+    <!-- <com.google.android.gms.ads.AdView
+         xmlns:ads="http://schemas.android.com/apk/res-auto"
+         android:id="@+id/adView"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:layout_centerHorizontal="true"
+         ads:adSize="BANNER"
+         ads:adUnitId="@string/banner_ad_unit_id"/>-->
 </RelativeLayout>

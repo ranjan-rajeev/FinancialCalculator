@@ -1,11 +1,8 @@
 package com.financialcalculator.model;
 
-import com.financialcalculator.generic.GenericViewTypeAdapter;
+import java.io.Serializable;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class GenericViewTypeModel {
+public class GenericViewTypeModel implements Serializable {
 
 
     /**
@@ -18,7 +15,7 @@ public class GenericViewTypeModel {
      * type : 1
      */
 
-    private int calId;
+    private String calId;
     private String data;
     private String firebaseId;
     private int inpId;
@@ -35,11 +32,11 @@ public class GenericViewTypeModel {
         isValid = valid;
     }
 
-    public int getCalId() {
+    public String getCalId() {
         return calId;
     }
 
-    public void setCalId(int calId) {
+    public void setCalId(String calId) {
         this.calId = calId;
     }
 

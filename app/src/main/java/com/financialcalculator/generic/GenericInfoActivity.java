@@ -1,6 +1,5 @@
 package com.financialcalculator.generic;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 
@@ -18,12 +17,8 @@ import com.financialcalculator.model.GenericOutputEntity;
 import com.financialcalculator.model.GenericViewTypeModel;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Logger;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GenericInfoActivity extends BaseActivity {
@@ -56,7 +51,7 @@ public class GenericInfoActivity extends BaseActivity {
         //genericViewTypeModelList = new GenericViewTypeModel().getDummyList();
         /*genericViewTypeAdapter = new GenericViewTypeAdapter(genericViewTypeModelList, this);
         rvInputs.setAdapter(genericViewTypeAdapter);*/
-        new ConvertAsync().execute();
+        //new ConvertAsync().execute();
         //new ParseOutput().execute();
     }
 
@@ -69,7 +64,7 @@ public class GenericInfoActivity extends BaseActivity {
         rvOutput.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private class ConvertAsync extends AsyncTask<Void, Void, List<GenericViewTypeModel>> {
+  /*  private class ConvertAsync extends AsyncTask<Void, Void, List<GenericViewTypeModel>> {
 
         @Override
         protected List<GenericViewTypeModel> doInBackground(Void... voids) {
@@ -114,7 +109,7 @@ public class GenericInfoActivity extends BaseActivity {
             super.onPostExecute(list);
             bindOutputRecycler(list);
         }
-    }
+    }*/
 
     public void bindOutputRecycler(List<GenericOutputEntity> genericOutputEntities) {
         hideKeyBoard(scrollView, this);
@@ -148,7 +143,7 @@ public class GenericInfoActivity extends BaseActivity {
             }
         }
         cvOutput.setVisibility(View.VISIBLE);
-        new ParseOutput().execute();
+        //new ParseOutput().execute();
     }
 
     public void scrollToView(View childView) {

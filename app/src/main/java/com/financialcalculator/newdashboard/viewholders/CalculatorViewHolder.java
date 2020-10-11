@@ -3,26 +3,16 @@ package com.financialcalculator.newdashboard.viewholders;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.financialcalculator.R;
-import com.financialcalculator.customviews.AutoScrollViewPager;
 import com.financialcalculator.model.CalculatorEntity;
-import com.financialcalculator.model.CarouselEntity;
 import com.financialcalculator.model.HomePageModel;
-import com.financialcalculator.newdashboard.LongBannerImagePagerAdapter;
 import com.financialcalculator.newdashboard.NewDashboardItemAdapter;
-import com.financialcalculator.utility.BaseActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -68,7 +58,8 @@ public class CalculatorViewHolder extends RecyclerView.ViewHolder {
         @Override
         protected void onPostExecute(List<CalculatorEntity> list) {
             super.onPostExecute(list);
-            bindGridRecyclerView(list);
+            if (list != null)
+                bindGridRecyclerView(list);
         }
     }
 
