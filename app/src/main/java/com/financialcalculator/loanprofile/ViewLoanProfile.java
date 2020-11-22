@@ -3,18 +3,16 @@ package com.financialcalculator.loanprofile;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-import android.view.View;
 
-import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
 import com.financialcalculator.roomdb.RoomDatabase;
 import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
-
 
 import java.util.List;
 
@@ -34,34 +32,13 @@ public class ViewLoanProfile extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         appDatabase = RoomDatabase.getAppDatabase(this);
-        //setUPAdd();
+        showBannerAd();
         init_widgets();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         new FilterGenericList().execute();
     }
 
-    /*private void setUPAdd() {
 
-        mAdView = findViewById(R.id.adView);
-
-        if (BuildConfig.DEBUG) {
-
-            AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
-                    .build();
-            mAdView.loadAd(adRequest);
-
-        } else {
-
-            if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
-                AdRequest adRequest = new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
-            } else {
-                mAdView.setVisibility(View.GONE);
-            }
-
-        }
-    }*/
 
     private void init_widgets() {
         rvDashboard = findViewById(R.id.rvDashboard);

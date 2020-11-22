@@ -5,13 +5,6 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.core.widget.NestedScrollView;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.financialcalculator.BuildConfig;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.financialcalculator.R;
 import com.financialcalculator.banking.fd.FDYearAdapter;
 import com.financialcalculator.model.FDDetailsEntity;
@@ -33,7 +31,6 @@ import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,7 +84,7 @@ public class SIPCalculatorActivity extends BaseActivity implements View.OnClickL
         });*/
         //endregion
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //setUPAdd();
+        showBannerAd();
         init_widgets();
         init_views();
         setAdapter();

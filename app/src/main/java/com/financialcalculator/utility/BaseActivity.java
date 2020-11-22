@@ -6,11 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -19,7 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.text.DecimalFormat;
 
@@ -64,7 +66,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        showBannerAd();
     }
 
     public static String getFormattedDouble(double d) {
@@ -235,6 +237,20 @@ public class BaseActivity extends AppCompatActivity {
             return Util.removeComma(editText.getText().toString());
         }
         return "";
+    }
+
+    public void showBannerAd() {
+        AdView adView = findViewById(R.id.adView);
+        if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
+            if (adView != null) {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                adView.loadAd(adRequest);
+            }
+        } else {
+            if (adView != null) {
+                adView.setVisibility(View.GONE);
+            }
+        }
     }
 }
 

@@ -117,6 +117,7 @@ public class EditTextSpinnerViewHolder extends RecyclerView.ViewHolder {
                     String selectedItem = parent.getItemAtPosition(position).toString();
                     value = new BigDecimal(keyValueHashMap.get(selectedItem)).setScale(0, BigDecimal.ROUND_HALF_UP);
                     ((GenericCalculatorActivity) context).setHashMapValue(genericViewTypeModel.getKey().charAt(1), value);
+                    ((GenericCalculatorActivity) context).setSpinnerHashMapValue(genericViewTypeModel.getKey().charAt(1), selectedItem);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -2,6 +2,7 @@ package com.financialcalculator.generic.outputholders;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,8 +30,9 @@ public class KeyValueViewHolder extends RecyclerView.ViewHolder {
     public void setData(Context context, GenericOutputEntity genericOutputEntity) {
         this.context = context;
         this.genericOutputEntity = genericOutputEntity;
-        tvTitle.setText(genericOutputEntity.getOutMsg());
+        //tvTitle.setText(genericOutputEntity.getOutMsg());
         new CalculateResult().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        new EvaluateExpression().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     private class CalculateResult extends AsyncTask<Void, Void, BigDecimal> {
@@ -60,6 +62,29 @@ public class KeyValueViewHolder extends RecyclerView.ViewHolder {
                 tvValue.setText(Util.getCommaSeparated(bigDecimal.toPlainString()));
             }
 
+        }
+    }
+
+    private class EvaluateExpression extends AsyncTask<Void, Void, SpannableStringBuilder> {
+
+        @Override
+        protected SpannableStringBuilder doInBackground(Void... voids) {
+            try {
+                GenericCalculatorActivity activity = (GenericCalculatorActivity) context;
+                return Util.evaluateString(genericOutputEntity.getOutMsg(), activity.getCalculatorEntity());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(SpannableStringBuilder result) {
+            super.onPostExecute(result);
+            if (result != null) {
+                tvTitle.setText(result);
+            }
         }
     }
 }

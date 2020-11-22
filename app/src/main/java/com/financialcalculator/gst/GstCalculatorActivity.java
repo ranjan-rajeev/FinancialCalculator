@@ -2,16 +2,6 @@ package com.financialcalculator.gst;
 
 import android.graphics.Rect;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputLayout;
-
-import androidx.core.widget.NestedScrollView;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -21,10 +11,15 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.financialcalculator.BuildConfig;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
+
 import com.financialcalculator.R;
 import com.financialcalculator.utility.BaseActivity;
-import com.financialcalculator.utility.Constants;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 
 
 public class GstCalculatorActivity extends BaseActivity implements View.OnClickListener {
@@ -51,7 +46,7 @@ public class GstCalculatorActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_gst_calculator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //setUPAdd();
+        showBannerAd();
         //region floating action button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

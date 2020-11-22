@@ -9,9 +9,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.provider.Settings;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.StyleSpan;
 
 import com.financialcalculator.R;
 import com.financialcalculator.SplashActivity;
@@ -30,6 +28,7 @@ import com.financialcalculator.home.MainActivity;
 import com.financialcalculator.loanprofile.CreateLoanProfileActivity;
 import com.financialcalculator.loanprofile.HomeLoanEligibility;
 import com.financialcalculator.loanprofile.ViewLoanProfile;
+import com.financialcalculator.model.CalculatorEntity;
 import com.financialcalculator.model.HomePageModel;
 import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.sip.LumpSumpSipActivity;
@@ -599,17 +598,23 @@ public class Util {
         return homePageModels;
     }
 
-    public static SpannableStringBuilder evaluateString(String inputString, HashMap<Character, BigDecimal> bigDecimals) {
+    public static SpannableStringBuilder evaluateString(String inputString, CalculatorEntity calculatorEntity) {
+        HashMap<Character, BigDecimal> bigDecimals = calculatorEntity.getInputHashmap();
+        HashMap<Character, String> spinnerHashmap = calculatorEntity.getSpinnerHashMap();
         SpannableStringBuilder ssb = new SpannableStringBuilder();
         String temp = "";
-        final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
         for (int i = 0; i < inputString.length(); i++) {
             switch (inputString.charAt(i)) {
                 case '$':
                     i = i + 1;
-                    temp = bigDecimals.get(inputString.charAt(i)).setScale(0, 0).toPlainString();
+                    if (Character.isUpperCase(inputString.charAt(i))) {
+                        temp = spinnerHashmap.get(inputString.charAt(i));
+                    } else {
+                        temp = bigDecimals.get(inputString.charAt(i)).setScale(0, 0).toPlainString();
+                    }
+                    //temp = bigDecimals.get(inputString.charAt(i)).setScale(0, 0).toPlainString();
                     ssb.append(temp);
-                    ssb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), ssb.length() - temp.length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    //ssb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), ssb.length() - temp.length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     //ssb.setSpan(new ForegroundColorSpan(Color.parseColor("#ff000000")), ssb.length() - temp.length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     break;
                 case '@':
@@ -621,7 +626,7 @@ public class Util {
                     }
                     temp = evaluate(formulae, bigDecimals).setScale(0, 0).toPlainString();
                     ssb.append(temp);
-                    ssb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), ssb.length() - temp.length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    //ssb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), ssb.length() - temp.length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     //ssb.setSpan(new ForegroundColorSpan(Color.parseColor("#ff000000")), ssb.length() - temp.length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     //result = result + evaluate(formulae, bigDecimals).setScale(0);
                     //ssb.setSpan(new ForegroundColorSpan(Color.parseColor("#3F51B5")), i, bigDecimals.get(inputString.charAt(i)).setScale(0).toPlainString().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

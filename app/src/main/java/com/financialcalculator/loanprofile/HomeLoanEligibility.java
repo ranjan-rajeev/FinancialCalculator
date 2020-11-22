@@ -5,13 +5,6 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.core.widget.NestedScrollView;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.financialcalculator.BuildConfig;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.financialcalculator.R;
 import com.financialcalculator.banking.fd.FDYearAdapter;
 import com.financialcalculator.model.FDDetailsEntity;
@@ -33,7 +31,6 @@ import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,7 +73,7 @@ public class HomeLoanEligibility extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_home_loan_eligibility);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //setUPAdd();
+        showBannerAd();
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,29 +91,7 @@ public class HomeLoanEligibility extends BaseActivity implements View.OnClickLis
         setListeners();
     }
 
-    /*private void setUPAdd() {
 
-        mAdView = findViewById(R.id.adView);
-
-        if (BuildConfig.DEBUG) {
-
-            AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
-                    .build();
-            mAdView.loadAd(adRequest);
-
-        } else {
-
-            if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
-                AdRequest adRequest = new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
-            } else {
-                mAdView.setVisibility(View.GONE);
-            }
-
-        }
-    }
-*/
     private void setAdapter() {
         fdType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.fd_type));
         spFdTYpe.setAdapter(fdType);

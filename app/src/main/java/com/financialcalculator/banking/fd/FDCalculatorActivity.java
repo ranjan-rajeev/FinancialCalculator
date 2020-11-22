@@ -21,7 +21,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
 import com.financialcalculator.model.FDDetailsEntity;
 import com.financialcalculator.model.FDEntity;
@@ -31,7 +30,6 @@ import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,7 +72,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_fdcalculator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //setUPAdd();
+        showBannerAd();
         roomDatabase = RoomDatabase.getAppDatabase(this);
         //region floating button
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -101,28 +99,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
 
     }
 
-    /*private void setUPAdd() {
 
-        mAdView = findViewById(R.id.adView);
-
-        if (BuildConfig.DEBUG) {
-
-            AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
-                    .build();
-            mAdView.loadAd(adRequest);
-
-        } else {
-
-            if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
-                AdRequest adRequest = new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
-            } else {
-                mAdView.setVisibility(View.GONE);
-            }
-
-        }
-    }*/
 
     private void bindValues(GenericSearchHistoryEntity genericSearchHistoryEntity) {
         try {

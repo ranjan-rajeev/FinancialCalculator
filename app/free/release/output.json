@@ -1,1 +1,20 @@
-[{"outputType":{"type":"APK"},"apkData":{"type":"MAIN","splits":[],"versionCode":3,"versionName":"1.0.0","enabled":true,"outputFile":"app-free-release.apk","fullName":"freeRelease","baseName":"free-release","dirName":""},"path":"app-free-release.apk","properties":{}}]
+{
+  "version": 1,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.horizonlabs.financialcalculator",
+  "variantName": "freeRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "properties": [],
+      "versionCode": 5,
+      "versionName": "5",
+      "enabled": true,
+      "outputFile": "app-free-release.apk"
+    }
+  ]
+}

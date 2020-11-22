@@ -2,6 +2,7 @@ package com.financialcalculator.generic.outputholders;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.TextView;
@@ -37,7 +38,7 @@ public class ExpressionWithFormulaeViewHolder extends RecyclerView.ViewHolder {
         protected SpannableStringBuilder doInBackground(Void... voids) {
             try {
                 GenericCalculatorActivity activity = (GenericCalculatorActivity) context;
-                return Util.evaluateString(genericOutputEntity.getOutMsg(), activity.getCalculatorEntity().inputHashmap);
+                return Util.evaluateString(genericOutputEntity.getOutMsg(), activity.getCalculatorEntity());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -49,7 +50,7 @@ public class ExpressionWithFormulaeViewHolder extends RecyclerView.ViewHolder {
         protected void onPostExecute(SpannableStringBuilder result) {
             super.onPostExecute(result);
             if (result != null) {
-                tvTitle.setText(result);
+                tvTitle.setText(Html.fromHtml(result.toString()));
             }
         }
     }

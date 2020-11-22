@@ -43,6 +43,7 @@ public class GenericCalculatorActivity extends BaseActivity implements Calculato
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generic_calculator);
+        showBannerAd();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -159,6 +160,12 @@ public class GenericCalculatorActivity extends BaseActivity implements Calculato
 
     public void setHashMapValue(Character key, BigDecimal value) {
         calculatorEntity.inputHashmap.put(key, value);
+        Logger.d("Key : " + key + "  Val : " + calculatorEntity.inputHashmap.get(key));
+    }
+
+    public void setSpinnerHashMapValue(Character key, String value) {
+        key = Character.toUpperCase(key);
+        calculatorEntity.spinnerHashMap.put(key, value);
         Logger.d("Key : " + key + "  Val : " + calculatorEntity.inputHashmap.get(key));
     }
 

@@ -1,5 +1,6 @@
 package com.financialcalculator;
 
+import com.financialcalculator.model.CalculatorEntity;
 import com.financialcalculator.utility.Util;
 
 import org.junit.Test;
@@ -109,13 +110,14 @@ public class ExampleUnitTest {
 
     @Test
     public void evaluate_expression_calculator() {
+        CalculatorEntity calculatorEntity = new CalculatorEntity();
         HashMap<Character, BigDecimal> decimalHashMap = new HashMap<>();
         decimalHashMap.put('p', new BigDecimal(111111).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP));
         decimalHashMap.put('m', new BigDecimal(222222).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP));
         decimalHashMap.put('n', new BigDecimal(5).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP));
-
+        calculatorEntity.setInputHashmap(decimalHashMap);
         String test = "Sum of $p and $m is : @p + m + 100 -100 @";
-        assertEquals("Sum of 111111 and 222222 is : 333333", Util.evaluateString(test, decimalHashMap));
+        assertEquals("Sum of 111111 and 222222 is : 333333", Util.evaluateString(test, calculatorEntity));
     }
 
 

@@ -73,7 +73,9 @@
         </activity>
         <activity
             android:name=".home.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity
             android:name=".emi.emicalculator.EmiCalculatorActivity"
             android:label="@string/title_activity_emi_calculator"

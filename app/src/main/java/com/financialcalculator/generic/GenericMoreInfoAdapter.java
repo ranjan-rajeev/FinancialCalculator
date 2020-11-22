@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.financialcalculator.R;
+import com.financialcalculator.generic.outputholders.MoreInfoViewHolder;
 import com.financialcalculator.model.MoreInfoEntity;
 
 import java.util.List;

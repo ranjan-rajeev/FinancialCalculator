@@ -105,8 +105,8 @@
                             android:layout_weight="1"
                             android:checkedButton="@id/rbYear"
                             android:orientation="horizontal"
-                            android:paddingBottom="8dp"
-                            android:paddingTop="8dp">
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp">
 
                             <RadioButton
                                 android:id="@+id/rbYear"
@@ -147,8 +147,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
                         android:layout_marginTop="20dp"
+                        android:layout_marginBottom="8dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -306,8 +306,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/progressInterest"
                                 android:gravity="center"
-                                android:paddingBottom="10dp"
                                 android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
                                 android:text="Total Interest Payable"
                                 android:textColor="@color/uvv_black" />
 
@@ -378,8 +378,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/progressInterest"
                                 android:gravity="center"
-                                android:paddingBottom="10dp"
                                 android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
                                 android:text="Total Principal"
                                 android:textColor="@color/uvv_black" />
 
@@ -428,8 +428,8 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:background="@color/divider" />
 
                     <LinearLayout
@@ -443,8 +443,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/border_gray"
                             android:gravity="center"
-                            android:paddingBottom="8dp"
                             android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:text="Year"
                             android:textColor="@color/uvv_black"
                             android:textStyle="bold" />
@@ -455,8 +455,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/border_green"
                             android:gravity="center"
-                            android:paddingBottom="8dp"
                             android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:text="Principal"
                             android:textColor="@color/white"
                             android:textStyle="bold" />
@@ -467,8 +467,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/border_yellow"
                             android:gravity="center"
-                            android:paddingBottom="8dp"
                             android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:text="Interest"
                             android:textColor="@color/white"
                             android:textStyle="bold" />
@@ -479,8 +479,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/border_red"
                             android:gravity="center"
-                            android:paddingBottom="8dp"
                             android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
                             android:text="Balance"
                             android:textColor="@color/white"
                             android:textStyle="bold" />
@@ -501,12 +501,12 @@
     </androidx.core.widget.NestedScrollView>
 
 
-    <!--<com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id" />-->
+        ads:adUnitId="@string/banner_ad_unit_id" />
 </RelativeLayout>

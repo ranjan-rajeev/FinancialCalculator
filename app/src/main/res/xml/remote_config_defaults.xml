@@ -4,6 +4,24 @@
     <entry>
         <key>dashboard_list</key>
         <value>{
+            "-MJCuKR-Rdu35ilJpq3w": {
+            "cmpData": "Retirement Plan Calculators",
+            "cmpId": "10",
+            "cmpPos": 10,
+            "cmpType": 4,
+            "firebaseId": "-MJCuKR-Rdu35ilJpq3w"
+            },
+            "-MJLNA2xmhzkxgh8pTxj": {
+            "cmpData": "[{\"calId\":160,\"calName\":\"Atal Pension
+            Yojana\",\"firebaseId\":\"-M783SXlEWRcTAWxUpXO\",\"iconUrl\":\"https://upload.wikimedia.org/wikipedia/en/d/db/Atal_Pension_Yojana.png\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"GenericCalculatorActivity\",\"version\":1},{\"calId\":8770,\"calName\":\"National
+            Pension
+            System\",\"firebaseId\":\"-MJCuzljMK8EUVziz6Ze\",\"iconUrl\":\"https://www.oneindia.com/img/2017/09/nps-12-1505195270.jpg\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"GenericCalculatorActivity\",\"version\":1},{\"calId\":2682,\"calName\":\"CAGR
+            Calculator\",\"firebaseId\":\"-MJLL0g0KjmrwyiABlEo\",\"iconUrl\":\"https://img.icons8.com/clouds/2x/calculator.png\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"GenericCalculatorActivity\",\"version\":2}]",
+            "cmpId": "11",
+            "cmpPos": 11,
+            "cmpType": 5,
+            "firebaseId": "-MJLNA2xmhzkxgh8pTxj"
+            },
             "-M6P_EIhhfQbEK6kMuJE": {
             "cmpData": "EMI Calculators",
             "cmpId": "1",
@@ -120,14 +138,6 @@
             "cmpPos": 1400,
             "cmpType": 5,
             "firebaseId": "-M6Plfq10wj0x8VNVaSu"
-            },
-            "-MIYBO4VWsafsDbrCCRE": {
-            "cmpData": "[{\"calId\":2356,\"calName\":\"Test
-            3\",\"firebaseId\":\"-MIYAMFxdh-r33VoP3Lh\",\"iconUrl\":\"nt\",\"input\":\"[]\",\"output\":\"[]\",\"redUrl\":\"GenericCalculatorActivity\",\"version\":1}]",
-            "cmpId": "1",
-            "cmpPos": 12345,
-            "cmpType": 5,
-            "firebaseId": "-MIYBO4VWsafsDbrCCRE"
             }
             }
         </value>
@@ -146,10 +156,13 @@
             Study Materials has been provided on school website.
         </value>
     </entry>
-
     <entry>
         <key>realtime_enabled</key>
         <value>false</value>
+    </entry>
+    <entry>
+        <key>ad_banner_id</key>
+        <value>ca-app-pub-4591215462176541/6998474882</value>
     </entry>
     <entry>
         <key>force_update</key>

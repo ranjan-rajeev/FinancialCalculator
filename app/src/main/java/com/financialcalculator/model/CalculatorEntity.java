@@ -30,6 +30,15 @@ public class CalculatorEntity implements Serializable {
     private int version;
 
     public HashMap<Character, BigDecimal> inputHashmap = new HashMap<>();
+    public HashMap<Character, String> spinnerHashMap = new HashMap<>();
+
+    public HashMap<Character, String> getSpinnerHashMap() {
+        return spinnerHashMap;
+    }
+
+    public void setSpinnerHashMap(HashMap<Character, String> spinnerHashMap) {
+        this.spinnerHashMap = spinnerHashMap;
+    }
 
     public HashMap<Character, BigDecimal> getInputHashmap() {
         return inputHashmap;

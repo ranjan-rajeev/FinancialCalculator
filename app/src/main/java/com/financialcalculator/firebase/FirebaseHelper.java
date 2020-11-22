@@ -37,6 +37,8 @@ public class FirebaseHelper {
     public static final String FA_EVENTS_APP_UNIQUE_ID = "android_id";
     public static Boolean isFIrebaseFetchSuccessfull = false;
 
+    public static final String AD_BANNER_ID = "ad_banner_id";
+
     public static void getValuesFromFirebaseRemoteConfig() {
 
         long cacheExpiration = 0; // 6 hour in seconds.
@@ -110,6 +112,10 @@ public class FirebaseHelper {
 
     public static Boolean getRealtimeEnabled() {
         return FirebaseRemoteConfig.getInstance().getBoolean(REALTIME_ENABLED);
+    }
+
+    public static String getAdBannerId() {
+        return FirebaseRemoteConfig.getInstance().getString(AD_BANNER_ID);
     }
 
     public static Boolean getForceUpdate() {
