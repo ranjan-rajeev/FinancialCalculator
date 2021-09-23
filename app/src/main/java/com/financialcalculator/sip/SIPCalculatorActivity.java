@@ -84,7 +84,7 @@ public class SIPCalculatorActivity extends BaseActivity implements View.OnClickL
         });*/
         //endregion
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        showBannerAd();
+
         init_widgets();
         init_views();
         setAdapter();

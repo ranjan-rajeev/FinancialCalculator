@@ -57,7 +57,7 @@ public class VatCalculatorActivity extends BaseActivity implements View.OnClickL
         });
         //endregion
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        showBannerAd();
+
         inti_widgets();
         setListeners();
         setAdapter();

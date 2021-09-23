@@ -84,7 +84,7 @@ public class LumpSumpSipActivity extends BaseActivity implements View.OnClickLis
         });*/
         //endregion
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        showBannerAd();
+
         init_widgets();
         init_views();
         setAdapter();

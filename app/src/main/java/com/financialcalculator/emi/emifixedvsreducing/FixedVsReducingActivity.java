@@ -63,7 +63,7 @@ public class FixedVsReducingActivity extends BaseActivity implements View.OnClic
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        showBannerAd();
+
         roomDatabase = RoomDatabase.getAppDatabase(this);
 
         //region floating button

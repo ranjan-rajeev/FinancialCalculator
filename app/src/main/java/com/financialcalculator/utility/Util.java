@@ -19,7 +19,6 @@ import com.financialcalculator.banking.rd.RDCalculatorActivity;
 import com.financialcalculator.emi.emicalculator.EmiCalculatorActivity;
 import com.financialcalculator.emi.emicompare.EmiCompareActivity;
 import com.financialcalculator.emi.emifixedvsreducing.FixedVsReducingActivity;
-import com.financialcalculator.firebase.FirebaseHelper;
 import com.financialcalculator.generic.GenericCalculatorActivity;
 import com.financialcalculator.generic.WebViewActivity;
 import com.financialcalculator.gst.GstCalculatorActivity;
@@ -580,7 +579,7 @@ public class Util {
     public static List<HomePageModel> parseDashboardListFirebase() {
         List<HomePageModel> homePageModels = new ArrayList<>();
         Gson gson = new Gson();
-        try {
+        /*try {
             JSONObject jsonObject = new JSONObject(FirebaseHelper.getDashboardList());
             Iterator<String> keys = jsonObject.keys();
             HomePageModel homePageModel;
@@ -594,7 +593,7 @@ public class Util {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
         return homePageModels;
     }
 

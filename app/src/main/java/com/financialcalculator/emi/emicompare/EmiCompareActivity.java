@@ -63,7 +63,7 @@ public class EmiCompareActivity extends BaseActivity implements View.OnClickList
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        showBannerAd();
+
         roomDatabase = RoomDatabase.getAppDatabase(this);
         init();
         init_views();

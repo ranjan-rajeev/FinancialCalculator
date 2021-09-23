@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
@@ -11,13 +10,14 @@ android {
             keyPassword 'finance'
         }
     }
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.financialcalculator"
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 5
         versionName "1.0.5"
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
     }
@@ -78,44 +78,25 @@ configurations {
 }
 
 dependencies {
-    implementation 'androidx.navigation:navigation-fragment:2.3.0'
-    implementation 'androidx.navigation:navigation-ui:2.3.0'
+    implementation 'com.google.android.play:core:1.10.2'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     def room_version = "1.1.1"
     //implementation 'com.google.firebase:firebase-ads:11.8.0'
 
+    annotationProcessor 'androidx.room:room-compiler:2.3.0'
 
-    implementation 'com.google.firebase:firebase-database:19.3.1'
-    implementation 'com.google.firebase:firebase-storage:19.1.1'
-    implementation 'com.google.firebase:firebase-auth:19.3.2'
-    implementation 'com.google.firebase:firebase-config:19.2.0'
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
-    implementation 'com.google.firebase:firebase-iid:20.2.4'
-    implementation 'com.google.firebase:firebase-messaging:20.2.4'
-    // Recommended: Add the Firebase SDK for Google Analytics.
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
-    // Add the Firebase Crashlytics SDK.
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
-    annotationProcessor 'androidx.room:room-compiler:2.0.0'
-
-    implementation 'androidx.room:room-runtime:2.0.0'
+    implementation 'androidx.room:room-runtime:2.3.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.synnapps:carouselview:0.1.3'
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.synnapps:carouselview:0.1.5'
-    implementation 'com.google.android.play:core:1.8.0'
-    implementation 'com.google.android.gms:play-services-ads:19.4.0'
-//    freeDebugImplementation 'com.google.android.gms:play-services-ads:17.2.0'
-//    paidDebugImplementation 'com.google.android.gms:play-services-ads:17.2.0'
-//    freeReleaseImplementation 'com.google.android.gms:play-services-ads:17.2.0'
-//    paidReleaseImplementation 'com.google.android.gms:play-services-ads:17.2.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
 
     //    Retrofit for network loading
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttp3Version"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttp3Version"
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"

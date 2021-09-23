@@ -48,7 +48,7 @@
         android:id="@+id/rvDashboard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/adView"
+
         android:layout_below="@+id/cvMsg" />
 
     <!-- <com.google.android.gms.ads.AdView

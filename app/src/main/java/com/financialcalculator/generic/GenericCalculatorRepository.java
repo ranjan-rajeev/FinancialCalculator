@@ -3,26 +3,15 @@ package com.financialcalculator.generic;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import androidx.annotation.NonNull;
-
 import com.financialcalculator.PrefManager.SharedPrefManager;
-import com.financialcalculator.firebase.FirebaseHelper;
 import com.financialcalculator.model.CalculatorEntity;
-import com.financialcalculator.model.GenericOutputEntity;
-import com.financialcalculator.model.GenericViewTypeModel;
 import com.financialcalculator.model.MoreInfoEntity;
 import com.financialcalculator.roomdb.RoomDatabase;
 import com.financialcalculator.utility.Logger;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GenericCalculatorRepository {
@@ -31,68 +20,6 @@ public class GenericCalculatorRepository {
     CalculatorListener calculatorListener;
     private Context context;
     private CalculatorEntity calculatorEntity;
-    ValueEventListener inputValueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            Logger.d("Calculator input firebase ");
-            List<GenericViewTypeModel> list = new ArrayList<>();
-            GenericViewTypeModel genericViewTypeModel;
-            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                try {
-                    genericViewTypeModel = snapshot.getValue(GenericViewTypeModel.class);
-                    if (genericViewTypeModel != null) {
-                        list.add(genericViewTypeModel);
-                    }
-                } catch (Exception e) {
-                    Logger.d("Unable to parse");
-                }
-            }
-            if (list != null) {
-                calculatorEntity.setInputList(list);
-                new StoreCalculatorDetails(calculatorEntity).execute();
-                calculatorListener.onDataFetched(calculatorEntity);
-            } else {
-                calculatorListener.onError("Empty Details");
-            }
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-            calculatorListener.onError(databaseError.getMessage());
-            Logger.d(databaseError.getMessage());
-        }
-    };
-    ValueEventListener outputValueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            Logger.d("Calculator output firebase ");
-            List<GenericOutputEntity> list = new ArrayList<>();
-            GenericOutputEntity genericOutputEntity;
-            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                try {
-                    genericOutputEntity = snapshot.getValue(GenericOutputEntity.class);
-                    if (genericOutputEntity != null) {
-                        list.add(genericOutputEntity);
-                    }
-                } catch (Exception e) {
-                    Logger.d("Unable to parse");
-                }
-            }
-            if (list != null) {
-                calculatorEntity.setOutputList(list);
-                new StoreCalculatorDetails(calculatorEntity).execute();
-            } else {
-                calculatorListener.onError("Empty Details");
-            }
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-            calculatorListener.onError(databaseError.getMessage());
-            Logger.d(databaseError.getMessage());
-        }
-    };
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private RoomDatabase roomDatabase;
     private List<MoreInfoEntity> moreInfoEntities;
 
@@ -122,15 +49,9 @@ public class GenericCalculatorRepository {
     }
 
     public void getInputDetailsFirebase() {
-        Logger.d("Fetch calculator input : " + calculatorEntity.getFirebaseId());
-        DatabaseReference inputRef = database.getReference(FirebaseHelper.DB_CALCULATOR).child(calculatorEntity.getFirebaseId()).child("input");
-        inputRef.orderByChild("cmpPos").addListenerForSingleValueEvent(inputValueEventListener);
     }
 
     public void getOutputDetailsFirebase() {
-        Logger.d("Fetch calculator output : " + calculatorEntity.getFirebaseId());
-        DatabaseReference outputRef = database.getReference(FirebaseHelper.DB_CALCULATOR).child(calculatorEntity.getFirebaseId()).child("output");
-        outputRef.orderByChild("cmpPos").addListenerForSingleValueEvent(outputValueEventListener);
     }
 
     private String getFirebaseVersionKey() {

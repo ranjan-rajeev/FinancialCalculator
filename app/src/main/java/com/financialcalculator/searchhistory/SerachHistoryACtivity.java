@@ -45,7 +45,7 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_serach_history_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        showBannerAd();
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         appDatabase = RoomDatabase.getAppDatabase(this);
         if (getIntent().hasExtra("TYPE")) {

@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -25,7 +24,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.financialcalculator.PrefManager.SharedPrefManager;
 import com.financialcalculator.R;
 import com.financialcalculator.about.AboutFragment;
-import com.financialcalculator.firebase.FirebaseHelper;
 import com.financialcalculator.model.MoreInfoEntity;
 import com.financialcalculator.newdashboard.NewDashBoardFragment;
 import com.financialcalculator.roomdb.RoomDatabase;
@@ -42,13 +40,7 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -58,28 +50,6 @@ public class MainActivity extends BaseActivity
 
     private static final int REQUEST_UPDATE = 11;
     private static boolean updatePopUpShown = false;
-    ValueEventListener moreinfoEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            Logger.d("Moreinfo firebase  onData");
-            List<MoreInfoEntity> list = new ArrayList<>();
-            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                try {
-                    list.add(snapshot.getValue(MoreInfoEntity.class));
-                } catch (Exception e) {
-                    Logger.d("Unable to parse");
-                }
-            }
-            if (list != null) {
-                new StoreMoreInfo(list).execute();
-            }
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-            Logger.d(databaseError.getMessage());
-        }
-    };
     private AppUpdateManager mAppUpdateManager;
     InstallStateUpdatedListener installStateUpdatedListener = new
             InstallStateUpdatedListener() {
@@ -98,15 +68,17 @@ public class MainActivity extends BaseActivity
                 }
             };
     private SharedPrefManager sharedPrefManager;
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private RoomDatabase roomDatabase;
 
     @Override
     protected void onStart() {
         super.onStart();
+        setUpAppUpdateManager();
+    }
+
+    private void setUpAppUpdateManager() {
         mAppUpdateManager = AppUpdateManagerFactory.create(this);
         mAppUpdateManager.registerListener(installStateUpdatedListener);
-
         mAppUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                     || appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
@@ -177,14 +149,14 @@ public class MainActivity extends BaseActivity
     }
 
     private void checkFirebaseConfigUpdate() {
-        if (Util.getVersionCode(this) < FirebaseHelper.getServerVersionCode()) {
+        /*if (Util.getVersionCode(this) < FirebaseHelper.getServerVersionCode()) {
             if (FirebaseHelper.getForceUpdate()) {
                 showAppUpdateAlert(false);
             } else {
                 updatePopUpShown = true;
                 showAppUpdateAlert(true);
             }
-        }
+        }*/
     }
 
     private void showAppUpdateAlert(boolean b) {
@@ -343,7 +315,7 @@ public class MainActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        showBannerAd();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         sharedPrefManager = SharedPrefManager.getInstance(this);
@@ -372,25 +344,19 @@ public class MainActivity extends BaseActivity
         navigationView.setCheckedItem(R.id.nav_home);
 
         showDashboard();
-        new FetchMoreDetails().execute();
+        //new FetchMoreDetails().execute();
 
-    }
-
-    private void fetchMoreInfoFirebase() {
-        Logger.d("Fetch moreinfo firebase : ");
-        DatabaseReference inputRef = database.getReference(FirebaseHelper.DB_MOREINFO);
-        inputRef.addListenerForSingleValueEvent(moreinfoEventListener);
     }
 
     private class FetchMoreDetails extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            long localCalVersion = sharedPrefManager.getLongValueForKey(FirebaseHelper.MORE_INFO_VERSION, 0L);
+           /* long localCalVersion = sharedPrefManager.getLongValueForKey(FirebaseHelper.MORE_INFO_VERSION, 0L);
             long serverVersion = FirebaseHelper.getMoreInfoVersion();
             if (localCalVersion < serverVersion) {
-                fetchMoreInfoFirebase();
-            }
+                //fetchMoreInfoFirebase();
+            }*/
             return null;
         }
 
@@ -409,8 +375,9 @@ public class MainActivity extends BaseActivity
 
         @Override
         protected Void doInBackground(Void... voids) {
-            roomDatabase.moreInfoDao().insertAll(moreInfoEntities);
+            /*roomDatabase.moreInfoDao().insertAll(moreInfoEntities);
             sharedPrefManager.putLongValueForKey(FirebaseHelper.MORE_INFO_VERSION, FirebaseHelper.getMoreInfoVersion());
+            */
             return null;
         }
 

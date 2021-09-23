@@ -72,7 +72,7 @@ public class FDCalculatorActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_fdcalculator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        showBannerAd();
+
         roomDatabase = RoomDatabase.getAppDatabase(this);
         //region floating button
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

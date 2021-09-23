@@ -9,9 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.financialcalculator.R;
 import com.financialcalculator.model.HomePageModel;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -22,7 +19,6 @@ public class AdViewViewHolder extends RecyclerView.ViewHolder {
     LinearLayout view;
     Context context;
     HomePageModel homePageModel;
-    AdView adView;
 
     public AdViewViewHolder(View itemView) {
         super(itemView);
@@ -32,7 +28,6 @@ public class AdViewViewHolder extends RecyclerView.ViewHolder {
     public void setData(Context context, HomePageModel homePageModel) {
         this.context = context;
         this.homePageModel = homePageModel;
-        adView = new AdView(context);
         new ConvertAsync().execute();
     }
 
@@ -57,17 +52,7 @@ public class AdViewViewHolder extends RecyclerView.ViewHolder {
         protected void onPostExecute(AdViewEntity entity) {
             super.onPostExecute(entity);
             if (entity != null) {
-                AdRequest adRequest = new AdRequest.Builder()
-//                        .addTestDevice("95646C9BB72CC16CA903FF766625E09E")
-//                        .addTestDevice("E4C1A1E239A779858B55CE1641C2BC02")
-                        .build();
-                //if(adRequest.isTestDevice(context)){
-                adView.setAdSize(AdSize.BANNER);
-                adView.setAdUnitId(entity.getAdId());
-                adView.loadAd(adRequest);
-                view.removeAllViews();
-                view.addView(adView, 0);
-                //}
+
             }
         }
     }

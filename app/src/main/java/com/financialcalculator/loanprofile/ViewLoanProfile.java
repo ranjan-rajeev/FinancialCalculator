@@ -32,7 +32,7 @@ public class ViewLoanProfile extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         appDatabase = RoomDatabase.getAppDatabase(this);
-        showBannerAd();
+
         init_widgets();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         new FilterGenericList().execute();

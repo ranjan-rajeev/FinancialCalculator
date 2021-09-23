@@ -100,7 +100,7 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         roomDatabase = RoomDatabase.getAppDatabase(this);
-        showBannerAd();
+
         init();
         init_views();
         setListener();

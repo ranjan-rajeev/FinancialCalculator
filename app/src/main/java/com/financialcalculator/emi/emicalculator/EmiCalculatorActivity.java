@@ -93,7 +93,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         roomDatabase = RoomDatabase.getAppDatabase(this);
-        showBannerAd();
+
 
         init();
         init_views();

@@ -46,7 +46,7 @@ public class GstCalculatorActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_gst_calculator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        showBannerAd();
+
         //region floating action button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

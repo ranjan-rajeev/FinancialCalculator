@@ -73,7 +73,7 @@ public class HomeLoanEligibility extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_home_loan_eligibility);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        showBannerAd();
+
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

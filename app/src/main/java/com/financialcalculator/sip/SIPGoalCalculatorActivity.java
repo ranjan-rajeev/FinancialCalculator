@@ -73,7 +73,7 @@ public class SIPGoalCalculatorActivity extends BaseActivity implements View.OnCl
         setContentView(R.layout.activity_sipgoal_calculator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        showBannerAd();
+
         roomDatabase = RoomDatabase.getAppDatabase(this);
         //region floating button
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

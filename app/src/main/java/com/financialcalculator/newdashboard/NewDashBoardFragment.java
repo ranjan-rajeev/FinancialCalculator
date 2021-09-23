@@ -45,7 +45,6 @@ public class NewDashBoardFragment extends BaseFragment {
 
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         sharedPrefManager = SharedPrefManager.getInstance(activity);
-        //setUPAdd(view);
         init_widgets(view);
         new ParseDashboardList().execute();
 
