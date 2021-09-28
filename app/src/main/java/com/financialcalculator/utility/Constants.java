@@ -33,6 +33,11 @@ public class Constants {
     public static final int GST_CALCULATOR = 130;
     public static final int VAT_CALCULATOR = 140;
 
+    public static final int NPS_CALCULATOR = 8770;
+    public static final int ATAL_CALCULATOR = 160;
+    public static final int CAGR_CALCULATOR = 2682;
+
+
     public static final int SI_CI_CALCULATOR = 11;
 
 

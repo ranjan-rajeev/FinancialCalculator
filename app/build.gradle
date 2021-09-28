@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     signingConfigs {
@@ -15,8 +14,8 @@ android {
         applicationId "com.financialcalculator"
         minSdkVersion 16
         targetSdkVersion 31
-        versionCode 5
-        versionName "1.0.5"
+        versionCode 6
+        versionName "1.0.6"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
@@ -55,8 +54,8 @@ android {
             buildConfigField('int', 'platform', '3')
             //For encryption disabled url
             //buildConfigField('int', 'platform', '5')
-            versionCode 5
-            versionName "1.0.5"
+            versionCode 6
+            versionName "1.0.6"
         }
     }
     compileOptions {

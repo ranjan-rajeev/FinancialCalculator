@@ -5,9 +5,13 @@ import android.content.Context;
 import com.financialcalculator.BuildConfig;
 import com.financialcalculator.FinanceCalculatorApplication;
 import com.financialcalculator.PrefManager.SharedPrefManager;
+import com.financialcalculator.model.CalculatorEntity;
+import com.financialcalculator.model.HomePageModel;
+import com.financialcalculator.model.MoreInfoEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -23,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HttpService {
     private static HttpService instance = new HttpService();
     public Retrofit retrofit;
-    private LoanAssistServices loanAssistServices;
+    private FinanceCalculatorServices financeCalculatorServices;
 
     private HttpService() {
 
@@ -57,7 +61,7 @@ public class HttpService {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson)).client(client).build();
 
-        loanAssistServices = retrofit.create(LoanAssistServices.class);
+        financeCalculatorServices = retrofit.create(FinanceCalculatorServices.class);
 
 //        Retrofit middleLayerRetrofit = new Retrofit.Builder()
 //                .baseUrl(CliqApplication.getInstance().environmentManager.getMiddleLayerHost() + "/")
@@ -143,8 +147,37 @@ public class HttpService {
     }
 
 
-   /* public Observable<OnlineDashBoardEntity> getDashboardData(String url) {
-        return loanAssistServices.getDashBoardData(url)
-                .flatMap((Function<OnlineDashBoardEntity, ObservableSource<OnlineDashBoardEntity>>) users -> Observable.just(users));
+    public Observable<List<HomePageModel>> getDashboardData() {
+        return financeCalculatorServices.getDashboardData();
+    }
+
+    public Observable<CalculatorEntity> getNpsCalculator() {
+        return financeCalculatorServices.getNpsCalculator();
+    }
+
+    public Observable<List<MoreInfoEntity>> getNpsMoreInfo() {
+        return financeCalculatorServices.getNpsMoreInfo();
+    }
+
+    public Observable<CalculatorEntity> getAtalCalculator() {
+        return financeCalculatorServices.getAtalCalculator();
+    }
+
+    public Observable<List<MoreInfoEntity>> getAtalMoreInfo() {
+        return financeCalculatorServices.getAtalMoreInfo();
+    }
+
+    public Observable<CalculatorEntity> getCAGRCalculator() {
+        return financeCalculatorServices.getCAGRCalculator();
+    }
+
+    public Observable<List<MoreInfoEntity>> getCAGRMoreInfo() {
+        return financeCalculatorServices.getCAGRMoreInfo();
+    }
+
+    /*//get Dashboard
+    public Observable<AddressDetailsList> getDashBoardData() {
+        return getSavedCustomerAccessToken().flatMap((Function<CliqAccessToken, ObservableSource<AddressDetailsList>>) CliqAccessToken -> cliqServicesV2.getAllAddresses(
+                getSharedPreference().getStringValueForKey(Constants.USER_NAME, ""), getSharedPreference().getStringValueForKey(Constants.USER_NAME, ""), CliqAccessToken.getAccessToken()));
     }*/
 }

@@ -5,14 +5,23 @@ import android.os.AsyncTask;
 
 import com.financialcalculator.PrefManager.SharedPrefManager;
 import com.financialcalculator.model.CalculatorEntity;
+import com.financialcalculator.model.HomePageModel;
 import com.financialcalculator.model.MoreInfoEntity;
 import com.financialcalculator.roomdb.RoomDatabase;
+import com.financialcalculator.services.HttpService;
+import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class GenericCalculatorRepository {
     SharedPrefManager sharedPrefManager;
@@ -31,6 +40,7 @@ public class GenericCalculatorRepository {
         localCalDetails = sharedPrefManager.getStringValueForKey(calculatorEntity.getFirebaseId(), "");
         roomDatabase = RoomDatabase.getAppDatabase(context);
         getCalculatorDetails();
+        getCalculatorMoreDetailsFromServer();
     }
 
     public void getCalculatorDetails() {
@@ -38,20 +48,96 @@ public class GenericCalculatorRepository {
         int serverCalVersion = calculatorEntity.getVersion();
         if (localCalVersion < serverCalVersion) {
             Logger.d("Fetching calculator details from server");
-            getInputDetailsFirebase();
-            getOutputDetailsFirebase();
+            getCalculatorDetailsFromServer();
         } else {
             Logger.d("Fetching calculator details from local");
             new ConvertCalculatorAsync().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         }
-        //fetch more info list
-        new FetchMoreDetails(calculatorEntity.getFirebaseId()).execute();
     }
 
-    public void getInputDetailsFirebase() {
+    private void getCalculatorDetailsFromServer() {
+        Observable<CalculatorEntity> stateResponseObservable = getCalculatorObserVableType(calculatorEntity.getCalId());
+        stateResponseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<CalculatorEntity>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(CalculatorEntity response) {
+                        if (response != null) {
+                            calculatorListener.onDataFetched(response);
+                            new StoreCalculatorDetails(response).execute();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
-    public void getOutputDetailsFirebase() {
+    private void getCalculatorMoreDetailsFromServer() {
+        Observable<List<MoreInfoEntity>> stateResponseObservable = getCalculatorMoreDetailsObserVableType(calculatorEntity.getCalId());
+        stateResponseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<MoreInfoEntity>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<MoreInfoEntity> response) {
+                        if (response != null) {
+                            moreInfoEntities = response;
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    Observable<CalculatorEntity> getCalculatorObserVableType(int calculatorId) {
+        switch (calculatorId) {
+            case Constants.CAGR_CALCULATOR:
+                return HttpService.getInstance().getCAGRCalculator();
+            case Constants.NPS_CALCULATOR:
+                return HttpService.getInstance().getNpsCalculator();
+            case Constants.ATAL_CALCULATOR:
+                return HttpService.getInstance().getAtalCalculator();
+            default:
+                return HttpService.getInstance().getNpsCalculator();
+        }
+    }
+
+    Observable<List<MoreInfoEntity>> getCalculatorMoreDetailsObserVableType(int calculatorId) {
+        switch (calculatorId) {
+            case Constants.CAGR_CALCULATOR:
+                return HttpService.getInstance().getCAGRMoreInfo();
+            case Constants.NPS_CALCULATOR:
+                return HttpService.getInstance().getNpsMoreInfo();
+            case Constants.ATAL_CALCULATOR:
+                return HttpService.getInstance().getAtalMoreInfo();
+            default:
+                return HttpService.getInstance().getNpsMoreInfo();
+        }
     }
 
     private String getFirebaseVersionKey() {

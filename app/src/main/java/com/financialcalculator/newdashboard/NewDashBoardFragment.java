@@ -16,17 +16,24 @@ import com.financialcalculator.PrefManager.SharedPrefManager;
 import com.financialcalculator.R;
 import com.financialcalculator.home.MainActivity;
 import com.financialcalculator.model.HomePageModel;
+import com.financialcalculator.services.HttpService;
 import com.financialcalculator.utility.BaseFragment;
 import com.financialcalculator.utility.Util;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class NewDashBoardFragment extends BaseFragment {
 
     public static final String TAG = "NewDashBoard";
     View view;
-    //private AdView mAdView;
     RecyclerView rvDashboard;
     HomePageAdapter homePageAdapter;
     List<HomePageModel> homePageModels = new ArrayList<>();
@@ -46,7 +53,11 @@ public class NewDashBoardFragment extends BaseFragment {
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         sharedPrefManager = SharedPrefManager.getInstance(activity);
         init_widgets(view);
-        new ParseDashboardList().execute();
+        if (Util.isNetworkConnected(activity)) {
+            getDashboardData();
+        } else {
+            new ParseDashboardList().execute();
+        }
 
         return view;
     }
@@ -60,16 +71,56 @@ public class NewDashBoardFragment extends BaseFragment {
     }
 
     private class ParseDashboardList extends AsyncTask<Void, Void, List<HomePageModel>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showDialog();
+        }
+
         @Override
         protected List<HomePageModel> doInBackground(Void... voids) {
-            return Util.parseDashboardListFirebase();
+            return Util.parseDashboardListFirebase(activity);
         }
 
         @Override
         protected void onPostExecute(List<HomePageModel> list) {
             super.onPostExecute(list);
+            cancelDialog();
             if (list != null)
                 homePageAdapter.updateList(list);
         }
     }
+
+    private void getDashboardData() {
+        showDialog();
+        Observable<List<HomePageModel>> stateResponseObservable = HttpService.getInstance().getDashboardData();
+        stateResponseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<HomePageModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<HomePageModel> response) {
+                        cancelDialog();
+                        if (response != null) {
+                            homePageAdapter.updateList(response);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        cancelDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 }
+

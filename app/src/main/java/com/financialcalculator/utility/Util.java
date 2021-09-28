@@ -1,6 +1,7 @@
 package com.financialcalculator.utility;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -34,12 +35,15 @@ import com.financialcalculator.sip.LumpSumpSipActivity;
 import com.financialcalculator.sip.SIPCalculatorActivity;
 import com.financialcalculator.sip.SIPGoalCalculatorActivity;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -513,10 +517,10 @@ public class Util {
         }
     }
 
-    public static String loadJSONFromAsset(Context context) {
+    public static String loadJSONFromAsset(Context context, String fileName) {
         String json = null;
         try {
-            InputStream is = context.getAssets().open("dashboard.json");
+            InputStream is = context.getAssets().open(fileName + ".json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -576,24 +580,16 @@ public class Util {
         return false;
     }
 
-    public static List<HomePageModel> parseDashboardListFirebase() {
+    public static List<HomePageModel> parseDashboardListFirebase(Activity activity) {
         List<HomePageModel> homePageModels = new ArrayList<>();
-        Gson gson = new Gson();
-        /*try {
-            JSONObject jsonObject = new JSONObject(FirebaseHelper.getDashboardList());
-            Iterator<String> keys = jsonObject.keys();
-            HomePageModel homePageModel;
-            while (keys.hasNext()) {
-                String key = keys.next();
-                String values = jsonObject.get(key).toString();
-                homePageModel = gson.fromJson(values, HomePageModel.class);
-                if (homePageModel != null) {
-                    homePageModels.add(homePageModel);
-                }
-            }
-        } catch (JSONException e) {
+        try {
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<HomePageModel>>() {
+            }.getType();
+            return gson.fromJson(loadJSONFromAsset(activity, "dashboard"), type);
+        } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
         return homePageModels;
     }
 
