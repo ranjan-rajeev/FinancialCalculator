@@ -12,6 +12,7 @@ import android.provider.Settings;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 
+import com.financialcalculator.PrefManager.SharedPrefManager;
 import com.financialcalculator.R;
 import com.financialcalculator.SplashActivity;
 import com.financialcalculator.banking.fd.FDCalculatorActivity;
@@ -29,6 +30,7 @@ import com.financialcalculator.loanprofile.CreateLoanProfileActivity;
 import com.financialcalculator.loanprofile.HomeLoanEligibility;
 import com.financialcalculator.loanprofile.ViewLoanProfile;
 import com.financialcalculator.model.CalculatorEntity;
+import com.financialcalculator.model.ConfigModel;
 import com.financialcalculator.model.HomePageModel;
 import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.sip.LumpSumpSipActivity;
@@ -591,6 +593,23 @@ public class Util {
             e.printStackTrace();
         }
         return homePageModels;
+    }
+
+    public static ConfigModel getConfig(Activity activity) {
+        ConfigModel configModel = null;
+        try {
+            Gson gson = new Gson();
+            Type type = new TypeToken<ConfigModel>() {
+            }.getType();
+            return gson.fromJson(SharedPrefManager.getInstance(activity).getStringValueForKey(Constants.SHD_PRF_CONFIG, "{\n" +
+                    "  \"showAds\": true,\n" +
+                    "  \"playStoreVersion\": 7,\n" +
+                    "  \"BANNER_PLACEMENT_ID\": \"662782841791842_662807035122756\"\n" +
+                    "}"), type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return configModel;
     }
 
     public static SpannableStringBuilder evaluateString(String inputString, CalculatorEntity calculatorEntity) {

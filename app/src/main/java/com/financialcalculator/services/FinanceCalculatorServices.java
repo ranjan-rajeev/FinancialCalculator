@@ -2,6 +2,7 @@ package com.financialcalculator.services;
 
 
 import com.financialcalculator.model.CalculatorEntity;
+import com.financialcalculator.model.ConfigModel;
 import com.financialcalculator.model.HomePageModel;
 import com.financialcalculator.model.MoreInfoEntity;
 
@@ -32,5 +33,8 @@ public interface FinanceCalculatorServices {
 
     @GET("/Finanace-Calculator-Web/json/cagr/cagrmoreinfo.json")
     Observable<List<MoreInfoEntity>> getCAGRMoreInfo();
+
+    @GET("/Finanace-Calculator-Web/json/config.json")
+    Observable<ConfigModel> getConfig();
 
 }

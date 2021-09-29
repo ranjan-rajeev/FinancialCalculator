@@ -6,6 +6,7 @@ import com.financialcalculator.BuildConfig;
 import com.financialcalculator.FinanceCalculatorApplication;
 import com.financialcalculator.PrefManager.SharedPrefManager;
 import com.financialcalculator.model.CalculatorEntity;
+import com.financialcalculator.model.ConfigModel;
 import com.financialcalculator.model.HomePageModel;
 import com.financialcalculator.model.MoreInfoEntity;
 import com.google.gson.Gson;
@@ -173,6 +174,10 @@ public class HttpService {
 
     public Observable<List<MoreInfoEntity>> getCAGRMoreInfo() {
         return financeCalculatorServices.getCAGRMoreInfo();
+    }
+
+    public Observable<ConfigModel> getConfig() {
+        return financeCalculatorServices.getConfig();
     }
 
     /*//get Dashboard

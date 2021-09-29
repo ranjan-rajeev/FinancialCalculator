@@ -149,21 +149,22 @@ public class MainActivity extends BaseActivity
     }
 
     private void checkFirebaseConfigUpdate() {
-        /*if (Util.getVersionCode(this) < FirebaseHelper.getServerVersionCode()) {
-            if (FirebaseHelper.getForceUpdate()) {
-                showAppUpdateAlert(false);
-            } else {
+        try {
+            int playStoreVersion = Util.getConfig(this).getPlayStoreVersion();
+            if (Util.getVersionCode(this) < playStoreVersion) {
                 updatePopUpShown = true;
                 showAppUpdateAlert(true);
             }
-        }*/
+        } catch (Exception e) {
+
+        }
     }
 
     private void showAppUpdateAlert(boolean b) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         AlertDialog alertDialog = builder.create();
-        builder.setTitle("Update Finance Calculator ?");
-        builder.setMessage("Finance Calculator recommends that you update app to the latest version for better performance.");
+        builder.setTitle("Update App !!!");
+        builder.setMessage("We recommend that you update the app to the latest version for better performance.");
         builder.setCancelable(b);
         builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -344,7 +345,7 @@ public class MainActivity extends BaseActivity
         navigationView.setCheckedItem(R.id.nav_home);
 
         showDashboard();
-        //new FetchMoreDetails().execute();
+        setUpAdView();
 
     }
 

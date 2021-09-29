@@ -11,12 +11,27 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.financialcalculator.PrefManager.SharedPrefManager;
 import com.financialcalculator.home.MainActivity;
+import com.financialcalculator.model.ConfigModel;
+import com.financialcalculator.model.HomePageModel;
+import com.financialcalculator.services.HttpService;
+import com.financialcalculator.utility.Constants;
+import com.google.gson.Gson;
+
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class SplashActivity extends AppCompatActivity {
 
     private final int SPLASH_DISPLAY_LENGTH = 2000;
+    SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +40,8 @@ public class SplashActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
-
+        sharedPrefManager = SharedPrefManager.getInstance(this);
+        getConfig();
         /*if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
             MobileAds.initialize(this, getResources().getString(R.string.ad_app_id));
         }*/
@@ -41,5 +57,33 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, SPLASH_DISPLAY_LENGTH);
 
+    }
+
+    private void getConfig() {
+        Observable<ConfigModel> stateResponseObservable = HttpService.getInstance().getConfig();
+        stateResponseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ConfigModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ConfigModel response) {
+                        if (response != null) {
+                            sharedPrefManager.putStringValueForKey(Constants.SHD_PRF_CONFIG, new Gson().toJson(response));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

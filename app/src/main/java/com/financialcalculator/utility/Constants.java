@@ -46,6 +46,7 @@ public class Constants {
     public static final String PREF_GCM_TOKEN = "PREF_GCM_TOKEN";
     public static final String DEFAULT_CHANNEL_ID = "MARKETING";
     public static final String SHD_PRF_USER_DETAILS = "userdetails";
+    public static final String SHD_PRF_CONFIG = "config";
     public static final String INTENT_PARAM_CAL = "cal";
 
     //========================================================

@@ -73,6 +73,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:launchMode="singleTop"
             android:name=".home.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
