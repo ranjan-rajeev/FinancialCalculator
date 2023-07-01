@@ -15,8 +15,8 @@ android {
         minSdkVersion 16
         targetSdkVersion 31
 
-        versionCode 7
-        versionName "1.0.7"
+        versionCode 10
+        versionName "1.1.0"
 
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -56,19 +56,17 @@ android {
             buildConfigField('int', 'platform', '3')
             //For encryption disabled url
             //buildConfigField('int', 'platform', '5')
-            versionCode 7
-            versionName "1.0.7"
+            versionCode 10
+            versionName "1.1.0"
         }
     }
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
-    lintOptions {
-        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
+    lint {
         abortOnError false
+        checkReleaseBuilds false
     }
 }
 configurations {

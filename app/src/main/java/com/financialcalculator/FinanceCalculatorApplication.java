@@ -1,16 +1,14 @@
 package com.financialcalculator;
 
+import android.app.Application;
 import android.content.Context;
 
-import androidx.multidex.MultiDexApplication;
 
 import com.financialcalculator.roomdb.RoomDatabase;
 
-import java.util.Arrays;
-import java.util.List;
 
 
-public class FinanceCalculatorApplication extends MultiDexApplication {
+public class FinanceCalculatorApplication extends Application {
     private static FinanceCalculatorApplication mInstance;
 
     @Override
