@@ -9,7 +9,7 @@
     <com.financialcalculator.customviews.AutoScrollViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:layout_gravity="center"
         android:clipToPadding="false"
         android:focusableInTouchMode="true"

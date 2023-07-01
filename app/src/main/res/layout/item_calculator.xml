@@ -11,6 +11,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCalList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_cliq_cash_wallet_background" />
 
 </androidx.cardview.widget.CardView>

@@ -23,7 +23,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 public class EditTextViewHolder extends RecyclerView.ViewHolder {
 
@@ -145,7 +144,7 @@ public class EditTextViewHolder extends RecyclerView.ViewHolder {
                         break;
                 }
             }
-            ((GenericCalculatorActivity) context).setInputHashMap(genericViewTypeModel.getKey().charAt(0), value);
+            ((GenericCalculatorActivity) context).setHashMapValue(genericViewTypeModel.getKey().charAt(0), value);
             genericViewTypeModel.setValid(true);
         } catch (Exception e) {
             e.printStackTrace();

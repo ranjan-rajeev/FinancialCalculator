@@ -8,25 +8,20 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.financialcalculator.R;
+import com.financialcalculator.generic.outputholders.ExpressionWithFormulaeViewHolder;
 import com.financialcalculator.generic.outputholders.GraphViewHolder;
 import com.financialcalculator.generic.outputholders.KeyValueViewHolder;
-import com.financialcalculator.generic.viewholders.ButtonViewHolder;
-import com.financialcalculator.generic.viewholders.DateViewHolder;
-import com.financialcalculator.generic.viewholders.EditTextSpinnerViewHolder;
-import com.financialcalculator.generic.viewholders.EditTextViewHolder;
-import com.financialcalculator.generic.viewholders.SpinnerTitleViewHolder;
-import com.financialcalculator.generic.viewholders.SpinnerViewHolder;
-import com.financialcalculator.generic.viewholders.WebViewViewHolder;
 import com.financialcalculator.model.GenericOutputEntity;
-import com.financialcalculator.model.GenericViewTypeModel;
 
 import java.util.List;
 
 public class GenericOutputAdapter extends RecyclerView.Adapter {
 
     public static final int TYPE_FORMULAE = 1;
-    public static final int TYPE_GRAPH = 4;
-    public static final int TYPE_DIVIDER = 5;
+    public static final int TYPE_EXPRESSION_WITH_FORMULAE = 2;
+    public static final int TYPE_GRAPH = 3;
+    public static final int TYPE_DIVIDER = 4;
+
     private List<GenericOutputEntity> list;
     Context mContext;
 
@@ -38,11 +33,14 @@ public class GenericOutputAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_output_key_value, parent, false);
         switch (viewType) {
             case TYPE_FORMULAE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_output_key_value, parent, false);
                 return new KeyValueViewHolder(view);
+            case TYPE_EXPRESSION_WITH_FORMULAE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_output_expression_with_formulae, parent, false);
+                return new ExpressionWithFormulaeViewHolder(view);
             case TYPE_GRAPH:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_output_graph, parent, false);
                 return new GraphViewHolder(view);
@@ -63,7 +61,7 @@ public class GenericOutputAdapter extends RecyclerView.Adapter {
                 return new WebViewViewHolder(view);*/
 
         }
-        return null;
+        return new KeyValueViewHolder(view);
     }
 
     @Override
@@ -83,9 +81,9 @@ public class GenericOutputAdapter extends RecyclerView.Adapter {
             case TYPE_GRAPH:
                 ((GraphViewHolder) holder).setData(mContext, genericOutputEntity);
                 break;
-//            case TYPE_SPINNER:
-//                ((SpinnerViewHolder) holder).setData(mContext, genericViewTypeModel);
-//                break;
+            case TYPE_EXPRESSION_WITH_FORMULAE:
+                ((ExpressionWithFormulaeViewHolder) holder).setData(mContext, genericOutputEntity);
+                break;
 //            case TYPE_DATE:
 //                ((DateViewHolder) holder).setData(mContext, genericViewTypeModel);
 //                break;

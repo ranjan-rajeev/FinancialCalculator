@@ -1,6 +1,8 @@
 package com.financialcalculator.model;
 
-public class GenericOutputEntity {
+import java.io.Serializable;
+
+public class GenericOutputEntity implements Serializable {
 
     /**
      * calId : 150
@@ -12,7 +14,7 @@ public class GenericOutputEntity {
      * type : 1
      */
 
-    private int calId;
+    private String calId;
     private String firebaseId;
     private String formulae;
     private int outId;
@@ -38,11 +40,11 @@ public class GenericOutputEntity {
         this.data = data;
     }
 
-    public int getCalId() {
+    public String getCalId() {
         return calId;
     }
 
-    public void setCalId(int calId) {
+    public void setCalId(String calId) {
         this.calId = calId;
     }
 

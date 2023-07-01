@@ -1,35 +1,24 @@
 package com.financialcalculator.generic;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-
 import com.financialcalculator.R;
-import com.financialcalculator.generic.viewholders.ButtonViewHolder;
-import com.financialcalculator.generic.viewholders.DateViewHolder;
 import com.financialcalculator.generic.viewholders.EditTextSpinnerViewHolder;
 import com.financialcalculator.generic.viewholders.EditTextViewHolder;
-import com.financialcalculator.generic.viewholders.SpinnerTitleViewHolder;
-import com.financialcalculator.generic.viewholders.SpinnerViewHolder;
-import com.financialcalculator.generic.viewholders.WebViewViewHolder;
 import com.financialcalculator.model.CalculatorEntity;
-import com.financialcalculator.model.CarouselEntity;
 import com.financialcalculator.model.GenericOutputEntity;
 import com.financialcalculator.model.GenericViewTypeModel;
 import com.financialcalculator.utility.BaseActivity;
+import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.Logger;
-import com.financialcalculator.utility.Util;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,49 +27,65 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.widget.LinearLayout.HORIZONTAL;
-
-public class GenericCalculatorActivity extends BaseActivity {
+public class GenericCalculatorActivity extends BaseActivity implements CalculatorListener {
 
     RecyclerView rvInputs;
     GenericViewTypeAdapter genericViewTypeAdapter;
-    RecyclerView rvOutput;
-    CardView cvOutput;
+    public CalculatorEntity calculatorEntity;
+    RecyclerView rvOutput, rvMoreInfo;
     GenericOutputAdapter genericOutputAdapter;
-    public static CalculatorEntity calculatorEntity;
+    CardView cvInput, cvOutput, cvMoreInfo;
     List<GenericViewTypeModel> genericViewTypeModelList;
     NestedScrollView scrollView;
+    GenericCalculatorRepository genericCalculatorRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generic_calculator);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        init_widgets();
         if (null != getIntent()) {
-            calculatorEntity = (CalculatorEntity) this.getIntent().getSerializableExtra("CALCULATOR");
-            if (calculatorEntity != null) {
+            try {
+                calculatorEntity = (CalculatorEntity) getIntent().getSerializableExtra(Constants.INTENT_PARAM_CAL);
                 getSupportActionBar().setTitle(calculatorEntity.getCalName());
+                genericCalculatorRepository = new GenericCalculatorRepository(this, this, calculatorEntity);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        init_widgets();
-        //genericViewTypeModelList = new GenericViewTypeModel().getDummyList();
-        /*genericViewTypeAdapter = new GenericViewTypeAdapter(genericViewTypeModelList, this);
-        rvInputs.setAdapter(genericViewTypeAdapter);*/
-        new ConvertAsync().execute();
-        //new ParseOutput().execute();
+        //genericCalculatorRepository.getCalculatorDetails();
+        // new ConvertAsync().execute();
     }
 
     private void init_widgets() {
         scrollView = findViewById(R.id.scrollView);
+        cvInput = findViewById(R.id.cvInput);
         rvInputs = findViewById(R.id.rvInputs);
         rvInputs.setLayoutManager(new LinearLayoutManager(this));
         cvOutput = findViewById(R.id.cvOutput);
         rvOutput = findViewById(R.id.rvOutput);
         rvOutput.setLayoutManager(new LinearLayoutManager(this));
+        cvMoreInfo = findViewById(R.id.cvMoreInfo);
+        rvMoreInfo = findViewById(R.id.rvMoreInfo);
+        rvMoreInfo.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public void onDataFetched(CalculatorEntity calculatorEntity) {
+        if (calculatorEntity != null) {
+            this.calculatorEntity = calculatorEntity;
+            bindInputRecycler(calculatorEntity.getInputList());
+        }
+    }
+
+    @Override
+    public void onError(String message) {
+
     }
 
     private class ConvertAsync extends AsyncTask<Void, Void, List<GenericViewTypeModel>> {
@@ -137,21 +142,37 @@ public class GenericCalculatorActivity extends BaseActivity {
         rvOutput.setAdapter(genericOutputAdapter);
     }
 
-    public void bindInputRecycler(List<GenericViewTypeModel> genericViewTypeModels) {
-        genericViewTypeAdapter = new GenericViewTypeAdapter(genericViewTypeModels, this);
-        rvInputs.setAdapter(genericViewTypeAdapter);
+    public void bindMoreInfoRecycler() {
+        if (genericCalculatorRepository.getMoreInfoEntities() != null) {
+            cvMoreInfo.setVisibility(View.VISIBLE);
+            GenericMoreInfoAdapter genericMoreInfoAdapter = new GenericMoreInfoAdapter(genericCalculatorRepository.getMoreInfoEntities(), this);
+            rvMoreInfo.setAdapter(genericMoreInfoAdapter);
+        }
     }
 
+    public void bindInputRecycler(List<GenericViewTypeModel> genericViewTypeModels) {
+        if (genericViewTypeModels != null && genericViewTypeModels.size() > 0) {
+            cvInput.setVisibility(View.VISIBLE);
+            genericViewTypeAdapter = new GenericViewTypeAdapter(genericViewTypeModels, this);
+            rvInputs.setAdapter(genericViewTypeAdapter);
+        }
+    }
 
-    public void setInputHashMap(Character key, BigDecimal value) {
+    public void setHashMapValue(Character key, BigDecimal value) {
         calculatorEntity.inputHashmap.put(key, value);
         Logger.d("Key : " + key + "  Val : " + calculatorEntity.inputHashmap.get(key));
     }
 
+    public void setSpinnerHashMapValue(Character key, String value) {
+        key = Character.toUpperCase(key);
+        calculatorEntity.spinnerHashMap.put(key, value);
+        Logger.d("Key : " + key + "  Val : " + calculatorEntity.inputHashmap.get(key));
+    }
 
     public void showResult() {
-        for (int i = 0; i < genericViewTypeModelList.size(); i++) {
-            if (!genericViewTypeModelList.get(i).isValid()) {
+        if (calculatorEntity.getInputList() == null) return;
+        for (int i = 0; i < calculatorEntity.getInputList().size(); i++) {
+            if (!calculatorEntity.getInputList().get(i).isValid()) {
                 RecyclerView.ViewHolder viewHolder = rvInputs.findViewHolderForAdapterPosition(i);
                 if (viewHolder instanceof EditTextViewHolder) {
                     ((EditTextViewHolder) viewHolder).showErrorMessage(true);
@@ -162,7 +183,10 @@ public class GenericCalculatorActivity extends BaseActivity {
             }
         }
         cvOutput.setVisibility(View.VISIBLE);
-        new ParseOutput().execute();
+        if (calculatorEntity.getOutputList() == null) return;
+        bindOutputRecycler(calculatorEntity.getOutputList());
+        bindMoreInfoRecycler();
+        //new ParseOutput().execute();
     }
 
     public void scrollToView(View childView) {
@@ -170,5 +194,7 @@ public class GenericCalculatorActivity extends BaseActivity {
         scrollView.smoothScrollTo(0, scrollTo);
     }
 
-
+    public CalculatorEntity getCalculatorEntity() {
+        return calculatorEntity;
+    }
 }

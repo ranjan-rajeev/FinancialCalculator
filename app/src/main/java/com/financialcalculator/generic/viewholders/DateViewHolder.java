@@ -52,7 +52,7 @@ public class DateViewHolder extends RecyclerView.ViewHolder {
                 calendar.set(year, monthOfYear, dayOfMonth);
                 editText.setText(Util.getDatefromLong(calendar.getTimeInMillis()));
                 BigDecimal value = new BigDecimal(calendar.getTimeInMillis()).setScale(0, BigDecimal.ROUND_HALF_UP);
-                ((GenericCalculatorActivity) context).setInputHashMap(genericViewTypeModel.getKey().charAt(0), value);
+                ((GenericCalculatorActivity) context).setHashMapValue(genericViewTypeModel.getKey().charAt(0), value);
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
         //mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());

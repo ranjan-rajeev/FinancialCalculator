@@ -32,8 +32,7 @@ import com.financialcalculator.sip.LumpSumpSipActivity;
 import com.financialcalculator.sip.SIPCalculatorActivity;
 import com.financialcalculator.sip.SIPGoalCalculatorActivity;
 import com.financialcalculator.utility.Constants;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +40,7 @@ import java.util.List;
 public class DashBoardFragment extends Fragment {
 
     View view;
-    private AdView mAdView;
+    //private AdView mAdView;
     RecyclerView rvDashboard;
     List<DashBoardRowEntity> dashBoardRowEntities;
     DashboardRowAdapter dashboardRowAdapter;
@@ -52,7 +51,7 @@ public class DashBoardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        setUPAdd(view);
+        //setUPAdd(view);
         //appDatabase = RoomDatabase.getAppDatabase(getActivity().getApplicationContext());
         init_widgets(view);
         new InitList().execute();
@@ -60,7 +59,7 @@ public class DashBoardFragment extends Fragment {
         return view;
     }
 
-    private void setUPAdd(View view) {
+    /*private void setUPAdd(View view) {
 
         mAdView = view.findViewById(R.id.adView);
 
@@ -81,7 +80,7 @@ public class DashBoardFragment extends Fragment {
             }
 
         }
-    }
+    }*/
 
     private void init_lists() {
         int i = 0;

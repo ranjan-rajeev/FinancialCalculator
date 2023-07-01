@@ -57,8 +57,8 @@
     <string name="title_activity_fixed_vs_reducing">Flat Vs Reducing Rate</string>
     <string name="title_activity_gst_calculator">GST Calculator</string>
     <string name="title_activity_vat_calculator">VAT Calculator</string>
-    <string name="banner_ad_unit_id">ca-app-pub-5208898531645791/6351256670</string>
-    <string name="ad_app_id">ca-app-pub-5208898531645791~1375220024</string>
+    <string name="banner_ad_unit_id">ca-app-pub-4591215462176541/6998474882</string>
+    <string name="ad_app_id">ca-app-pub-4591215462176541~9789640820</string>
     <string name="title_activity_generic_activity">Generic Calculator</string>
     <string-array name="gst_type">
         <item>Add GST</item>
@@ -120,4 +120,8 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="currency">\u20B9</string>
+    <string name="default_channel_id">"MARKETING"</string>
+    <string name="text_channel_promotional_name">Promotional</string>
+    <string name="text_channel_promotional_description">Get Sale, Promotion, Discount and Recommendation alerts</string>
+
 </resources>

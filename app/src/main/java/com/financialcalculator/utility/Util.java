@@ -1,16 +1,18 @@
 package com.financialcalculator.utility;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
-import android.net.Uri;
+import android.provider.Settings;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.webkit.URLUtil;
-import android.webkit.WebView;
-import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-
+import com.financialcalculator.PrefManager.SharedPrefManager;
 import com.financialcalculator.R;
 import com.financialcalculator.SplashActivity;
 import com.financialcalculator.banking.fd.FDCalculatorActivity;
@@ -27,32 +29,37 @@ import com.financialcalculator.home.MainActivity;
 import com.financialcalculator.loanprofile.CreateLoanProfileActivity;
 import com.financialcalculator.loanprofile.HomeLoanEligibility;
 import com.financialcalculator.loanprofile.ViewLoanProfile;
+import com.financialcalculator.model.CalculatorEntity;
+import com.financialcalculator.model.ConfigModel;
+import com.financialcalculator.model.HomePageModel;
 import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.sip.LumpSumpSipActivity;
 import com.financialcalculator.sip.SIPCalculatorActivity;
 import com.financialcalculator.sip.SIPGoalCalculatorActivity;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Stack;
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import java.util.UUID;
 
 /**
  * Created by Rajeev Ranjan -  ABPB on 05-04-2019.
@@ -512,10 +519,10 @@ public class Util {
         }
     }
 
-    public static String loadJSONFromAsset(Context context) {
+    public static String loadJSONFromAsset(Context context, String fileName) {
         String json = null;
         try {
-            InputStream is = context.getAssets().open("dashboard.json");
+            InputStream is = context.getAssets().open(fileName + ".json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -528,4 +535,122 @@ public class Util {
         return json;
     }
 
+    @SuppressLint("HardwareIds")
+    public static String getUniqueDeviceId(Context context) {
+        String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        UUID deviceUuid = new UUID((long) androidId.hashCode(), (long) androidId.hashCode());
+        return deviceUuid.toString();
+    }
+
+    public static String getVersionName(Context context) {
+        String versionName = "";
+        PackageInfo pinfo;
+        try {
+            pinfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return pinfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionName;
+    }
+
+    public static int getVersionCode(Context context) {
+        int versionCode = 0;
+        PackageInfo pinfo;
+        try {
+            pinfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return pinfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionCode;
+    }
+
+    public static void get() {
+
+    }
+
+    public static boolean isRunning(Context ctx) {
+        ActivityManager activityManager = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(Integer.MAX_VALUE);
+
+        for (ActivityManager.RunningTaskInfo task : tasks) {
+            if (ctx.getPackageName().equalsIgnoreCase(task.baseActivity.getPackageName()))
+                return true;
+        }
+
+        return false;
+    }
+
+    public static List<HomePageModel> parseDashboardListFirebase(Activity activity) {
+        List<HomePageModel> homePageModels = new ArrayList<>();
+        try {
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<HomePageModel>>() {
+            }.getType();
+            return gson.fromJson(loadJSONFromAsset(activity, "dashboard"), type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return homePageModels;
+    }
+
+    public static ConfigModel getConfig(Activity activity) {
+        ConfigModel configModel = null;
+        try {
+            Gson gson = new Gson();
+            Type type = new TypeToken<ConfigModel>() {
+            }.getType();
+            return gson.fromJson(SharedPrefManager.getInstance(activity).getStringValueForKey(Constants.SHD_PRF_CONFIG, "{\n" +
+                    "  \"showAds\": true,\n" +
+                    "  \"playStoreVersion\": 7,\n" +
+                    "  \"BANNER_PLACEMENT_ID\": \"662782841791842_662807035122756\"\n" +
+                    "}"), type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return configModel;
+    }
+
+    public static SpannableStringBuilder evaluateString(String inputString, CalculatorEntity calculatorEntity) {
+        HashMap<Character, BigDecimal> bigDecimals = calculatorEntity.getInputHashmap();
+        HashMap<Character, String> spinnerHashmap = calculatorEntity.getSpinnerHashMap();
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+        String temp = "";
+        for (int i = 0; i < inputString.length(); i++) {
+            switch (inputString.charAt(i)) {
+                case '$':
+                    i = i + 1;
+                    if (Character.isUpperCase(inputString.charAt(i))) {
+                        temp = spinnerHashmap.get(inputString.charAt(i));
+                    } else {
+                        temp = bigDecimals.get(inputString.charAt(i)).setScale(0, 0).toPlainString();
+                    }
+                    //temp = bigDecimals.get(inputString.charAt(i)).setScale(0, 0).toPlainString();
+                    ssb.append(temp);
+                    //ssb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), ssb.length() - temp.length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    //ssb.setSpan(new ForegroundColorSpan(Color.parseColor("#ff000000")), ssb.length() - temp.length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    break;
+                case '@':
+                    i = i + 1;
+                    String formulae = "";
+                    while (inputString.charAt(i) != '@') {
+                        formulae = formulae + inputString.charAt(i);
+                        i++;
+                    }
+                    temp = evaluate(formulae, bigDecimals).setScale(0, 0).toPlainString();
+                    ssb.append(temp);
+                    //ssb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), ssb.length() - temp.length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    //ssb.setSpan(new ForegroundColorSpan(Color.parseColor("#ff000000")), ssb.length() - temp.length(), ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    //result = result + evaluate(formulae, bigDecimals).setScale(0);
+                    //ssb.setSpan(new ForegroundColorSpan(Color.parseColor("#3F51B5")), i, bigDecimals.get(inputString.charAt(i)).setScale(0).toPlainString().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    break;
+                default:
+                    ssb.append(inputString.charAt(i));
+                    //result = result + inputString.charAt(i);
+                    break;
+            }
+        }
+        return ssb;
+    }
 }

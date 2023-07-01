@@ -5,13 +5,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 
-import com.financialcalculator.BuildConfig;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.financialcalculator.R;
 import com.financialcalculator.banking.fd.FDCalculatorActivity;
 import com.financialcalculator.emi.emicalculator.EmiCalculatorActivity;
@@ -21,8 +20,7 @@ import com.financialcalculator.roomdb.tables.EMISearchHistoryEntity;
 import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -40,14 +38,14 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
     RoomDatabase appDatabase;
     List<GenericSearchHistoryEntity> genericSearchHistoryEntities;
     GenericSearchHistoryAdapter genericSearchHistoryAdapter;
-    private AdView mAdView;
+    //private AdView mAdView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serach_history_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setUPAdd();
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         appDatabase = RoomDatabase.getAppDatabase(this);
         if (getIntent().hasExtra("TYPE")) {
@@ -59,28 +57,7 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
 
         //init_Adapters();
     }
-    private void setUPAdd() {
 
-        mAdView = findViewById(R.id.adView);
-
-        if (BuildConfig.DEBUG) {
-
-            AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
-                    .build();
-            mAdView.loadAd(adRequest);
-
-        } else {
-
-            if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
-                AdRequest adRequest = new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
-            } else {
-                mAdView.setVisibility(View.GONE);
-            }
-
-        }
-    }
     /*@Override
     protected void onRestart() {
         super.onRestart();

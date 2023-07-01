@@ -4,16 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Space;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.financialcalculator.R;
-import com.financialcalculator.generic.viewholders.DateViewHolder;
-import com.financialcalculator.generic.viewholders.EditTextSpinnerViewHolder;
-import com.financialcalculator.generic.viewholders.SpinnerTitleViewHolder;
-import com.financialcalculator.generic.viewholders.SpinnerViewHolder;
-import com.financialcalculator.generic.viewholders.WebViewViewHolder;
 import com.financialcalculator.model.HomePageModel;
 import com.financialcalculator.newdashboard.viewholders.AdViewViewHolder;
 import com.financialcalculator.newdashboard.viewholders.CalculatorViewHolder;

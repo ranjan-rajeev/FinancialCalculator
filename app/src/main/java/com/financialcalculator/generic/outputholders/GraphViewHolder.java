@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.financialcalculator.R;
 import com.financialcalculator.generic.GenericCalculatorActivity;
-import com.financialcalculator.generic.viewholders.ButtonViewHolder;
 import com.financialcalculator.model.GenericOutputEntity;
 import com.financialcalculator.utility.Util;
 import com.google.gson.Gson;
@@ -54,6 +53,36 @@ public class GraphViewHolder extends RecyclerView.ViewHolder {
         new CalculateResult().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
+    public void animateProgressBar(ProgressBar progressBar) {
+        progressBar.setProgress(100);
+       /* ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, 100); // see this max value coming back here,// we animate towards that value
+        animation.setDuration(0); // in milliseconds
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.start();*/
+    }
+
+    private void bindData() {
+        try {
+            animateProgressBar(progressInterestFull);
+            animateProgressBar(progressPrincipalFull);
+
+            tvPrincipalTitle.setText(graphViewEntity.getTotMsg());
+            tvTotalPrincipalValue.setText(Util.getCommaSeparated(totalPrincipal.toPlainString()) + " " + genericOutputEntity.getCurr());
+            tvTotalPrincipalPercent.setText("" + totalPercent + "%");
+
+            tvIntTitle.setText(graphViewEntity.getIntMsg());
+            tvProgressInterest.setText(Util.getCommaSeparated(interest.toPlainString()) + " " + genericOutputEntity.getCurr());
+            tvProgressInterestPercent.setText("" + interestPercent + "%");
+
+            animateProgressBar(progressPrincipal, totalPercent.intValue());
+            animateProgressBar(progressInterest, interestPercent.intValue());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     private class CalculateResult extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -65,10 +94,11 @@ public class GraphViewHolder extends RecyclerView.ViewHolder {
             graphViewEntity = gson.fromJson(genericOutputEntity.getData(), type);
 
             try {
-                totalPrincipal = Util.evaluate(graphViewEntity.getTotFormulae(), GenericCalculatorActivity.calculatorEntity.inputHashmap);
+                GenericCalculatorActivity activity = (GenericCalculatorActivity) context;
+                totalPrincipal = Util.evaluate(graphViewEntity.getTotFormulae(), activity.getCalculatorEntity().inputHashmap);
                 totalPrincipal = totalPrincipal.setScale(0, BigDecimal.ROUND_HALF_UP);
 
-                interest = Util.evaluate(graphViewEntity.getIntFormulae(), GenericCalculatorActivity.calculatorEntity.inputHashmap);
+                interest = Util.evaluate(graphViewEntity.getIntFormulae(), activity.getCalculatorEntity().inputHashmap);
                 interest = interest.setScale(0, BigDecimal.ROUND_HALF_UP);
 
                 BigDecimal totIntPrin = Util.applyOp('+', totalPrincipal, interest);
@@ -95,35 +125,6 @@ public class GraphViewHolder extends RecyclerView.ViewHolder {
 
             //tvValue.setText(genericOutputEntity.getCurr() + " " + Util.getCommaSeparated(bigDecimal.toPlainString()));
         }
-    }
-
-    private void bindData() {
-        try {
-            animateProgressBar(progressInterestFull);
-            animateProgressBar(progressPrincipalFull);
-
-            tvPrincipalTitle.setText(graphViewEntity.getTotMsg());
-            tvTotalPrincipalValue.setText(Util.getCommaSeparated(totalPrincipal.toPlainString()) + " " + genericOutputEntity.getCurr());
-            tvTotalPrincipalPercent.setText("" + totalPercent + "%");
-
-            tvIntTitle.setText(graphViewEntity.getIntMsg());
-            tvProgressInterest.setText(Util.getCommaSeparated(interest.toPlainString()) + " " + genericOutputEntity.getCurr());
-            tvProgressInterestPercent.setText("" + interestPercent + "%");
-
-            animateProgressBar(progressPrincipal, totalPercent.intValue());
-            animateProgressBar(progressInterest, interestPercent.intValue());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    public void animateProgressBar(ProgressBar progressBar) {
-        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, 100); // see this max value coming back here,// we animate towards that value
-        animation.setDuration(0); // in milliseconds
-        animation.setInterpolator(new DecelerateInterpolator());
-        animation.start();
     }
 
     public void animateProgressBar(ProgressBar progressBar, int max) {

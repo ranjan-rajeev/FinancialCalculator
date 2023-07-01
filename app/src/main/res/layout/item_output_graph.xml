@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/margin_8"
+    android:paddingBottom="@dimen/margin_8">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -42,11 +45,11 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:gravity="center"
-                android:text="0%"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimary"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_size_20"
+                android:textStyle="bold"
+                tools:text="0%" />
 
 
         </RelativeLayout>
@@ -57,9 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/progressInterest"
+            android:layout_marginTop="@dimen/margin_10"
             android:gravity="center"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:text="Total Interest Payable"
             android:textColor="@color/uvv_black" />
 
@@ -69,7 +71,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvInt"
             android:gravity="center"
-            android:padding="10dp"
             android:text="0 \u20B9"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
@@ -117,7 +118,7 @@
                 android:text="0%"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimary"
-                android:textSize="30sp"
+                android:textSize="@dimen/text_size_20"
                 android:textStyle="bold" />
 
 
@@ -129,9 +130,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/progressInterest"
+            android:layout_marginTop="@dimen/margin_10"
             android:gravity="center"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:text="Total Principal"
             android:textColor="@color/uvv_black" />
 
@@ -141,7 +141,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvInt"
             android:gravity="center"
-            android:padding="10dp"
             android:text="0 \u20B9"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"

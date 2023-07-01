@@ -3,6 +3,7 @@ package com.financialcalculator.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 
 public class CalculatorEntity implements Serializable {
 
@@ -23,8 +24,21 @@ public class CalculatorEntity implements Serializable {
     private String iconUrl;
     private String input;
     private String output;
+    private List<GenericViewTypeModel> inputList;
+    private List<GenericOutputEntity> outputList;
     private String redUrl;
+    private int version;
+
     public HashMap<Character, BigDecimal> inputHashmap = new HashMap<>();
+    public HashMap<Character, String> spinnerHashMap = new HashMap<>();
+
+    public HashMap<Character, String> getSpinnerHashMap() {
+        return spinnerHashMap;
+    }
+
+    public void setSpinnerHashMap(HashMap<Character, String> spinnerHashMap) {
+        this.spinnerHashMap = spinnerHashMap;
+    }
 
     public HashMap<Character, BigDecimal> getInputHashmap() {
         return inputHashmap;
@@ -66,6 +80,30 @@ public class CalculatorEntity implements Serializable {
         this.iconUrl = iconUrl;
     }
 
+    public List<GenericViewTypeModel> getInputList() {
+        return inputList;
+    }
+
+    public void setInputList(List<GenericViewTypeModel> inputList) {
+        this.inputList = inputList;
+    }
+
+    public List<GenericOutputEntity> getOutputList() {
+        return outputList;
+    }
+
+    public void setOutputList(List<GenericOutputEntity> outputList) {
+        this.outputList = outputList;
+    }
+
+    public String getRedUrl() {
+        return redUrl;
+    }
+
+    public void setRedUrl(String redUrl) {
+        this.redUrl = redUrl;
+    }
+
     public String getInput() {
         return input;
     }
@@ -82,11 +120,12 @@ public class CalculatorEntity implements Serializable {
         this.output = output;
     }
 
-    public String getRedUrl() {
-        return redUrl;
+    public int getVersion() {
+        return version;
     }
 
-    public void setRedUrl(String redUrl) {
-        this.redUrl = redUrl;
+    public void setVersion(int version) {
+        this.version = version;
     }
+
 }

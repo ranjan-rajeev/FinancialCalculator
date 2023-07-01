@@ -1,13 +1,14 @@
 package com.financialcalculator;
 
-import android.app.Application;
 import android.content.Context;
 
 import androidx.multidex.MultiDexApplication;
 
 import com.financialcalculator.roomdb.RoomDatabase;
-import com.financialcalculator.utility.Constants;
-import com.google.android.gms.ads.MobileAds;
+
+import java.util.Arrays;
+import java.util.List;
+
 
 public class FinanceCalculatorApplication extends MultiDexApplication {
     private static FinanceCalculatorApplication mInstance;
@@ -17,6 +18,11 @@ public class FinanceCalculatorApplication extends MultiDexApplication {
         super.onCreate();
         mInstance = this;
         RoomDatabase.getAppDatabase(this); //This will provide RoomDatabase Instance
+        addTestDevice();
+    }
+
+    private void addTestDevice() {
+
     }
 
     public static Context getContext() {

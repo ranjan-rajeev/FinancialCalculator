@@ -1,15 +1,14 @@
 package com.financialcalculator;
 
+import com.financialcalculator.model.CalculatorEntity;
 import com.financialcalculator.utility.Util;
 
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -108,4 +107,18 @@ public class ExampleUnitTest {
         String formulae = "(((( m / p ) ^ ( 1 / n) ) - 1 ) * 100 )";
         assertEquals(new BigDecimal(58.489319246100).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP), Util.evaluate(formulae, decimalHashMap));
     }
+
+    @Test
+    public void evaluate_expression_calculator() {
+        CalculatorEntity calculatorEntity = new CalculatorEntity();
+        HashMap<Character, BigDecimal> decimalHashMap = new HashMap<>();
+        decimalHashMap.put('p', new BigDecimal(111111).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP));
+        decimalHashMap.put('m', new BigDecimal(222222).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP));
+        decimalHashMap.put('n', new BigDecimal(5).setScale(Util.PRECISION, BigDecimal.ROUND_HALF_UP));
+        calculatorEntity.setInputHashmap(decimalHashMap);
+        String test = "Sum of $p and $m is : @p + m + 100 -100 @";
+        assertEquals("Sum of 111111 and 222222 is : 333333", Util.evaluateString(test, calculatorEntity));
+    }
+
+
 }
