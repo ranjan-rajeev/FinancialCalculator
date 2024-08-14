@@ -31,9 +31,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4
       - name: Setup JDK
-        uses: actions/setup-java@v3.13.0
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '21'
@@ -57,9 +57,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4
       - name: Setup JDK
-        uses: actions/setup-java@v3.13.0
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '21'
