@@ -30,7 +30,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private final int SPLASH_DISPLAY_LENGTH = 2000;
     SharedPrefManager sharedPrefManager;
 
     @Override
@@ -47,6 +46,7 @@ public class SplashActivity extends AppCompatActivity {
         }*/
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
         ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, 500); // see this max value coming back here,// we animate towards that value
+        int SPLASH_DISPLAY_LENGTH = 2000;
         animation.setDuration(SPLASH_DISPLAY_LENGTH); // in milliseconds
         animation.setInterpolator(new DecelerateInterpolator());
         animation.start();
