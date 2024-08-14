@@ -68,6 +68,7 @@ android {
         abortOnError false
         checkReleaseBuilds false
     }
+    namespace 'com.financialcalculator'
 }
 configurations {
     freeDebugImplementation
