@@ -15,8 +15,8 @@ android {
         minSdkVersion 16
         targetSdkVersion 31
 
-        versionCode 10
-        versionName "1.1.0"
+        versionCode 11
+        versionName "1.1.1"
 
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -41,25 +41,25 @@ android {
         }
     }
 
-    productFlavors {
-        flavorDimensions "default"
-        paid {
-            applicationId "com.horizonlabs.financialcalculator.paid"
-            resValue "string", "app_name", "Financial\nCalculator"
-            buildConfigField('int', 'platform', '4')
-            versionCode 3
-            versionName "1.0.0"
-        }
-        free {
-            applicationId "com.horizonlabs.financialcalculator"
-            resValue "string", "app_name", "Financial\nCalculator"
-            buildConfigField('int', 'platform', '3')
-            //For encryption disabled url
-            //buildConfigField('int', 'platform', '5')
-            versionCode 10
-            versionName "1.1.0"
-        }
-    }
+//    productFlavors {
+//        flavorDimensions "default"
+//        paid {
+//            applicationId "com.horizonlabs.financialcalculator.paid"
+//            resValue "string", "app_name", "Financial\nCalculator"
+//            buildConfigField('int', 'platform', '4')
+//            versionCode 3
+//            versionName "1.0.0"
+//        }
+//        free {
+//            applicationId "com.horizonlabs.financialcalculator"
+//            resValue "string", "app_name", "Financial\nCalculator"
+//            buildConfigField('int', 'platform', '3')
+//            //For encryption disabled url
+//            //buildConfigField('int', 'platform', '5')
+//            versionCode 10
+//            versionName "1.1.0"
+//        }
+//    }
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
@@ -70,12 +70,12 @@ android {
     }
     namespace 'com.financialcalculator'
 }
-configurations {
-    freeDebugImplementation
-    paidDebugImplementation
-    freeReleaseImplementation
-    paidReleaseImplementation
-}
+//configurations {
+//    freeDebugImplementation
+//    paidDebugImplementation
+//    freeReleaseImplementation
+//    paidReleaseImplementation
+//}
 
 dependencies {
     implementation 'com.google.android.play:core:1.10.2'

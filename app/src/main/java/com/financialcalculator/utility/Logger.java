@@ -11,7 +11,7 @@ import com.financialcalculator.BuildConfig;
 
 
 public class Logger {
-    public static final String TAG = BuildConfig.FLAVOR;
+    public static final String TAG = "Free";
     private static boolean DEBUG_ENABLED = BuildConfig.DEBUG;
 
     private Logger() {
