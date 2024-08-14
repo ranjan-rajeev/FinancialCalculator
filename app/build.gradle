@@ -15,8 +15,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 35
 
-        versionCode 13
-        versionName "1.1.2"
+        versionCode 14
+        versionName "1.1.4"
 
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -97,7 +97,7 @@ dependencies {
     //    Retrofit for network loading
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.10.1'
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttp3Version"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttp3Version"
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
@@ -114,7 +114,7 @@ dependencies {
     //facebook ad
     //implementation 'com.facebook.android:audience-network-sdk:6.7.0'
 
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:5.2.0'
 
 }

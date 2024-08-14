@@ -42,7 +42,7 @@
     <string name="title_activity_lump_sump_sip">Lumpsum Calculator</string>
 </resources>-->
 <resources>
-    <!-- <string name="app_name">FinancialCalculator</string>-->
+     <string name="app_name">Finance Calculator</string>
     <string name="preferences">financialcalculator</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
