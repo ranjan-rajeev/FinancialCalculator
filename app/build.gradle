@@ -12,11 +12,11 @@ android {
     compileSdk 34
     defaultConfig {
         applicationId "com.horizonlabs.financialcalculator"
-        minSdkVersion 21
-        targetSdkVersion 35
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
 
-        versionCode 14
-        versionName "1.1.4"
+        versionCode rootProject.versionCode
+        versionName rootProject.versionName
 
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
