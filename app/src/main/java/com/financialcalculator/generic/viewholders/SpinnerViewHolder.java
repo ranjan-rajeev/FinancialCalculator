@@ -2,10 +2,12 @@ package com.financialcalculator.generic.viewholders;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.Html;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,20 +17,16 @@ import com.financialcalculator.model.GenericViewTypeModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.TreeMap;
 
 public class SpinnerViewHolder extends RecyclerView.ViewHolder {
 
     Spinner spinner;
+    TextView spTitle;
     ArrayAdapter<String> arrayAdapter;
     LinkedHashMap<String, String> keyValueHashMap = new LinkedHashMap<>();
     Context context;
@@ -37,12 +35,14 @@ public class SpinnerViewHolder extends RecyclerView.ViewHolder {
     public SpinnerViewHolder(View itemView) {
         super(itemView);
         this.spinner = itemView.findViewById(R.id.spinner);
+        this.spTitle = itemView.findViewById(R.id.spTitle);
     }
 
     public void setData(Context context, GenericViewTypeModel genericViewTypeModel) {
         this.context = context;
         this.genericViewTypeModel = genericViewTypeModel;
         this.genericViewTypeModel.setValid(true);
+        spTitle.setText(Html.fromHtml(genericViewTypeModel.getTitle()));
         new ConvertAsync().execute();
 
     }
@@ -83,7 +83,8 @@ public class SpinnerViewHolder extends RecyclerView.ViewHolder {
                     BigDecimal value = null;
                     String selectedItem = parent.getItemAtPosition(position).toString();
                     value = new BigDecimal(keyValueHashMap.get(selectedItem)).setScale(0, BigDecimal.ROUND_HALF_UP);
-                    ((GenericCalculatorActivity) context).setInputHashMap(genericViewTypeModel.getKey().charAt(0), value);
+                    ((GenericCalculatorActivity) context).setHashMapValue(genericViewTypeModel.getKey().charAt(0), value);
+                    ((GenericCalculatorActivity) context).setSpinnerHashMapValue(genericViewTypeModel.getKey().charAt(0), selectedItem);
 
                 } catch (Exception e) {
                     e.printStackTrace();

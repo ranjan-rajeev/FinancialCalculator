@@ -2,16 +2,6 @@ package com.financialcalculator.gst;
 
 import android.graphics.Rect;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputLayout;
-
-import androidx.core.widget.NestedScrollView;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -21,12 +11,16 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.financialcalculator.BuildConfig;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
+
 import com.financialcalculator.R;
 import com.financialcalculator.utility.BaseActivity;
-import com.financialcalculator.utility.Constants;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
+
 
 public class VatCalculatorActivity extends BaseActivity implements View.OnClickListener {
 
@@ -44,7 +38,7 @@ public class VatCalculatorActivity extends BaseActivity implements View.OnClickL
     ArrayAdapter<String> gstType;
 
     double originalCost = 0, gstApplied = 0, netPrice = 0;
-    private AdView mAdView;
+    //private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,34 +57,13 @@ public class VatCalculatorActivity extends BaseActivity implements View.OnClickL
         });
         //endregion
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setUPAdd();
+
         inti_widgets();
         setListeners();
         setAdapter();
     }
 
-    private void setUPAdd() {
 
-        mAdView = findViewById(R.id.adView);
-
-        if (BuildConfig.DEBUG) {
-
-            AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("5C24676FE04113F56F0B0A9566555BCD")
-                    .build();
-            mAdView.loadAd(adRequest);
-
-        } else {
-
-            if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
-                AdRequest adRequest = new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
-            } else {
-                mAdView.setVisibility(View.GONE);
-            }
-
-        }
-    }
 
     private void setAdapter() {
         gstType = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.vat_type));

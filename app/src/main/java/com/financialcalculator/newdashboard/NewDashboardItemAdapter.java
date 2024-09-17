@@ -9,14 +9,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.financialcalculator.R;
-import com.financialcalculator.dashboard.DashBoardFragment;
 import com.financialcalculator.generic.GenericCalculatorActivity;
 import com.financialcalculator.model.CalculatorEntity;
-import com.financialcalculator.model.DashboardEntity;
+import com.financialcalculator.utility.Constants;
 import com.financialcalculator.utility.GenericImageLoader;
 import com.financialcalculator.utility.Util;
 
@@ -68,7 +66,7 @@ public class NewDashboardItemAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onClick(View view) {
                     if (calculatorEntity.getRedUrl().equalsIgnoreCase("GenericCalculatorActivity")) {
                         Intent intent = new Intent(mContext, GenericCalculatorActivity.class);
-                        intent.putExtra("CALCULATOR", calculatorEntity);
+                        intent.putExtra(Constants.INTENT_PARAM_CAL, calculatorEntity);
                         mContext.startActivity(intent);
                     } else {
                         Util.inAppRedirection(mContext, calculatorEntity.getRedUrl(), calculatorEntity.getCalName());

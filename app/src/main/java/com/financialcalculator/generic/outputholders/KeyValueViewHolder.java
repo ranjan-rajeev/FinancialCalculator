@@ -2,6 +2,7 @@ package com.financialcalculator.generic.outputholders;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,14 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.financialcalculator.R;
 import com.financialcalculator.generic.GenericCalculatorActivity;
-import com.financialcalculator.model.EditTextEntity;
 import com.financialcalculator.model.GenericOutputEntity;
-import com.financialcalculator.model.GenericViewTypeModel;
 import com.financialcalculator.utility.Util;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 
 public class KeyValueViewHolder extends RecyclerView.ViewHolder {
@@ -34,8 +30,9 @@ public class KeyValueViewHolder extends RecyclerView.ViewHolder {
     public void setData(Context context, GenericOutputEntity genericOutputEntity) {
         this.context = context;
         this.genericOutputEntity = genericOutputEntity;
-        tvTitle.setText(genericOutputEntity.getOutMsg());
+        //tvTitle.setText(genericOutputEntity.getOutMsg());
         new CalculateResult().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        new EvaluateExpression().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     private class CalculateResult extends AsyncTask<Void, Void, BigDecimal> {
@@ -44,12 +41,13 @@ public class KeyValueViewHolder extends RecyclerView.ViewHolder {
         protected BigDecimal doInBackground(Void... voids) {
             BigDecimal result = new BigDecimal(0).setScale(0);
             try {
-                result = Util.evaluate(genericOutputEntity.getFormulae(), GenericCalculatorActivity.calculatorEntity.inputHashmap);
+                GenericCalculatorActivity activity = (GenericCalculatorActivity) context;
+                result = Util.evaluate(genericOutputEntity.getFormulae(), activity.getCalculatorEntity().inputHashmap);
                 result = result.setScale(0, BigDecimal.ROUND_HALF_UP);
-                ((GenericCalculatorActivity) context).setInputHashMap(genericOutputEntity.getOutKey().charAt(0), result);
+                ((GenericCalculatorActivity) context).setHashMapValue(genericOutputEntity.getOutKey().charAt(0), result);
             } catch (Exception e) {
                 e.printStackTrace();
-                ((GenericCalculatorActivity) context).setInputHashMap(genericOutputEntity.getOutKey().charAt(0), result);
+                ((GenericCalculatorActivity) context).setHashMapValue(genericOutputEntity.getOutKey().charAt(0), result);
             }
             return result;
         }
@@ -64,6 +62,29 @@ public class KeyValueViewHolder extends RecyclerView.ViewHolder {
                 tvValue.setText(Util.getCommaSeparated(bigDecimal.toPlainString()));
             }
 
+        }
+    }
+
+    private class EvaluateExpression extends AsyncTask<Void, Void, SpannableStringBuilder> {
+
+        @Override
+        protected SpannableStringBuilder doInBackground(Void... voids) {
+            try {
+                GenericCalculatorActivity activity = (GenericCalculatorActivity) context;
+                return Util.evaluateString(genericOutputEntity.getOutMsg(), activity.getCalculatorEntity());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(SpannableStringBuilder result) {
+            super.onPostExecute(result);
+            if (result != null) {
+                tvTitle.setText(result);
+            }
         }
     }
 }

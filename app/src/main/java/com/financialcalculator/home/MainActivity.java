@@ -1,69 +1,189 @@
 package com.financialcalculator.home;
 
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-
-import com.financialcalculator.newdashboard.NewDashBoardFragment;
-import com.financialcalculator.utility.BaseActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.financialcalculator.BuildConfig;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.financialcalculator.PrefManager.SharedPrefManager;
 import com.financialcalculator.R;
 import com.financialcalculator.about.AboutFragment;
-import com.financialcalculator.dashboard.DashBoardFragment;
-import com.financialcalculator.utility.Constants;
-import com.google.android.gms.ads.MobileAds;
+import com.financialcalculator.model.MoreInfoEntity;
+import com.financialcalculator.newdashboard.NewDashBoardFragment;
+import com.financialcalculator.roomdb.RoomDatabase;
+import com.financialcalculator.utility.BaseActivity;
+import com.financialcalculator.utility.Logger;
+import com.financialcalculator.utility.Util;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallState;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
+
+import java.util.List;
+
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     boolean doubleBackToExitPressedOnce = false;
 
+    private static final int REQUEST_UPDATE = 11;
+    private static boolean updatePopUpShown = false;
+    private AppUpdateManager mAppUpdateManager;
+    InstallStateUpdatedListener installStateUpdatedListener = new
+            InstallStateUpdatedListener() {
+                @Override
+                public void onStateUpdate(InstallState state) {
+                    if (state.installStatus() == InstallStatus.DOWNLOADED) {
+                        //CHECK THIS if AppUpdateType.FLEXIBLE, otherwise you can skip
+                        popupSnackbarForCompleteUpdate();
+                    } else if (state.installStatus() == InstallStatus.INSTALLED) {
+                        if (mAppUpdateManager != null) {
+                            mAppUpdateManager.unregisterListener(installStateUpdatedListener);
+                        }
+                    } else {
+                        Logger.d("InstallStateUpdatedListener: state: " + state.installStatus());
+                    }
+                }
+            };
+    private SharedPrefManager sharedPrefManager;
+    private RoomDatabase roomDatabase;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    protected void onStart() {
+        super.onStart();
+        setUpAppUpdateManager();
+    }
 
-        if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
-            MobileAds.initialize(this, getResources().getString(R.string.ad_app_id));
-        }
+    private void setUpAppUpdateManager() {
+        mAppUpdateManager = AppUpdateManagerFactory.create(this);
+        mAppUpdateManager.registerListener(installStateUpdatedListener);
+        mAppUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    || appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE /*AppUpdateType.IMMEDIATE*/)) {
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(findViewById(R.id.fab), "Let us update your app in background while you continue exploring the app !!!", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Update", v -> {
+                            try {
+                                mAppUpdateManager.startUpdateFlowForResult(
+                                        appUpdateInfo, AppUpdateType.FLEXIBLE /*AppUpdateType.IMMEDIATE*/, MainActivity.this, REQUEST_UPDATE);
+                            } catch (IntentSender.SendIntentException e) {
+                                e.printStackTrace();
+                            }
+                        }).show();
+            }
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    || appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE /*AppUpdateType.IMMEDIATE*/)) {
+
+                try {
+                    mAppUpdateManager.startUpdateFlowForResult(
+                            appUpdateInfo, AppUpdateType.IMMEDIATE /*AppUpdateType.IMMEDIATE*/, MainActivity.this, REQUEST_UPDATE);
+
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                //CHECK THIS if AppUpdateType.FLEXIBLE, otherwise you can skip
+                if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))
+                    popupSnackbarForCompleteUpdate();
+            } else {
+                Logger.d("checkForAppUpdateAvailability: something else");
             }
         });
+    }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+    private void popupSnackbarForCompleteUpdate() {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.fab),
+                "New app is ready!", Snackbar.LENGTH_INDEFINITE);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_home);
+        snackbar.setAction("Install", view -> {
+            if (mAppUpdateManager != null) {
+                mAppUpdateManager.completeUpdate();
+            }
+        });
+        //snackbar.setActionTextColor(getResources().getColor(R.color.install_color));
+        snackbar.show();
+    }
 
-        showDashboard();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_UPDATE) {
+            if (resultCode != RESULT_OK) {
+                Logger.d("onActivityResult: app download failed");
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!updatePopUpShown) {
+            checkFirebaseConfigUpdate();
+        }
+    }
+
+    private void checkFirebaseConfigUpdate() {
+        try {
+            int playStoreVersion = Util.getConfig(this).getPlayStoreVersion();
+            if (Util.getVersionCode(this) < playStoreVersion) {
+                updatePopUpShown = true;
+                showAppUpdateAlert(true);
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void showAppUpdateAlert(boolean b) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog alertDialog = builder.create();
+        builder.setTitle("Update App !!!");
+        builder.setMessage("We recommend that you update the app to the latest version for better performance.");
+        builder.setCancelable(b);
+        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                final String appPackageName = MainActivity.this.getPackageName(); // getPackageName() from Context or Activity object
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+            }
+        });
+        if (b) {
+            builder.setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    alertDialog.dismiss();
+                }
+            });
+        }
+        builder.show();
     }
 
     private void showDashboard() {
@@ -192,4 +312,79 @@ public class MainActivity extends BaseActivity
         return false;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        sharedPrefManager = SharedPrefManager.getInstance(this);
+        roomDatabase = RoomDatabase.getAppDatabase(this);
+       /* if (BuildConfig.FLAVOR.equals("free") && Constants.APP_TYPE == 0) {
+            MobileAds.initialize(this, getResources().getString(R.string.ad_app_id));
+        }*/
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_home);
+
+        showDashboard();
+        setUpAdView();
+
+    }
+
+    private class FetchMoreDetails extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+           /* long localCalVersion = sharedPrefManager.getLongValueForKey(FirebaseHelper.MORE_INFO_VERSION, 0L);
+            long serverVersion = FirebaseHelper.getMoreInfoVersion();
+            if (localCalVersion < serverVersion) {
+                //fetchMoreInfoFirebase();
+            }*/
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void list) {
+            super.onPostExecute(list);
+        }
+    }
+
+    private class StoreMoreInfo extends AsyncTask<Void, Void, Void> {
+        private List<MoreInfoEntity> moreInfoEntities;
+
+        public StoreMoreInfo(List<MoreInfoEntity> moreInfoEntities) {
+            this.moreInfoEntities = moreInfoEntities;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            /*roomDatabase.moreInfoDao().insertAll(moreInfoEntities);
+            sharedPrefManager.putLongValueForKey(FirebaseHelper.MORE_INFO_VERSION, FirebaseHelper.getMoreInfoVersion());
+            */
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void list) {
+            super.onPostExecute(list);
+        }
+    }
 }

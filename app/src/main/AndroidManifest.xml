@@ -13,6 +13,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
+        <!--<service
+            android:name=".firebase.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="false"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>-->
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher_round" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_channel_id" />
+
         <activity
             android:name=".generic.WebViewActivity"
             android:label="@string/app_name"
@@ -41,15 +64,19 @@
         <activity
             android:name=".SplashActivity"
             android:noHistory="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".home.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:launchMode="singleTop"
+            android:name=".home.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
         <activity
             android:name=".emi.emicalculator.EmiCalculatorActivity"
@@ -70,11 +97,11 @@
             -->
         </activity>
         <activity
-            android:windowSoftInputMode="stateVisible|adjustPan"
             android:name=".emi.emicompare.EmiCompareActivity"
             android:label="@string/title_activity_emi_compare"
             android:parentActivityName=".home.MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateVisible|adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.financialcalculator.home.MainActivity" />

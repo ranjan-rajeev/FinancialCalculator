@@ -1,27 +1,39 @@
 package com.financialcalculator.utility;
 
+import static com.facebook.ads.AdSettings.IntegrationErrorMode.INTEGRATION_ERROR_CALLBACK_MODE;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdListener;
+import com.facebook.ads.AdSettings;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
+import com.financialcalculator.BuildConfig;
 import com.financialcalculator.R;
+import com.financialcalculator.model.ConfigModel;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Rohit on 12/12/15.
@@ -29,6 +41,8 @@ import java.text.DecimalFormat;
 public class BaseActivity extends AppCompatActivity {
 
     ProgressDialog dialog;
+    AdView adView = null;
+    String BANNER_PLACEMENT_ID = "IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID";//662782841791842_662807035122756 //IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID
 
     public void dialogExit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -64,7 +78,6 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     public static String getFormattedDouble(double d) {
@@ -235,6 +248,67 @@ public class BaseActivity extends AppCompatActivity {
             return Util.removeComma(editText.getText().toString());
         }
         return "";
+    }
+
+    public void setUpAdView() {
+
+        // Instantiate an AdView object.
+        // NOTE: The placement ID from the Facebook Monetization Manager identifies your App.
+        // To get test ads, add IMG_16_9_APP_INSTALL# to your placement id. Remove this when your app is ready to serve real ads.
+        ConfigModel configModel = Util.getConfig(BaseActivity.this);
+        if (configModel == null) return;
+        if (!configModel.isShowAds()) return;
+
+        LinearLayout adContainer = (LinearLayout) findViewById(R.id.banner_container);
+        if (adContainer == null) return;
+        if (adView == null)
+            adView = new AdView(this, configModel.getBANNER_PLACEMENT_ID(), AdSize.BANNER_HEIGHT_50);
+        // Find the Ad Container
+
+        // Add the ad view to your activity layout
+        adContainer.addView(adView);
+
+        //Add test devices
+        List<String> testDevices = new ArrayList<>();
+        testDevices.add("6b29c319-2a2d-4821-9a70-ae1466e7a7cb");
+        testDevices.add("53a1eb19-c027-4d21-85cd-211deeea5975");
+        testDevices.add("96aca51a-eac1-47ea-9bd3-ec736bc473e1");
+        AdSettings.addTestDevices(testDevices);
+        AdSettings.setIntegrationErrorMode(INTEGRATION_ERROR_CALLBACK_MODE);
+
+        AdListener adListener = new AdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                Logger.d("Ad Failed to Load " + adError.getErrorMessage());
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                // Ad loaded callback
+                Logger.d("Ad Loaded success");
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                // Ad clicked callback
+                Logger.d("Ad Clicked");
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+                // Ad impression logged callback
+            }
+        };
+        // Request an ad
+        adView.loadAd(adView.buildLoadAdConfig().withAdListener(adListener).build());
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
     }
 }
 
