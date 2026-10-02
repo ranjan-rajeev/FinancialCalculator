@@ -37,6 +37,7 @@ import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
 import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
+import com.financialcalculator.utility.InAppReviewManager;
 import com.financialcalculator.utility.Logger;
 import com.financialcalculator.utility.Util;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -83,6 +84,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
 
     RoomDatabase roomDatabase;
     GenericSearchHistoryEntity genericSearchHistoryEntity;
+    private InAppReviewManager inAppReviewManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +95,7 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         roomDatabase = RoomDatabase.getAppDatabase(this);
-
+        inAppReviewManager = new InAppReviewManager(this);
 
         init();
         init_views();
@@ -328,6 +330,24 @@ public class EmiCalculatorActivity extends BaseActivity implements View.OnClickL
     private void showLayouts() {
         cvResult.setVisibility(View.VISIBLE);
         cvDetails.setVisibility(View.VISIBLE);
+
+        // Request in-app review after successful calculation (with 3-day cooldown)
+        inAppReviewManager.requestReviewIfNeeded(this, new InAppReviewManager.OnReviewCallback() {
+            @Override
+            public void onReviewShown() {
+                Logger.d("In-app review shown successfully");
+            }
+
+            @Override
+            public void onReviewSkipped(String reason) {
+                Logger.d("In-app review skipped: " + reason);
+            }
+
+            @Override
+            public void onReviewFailed(Exception e) {
+                Logger.d("In-app review failed: " + e.getMessage());
+            }
+        });
     }
 
 

@@ -18,6 +18,7 @@ import com.financialcalculator.model.GenericOutputEntity;
 import com.financialcalculator.model.GenericViewTypeModel;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
+import com.financialcalculator.utility.InAppReviewManager;
 import com.financialcalculator.utility.Logger;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -38,6 +39,7 @@ public class GenericCalculatorActivity extends BaseActivity implements Calculato
     List<GenericViewTypeModel> genericViewTypeModelList;
     NestedScrollView scrollView;
     GenericCalculatorRepository genericCalculatorRepository;
+    private InAppReviewManager inAppReviewManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class GenericCalculatorActivity extends BaseActivity implements Calculato
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        inAppReviewManager = new InAppReviewManager(this);
         init_widgets();
         if (null != getIntent()) {
             try {
@@ -186,6 +189,24 @@ public class GenericCalculatorActivity extends BaseActivity implements Calculato
         if (calculatorEntity.getOutputList() == null) return;
         bindOutputRecycler(calculatorEntity.getOutputList());
         bindMoreInfoRecycler();
+        
+        // Request in-app review after successful calculation (with 3-day cooldown)
+        inAppReviewManager.requestReviewIfNeeded(this, new InAppReviewManager.OnReviewCallback() {
+            @Override
+            public void onReviewShown() {
+                Logger.d("In-app review shown successfully");
+            }
+
+            @Override
+            public void onReviewSkipped(String reason) {
+                Logger.d("In-app review skipped: " + reason);
+            }
+
+            @Override
+            public void onReviewFailed(Exception e) {
+                Logger.d("In-app review failed: " + e.getMessage());
+            }
+        });
         //new ParseOutput().execute();
     }
 
