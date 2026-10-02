@@ -141,15 +141,13 @@ public class LumpSumpSipActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         hideKeyBoard(view, this);
-        switch (view.getId()) {
-            case R.id.tvCalculate:
-                if (isValidInput()) {
-                    showLayouts();
-                    new AsyncCalculateEMiDetails().execute();
-                    bindDeposits();
-                    updateGenericHistory();
-                }
-                break;
+        if (view.getId() == R.id.tvCalculate) {
+            if (isValidInput()) {
+                showLayouts();
+                new AsyncCalculateEMiDetails().execute();
+                bindDeposits();
+                updateGenericHistory();
+            }
         }
     }
 
@@ -481,14 +479,13 @@ public class LumpSumpSipActivity extends BaseActivity implements View.OnClickLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id) {
-            case R.id.action_history:
-                startActivityForResult(new Intent(this, SerachHistoryACtivity.class)
-                        .putExtra("TYPE", Constants.LUMPSUMP_CALCULATOR), SerachHistoryACtivity.REQUEST_CODE);
+        if (id == R.id.action_history) {
+            startActivityForResult(new Intent(this, SerachHistoryACtivity.class)
+                    .putExtra("TYPE", Constants.LUMPSUMP_CALCULATOR), SerachHistoryACtivity.REQUEST_CODE);
 
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 

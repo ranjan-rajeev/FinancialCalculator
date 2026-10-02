@@ -92,10 +92,8 @@ public class SerachHistoryACtivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fab:
-                redirectToResACtivity();
-                break;
+        if (view.getId() == R.id.fab) {
+            redirectToResACtivity();
         }
     }
 

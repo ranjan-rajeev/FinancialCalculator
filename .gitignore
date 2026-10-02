@@ -1,10 +1,22 @@
-*.iml
-.gradle
-/local.properties
-.DS_Store
+# Built artifacts
 /build
-/.idea
-/.gradle
+/app/build
 /captures
 .externalNativeBuild
+.cxx
+
+# Gradle
+.gradle
+
+# Local configuration
+/local.properties
+
+# Secrets — keystore.properties must never be committed
+/keystore.properties
+*.jks
+*.keystore
+
+# IDE
 .idea
+*.iml
+.DS_Store

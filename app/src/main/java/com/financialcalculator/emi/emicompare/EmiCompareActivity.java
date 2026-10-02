@@ -145,15 +145,13 @@ public class EmiCompareActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         hideKeyBoard(view, this);
-        switch (view.getId()) {
-            case R.id.tvDetails:
-                if (isValidInput()) {
-                    scrollToRow(scrollView, llEmiCAl, cvResult);
-                    calculateEmi(getCommaRemovedText(etPrincipal), getCommaRemovedText(etInterest), getCommaRemovedText(etTenure));
-                    calculateEmiLoan2(getCommaRemovedText(etPrincipalLoan2), getCommaRemovedText(etInterestLoan2), getCommaRemovedText(etTenureLoan2));
-                    updateGenericHistory();
-                }
-                break;
+        if (view.getId() == R.id.tvDetails) {
+            if (isValidInput()) {
+                scrollToRow(scrollView, llEmiCAl, cvResult);
+                calculateEmi(getCommaRemovedText(etPrincipal), getCommaRemovedText(etInterest), getCommaRemovedText(etTenure));
+                calculateEmiLoan2(getCommaRemovedText(etPrincipalLoan2), getCommaRemovedText(etInterestLoan2), getCommaRemovedText(etTenureLoan2));
+                updateGenericHistory();
+            }
         }
     }
 
@@ -346,14 +344,13 @@ public class EmiCompareActivity extends BaseActivity implements View.OnClickList
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id) {
-            case R.id.action_history:
-                startActivityForResult(new Intent(this, SerachHistoryACtivity.class)
-                        .putExtra("TYPE", Constants.COMPARE_LOAN), SerachHistoryACtivity.REQUEST_CODE);
+        if (id == R.id.action_history) {
+            startActivityForResult(new Intent(this, SerachHistoryACtivity.class)
+                    .putExtra("TYPE", Constants.COMPARE_LOAN), SerachHistoryACtivity.REQUEST_CODE);
 
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 

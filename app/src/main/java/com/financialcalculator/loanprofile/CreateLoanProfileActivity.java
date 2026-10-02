@@ -297,44 +297,39 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         hideKeyBoard(view, this);
-        switch (view.getId()) {
+        if (view.getId() == R.id.tvCalculate) {
+            if (isValidInput()) {
+                scrollToRow(scrollView, llEmiCAl, cvResult);
+                calculateEmi(getCommaRemovedText(etPrincipal), getCommaRemovedText(etInterest), getCommaRemovedText(etTenure));
+            }
+        } else if (view.getId() == R.id.tvDetails) {
+            if (isValidInput()) {
+                if (!isEdit) {
 
-            case R.id.tvCalculate:
-                if (isValidInput()) {
-                    scrollToRow(scrollView, llEmiCAl, cvResult);
-                    calculateEmi(getCommaRemovedText(etPrincipal), getCommaRemovedText(etInterest), getCommaRemovedText(etTenure));
-                }
-                break;
-            case R.id.tvDetails:
-                if (isValidInput()) {
-                    if (!isEdit) {
+                    emiSearchHistoryEntity = new EMISearchHistoryEntity(Constants.EMI_CALCULATOR,
+                            getCommaRemovedText(etPrincipal), getCommaRemovedText(etInterest), getCommaRemovedText(etTenure), "MONTHS", Util.getLongDate(etDateFirstInstallment.getText().toString()));
 
-                        emiSearchHistoryEntity = new EMISearchHistoryEntity(Constants.EMI_CALCULATOR,
-                                getCommaRemovedText(etPrincipal), getCommaRemovedText(etInterest), getCommaRemovedText(etTenure), "MONTHS", Util.getLongDate(etDateFirstInstallment.getText().toString()));
-
-                        if (rbYear.isChecked()) {
-                            emiSearchHistoryEntity.setLoanTenureTYpe("YEARS");
-                        }
-                        isEdit = true;
-                        //new InsertEMiHistory().execute();
-                    } else {
-                        if (rbYear.isChecked()) {
-                            emiSearchHistoryEntity.setLoanTenureTYpe("YEARS");
-                        } else {
-                            emiSearchHistoryEntity.setLoanTenureTYpe("MONTHS");
-                        }
-                        emiSearchHistoryEntity.setLoanTenure(getCommaRemovedText(etTenure));
-
-                        emiSearchHistoryEntity.setPrincipalAmt(getCommaRemovedText(etPrincipal));
-                        emiSearchHistoryEntity.setRoi(getCommaRemovedText(etInterest));
-                        emiSearchHistoryEntity.setUpdatedTime(Util.getLongDate(etDateFirstInstallment.getText().toString()));
-                        // new UpdateEMiHistory().execute();
+                    if (rbYear.isChecked()) {
+                        emiSearchHistoryEntity.setLoanTenureTYpe("YEARS");
                     }
-                    showLayouts();
-                    new AsyncCalculateEMiDetails().execute();
-                    break;
-                }
+                    isEdit = true;
+                    //new InsertEMiHistory().execute();
+                } else {
+                    if (rbYear.isChecked()) {
+                        emiSearchHistoryEntity.setLoanTenureTYpe("YEARS");
+                    } else {
+                        emiSearchHistoryEntity.setLoanTenureTYpe("MONTHS");
+                    }
+                    emiSearchHistoryEntity.setLoanTenure(getCommaRemovedText(etTenure));
 
+                    emiSearchHistoryEntity.setPrincipalAmt(getCommaRemovedText(etPrincipal));
+                    emiSearchHistoryEntity.setRoi(getCommaRemovedText(etInterest));
+                    emiSearchHistoryEntity.setUpdatedTime(Util.getLongDate(etDateFirstInstallment.getText().toString()));
+                    // new UpdateEMiHistory().execute();
+                }
+                showLayouts();
+                new AsyncCalculateEMiDetails().execute();
+            }
         }
 
     }
@@ -666,14 +661,13 @@ public class CreateLoanProfileActivity extends BaseActivity implements View.OnCl
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id) {
-            case R.id.action_history:
-                startActivityForResult(new Intent(this, SerachHistoryACtivity.class)
-                        .putExtra("TYPE", Constants.LOAN_PROFILE), SerachHistoryACtivity.REQUEST_CODE);
+        if (id == R.id.action_history) {
+            startActivityForResult(new Intent(this, SerachHistoryACtivity.class)
+                    .putExtra("TYPE", Constants.LOAN_PROFILE), SerachHistoryACtivity.REQUEST_CODE);
 
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 

@@ -251,21 +251,16 @@ public class MainActivity extends BaseActivity
             @Override
             public void run() {
 
-                switch (item.getItemId()) {
-                    case R.id.nav_home:
-                        getSupportActionBar().setTitle("HOME");
-                        loadFragment(new NewDashBoardFragment());
-                        break;
-                    case R.id.nav_about:
-                        getSupportActionBar().setTitle("About");
-                        loadFragment(new AboutFragment());
-                        break;
-                    case R.id.nav_share:
-                        shareWhatsApp();
-                        break;
-                    case R.id.nav_rate:
-                        launchMarket();
-                        break;
+                if (item.getItemId() == R.id.nav_home) {
+                    getSupportActionBar().setTitle("HOME");
+                    loadFragment(new NewDashBoardFragment());
+                } else if (item.getItemId() == R.id.nav_about) {
+                    getSupportActionBar().setTitle("About");
+                    loadFragment(new AboutFragment());
+                } else if (item.getItemId() == R.id.nav_share) {
+                    shareWhatsApp();
+                } else if (item.getItemId() == R.id.nav_rate) {
+                    launchMarket();
                 }
             }
         }, 200);

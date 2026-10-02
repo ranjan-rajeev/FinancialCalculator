@@ -173,22 +173,20 @@ public class GstCalculatorActivity extends BaseActivity implements View.OnClickL
         }
 
         double rate = 0;
-        switch (checkedBUttonId) {
-            case R.id.rb1:
-                return 5;
-            case R.id.rb2:
-                return 12;
-            case R.id.rb3:
-                return 18;
-            case R.id.rb4:
-                return 28;
-            case R.id.rb5:
-                if (!etCustomRAte.getText().toString().equals(""))
-                    rate = Double.parseDouble(getCommaRemovedText(etCustomRAte));
-                return rate;
-
-            default:
-                return 0;
+        if (checkedBUttonId == R.id.rb1) {
+            return 5;
+        } else if (checkedBUttonId == R.id.rb2) {
+            return 12;
+        } else if (checkedBUttonId == R.id.rb3) {
+            return 18;
+        } else if (checkedBUttonId == R.id.rb4) {
+            return 28;
+        } else if (checkedBUttonId == R.id.rb5) {
+            if (!etCustomRAte.getText().toString().equals(""))
+                rate = Double.parseDouble(getCommaRemovedText(etCustomRAte));
+            return rate;
+        } else {
+            return 0;
         }
     }
 
@@ -196,14 +194,12 @@ public class GstCalculatorActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         hideKeyBoard(view, this);
-        switch (view.getId()) {
-            case R.id.tvCalculate:
-                if (isValid()) {
-                    scrollToRow(scrollView, llEmiCAl, cvResult);
-                    calculateGst();
-                    bindData();
-                }
-                break;
+        if (view.getId() == R.id.tvCalculate) {
+            if (isValid()) {
+                scrollToRow(scrollView, llEmiCAl, cvResult);
+                calculateGst();
+                bindData();
+            }
         }
     }
 
