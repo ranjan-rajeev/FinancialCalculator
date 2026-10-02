@@ -215,11 +215,17 @@ captured; keystore no longer in git.
    - `ZebraRowBackground` — reproduces `Util.getFixedBackground` / `getRandomBackground`.
    - `LegacyMarquee` — Compose `BasicMarquee` with the current `marqueeRepeatLimit="marquee_forever"`.
 3. Replace XML drawables with equivalent Compose `Shape`/`Brush`/`ImageVector` definitions.
-4. **Screenshot parity tests** (Roborazzi or Paparazzi) asserting rendered composables match
-   `docs/baseline/` within a tight pixel threshold.
+4. **Token + geometry unit tests.** Deliberately *not* screenshot-diff tests: the two
+   rendering pipelines antialias differently, so an automated pixel threshold is either
+   meaningless (loose enough to pass real drift) or permanently red (tight enough to be
+   useful). Instead assert the design tokens against `colors.xml` / `styles.xml` by parsing
+   them from disk, and assert each component's dp geometry and state colours directly.
+   Regression tests guard the tokens; **visual parity is confirmed by hand** against
+   `docs/baseline/`. (Roborazzi 1.43.1 and Paparazzi 2.0.0-alpha05 are both available and
+   verified to resolve against this toolchain if automated capture is wanted in Phase 10.)
 
-**Exit criteria:** every `ui/components` primitive has a passing screenshot-parity test against the
-Phase 0 baseline.
+**Exit criteria:** every `ui/components` primitive has passing token/geometry tests, and each
+has been eyeballed against the Phase 0 baseline.
 
 ---
 
