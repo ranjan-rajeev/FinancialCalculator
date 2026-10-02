@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,12 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.financialcalculator.R;
 import com.financialcalculator.model.ConfigModel;
@@ -70,6 +77,63 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        setupWindowInsets();
+    }
+
+    @Override
+    public void setContentView(View view) {
+        super.setContentView(view);
+        setupWindowInsets();
+    }
+
+    @Override
+    public void setContentView(View view, android.view.ViewGroup.LayoutParams params) {
+        super.setContentView(view, params);
+        setupWindowInsets();
+    }
+
+    private void setupWindowInsets() {
+        updateStatusBar();
+        View root = findViewById(android.R.id.content);
+        if (root != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+                View toolbar = findViewById(R.id.toolbar);
+                View topView = null;
+                if (toolbar != null && toolbar.getParent() instanceof View) {
+                    topView = (View) toolbar.getParent();
+                } else {
+                    topView = findViewById(R.id.appBar);
+                }
+
+                if (topView != null) {
+                    topView.setPadding(
+                            topView.getPaddingLeft(),
+                            systemBars.top,
+                            topView.getPaddingRight(),
+                            topView.getPaddingBottom()
+                    );
+                    v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom);
+                } else {
+                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                }
+                return WindowInsetsCompat.CONSUMED;
+            });
+        }
+    }
+
+    protected void updateStatusBar() {
+        Window window = getWindow();
+        WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (insetsController != null) {
+            insetsController.setAppearanceLightStatusBars(false);
+        }
     }
 
     public static String getFormattedDouble(double d) {

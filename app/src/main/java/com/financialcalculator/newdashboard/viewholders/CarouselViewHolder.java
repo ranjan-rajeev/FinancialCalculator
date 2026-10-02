@@ -23,8 +23,6 @@ import com.financialcalculator.newdashboard.LongBannerImagePagerAdapter;
 import com.financialcalculator.utility.BaseActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.synnapps.carouselview.CarouselView;
-import com.synnapps.carouselview.ImageListener;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
