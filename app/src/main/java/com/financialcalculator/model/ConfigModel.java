@@ -4,6 +4,8 @@ public class ConfigModel {
     String BANNER_PLACEMENT_ID;
     int playStoreVersion;
     boolean showAds;
+    boolean inAppReviewEnabled = true;
+    int inAppReviewCooldownDays = 2;
 
     public String getBANNER_PLACEMENT_ID() {
         return BANNER_PLACEMENT_ID;
@@ -27,5 +29,21 @@ public class ConfigModel {
 
     public void setShowAds(boolean showAds) {
         this.showAds = showAds;
+    }
+
+    public boolean isInAppReviewEnabled() {
+        return inAppReviewEnabled;
+    }
+
+    public void setInAppReviewEnabled(boolean inAppReviewEnabled) {
+        this.inAppReviewEnabled = inAppReviewEnabled;
+    }
+
+    public int getInAppReviewCooldownDays() {
+        return inAppReviewCooldownDays;
+    }
+
+    public void setInAppReviewCooldownDays(int inAppReviewCooldownDays) {
+        this.inAppReviewCooldownDays = inAppReviewCooldownDays;
     }
 }

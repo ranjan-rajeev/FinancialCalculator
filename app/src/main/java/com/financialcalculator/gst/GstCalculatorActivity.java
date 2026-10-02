@@ -17,6 +17,7 @@ import androidx.core.widget.NestedScrollView;
 
 import com.financialcalculator.R;
 import com.financialcalculator.utility.BaseActivity;
+import com.financialcalculator.utility.InAppReviewManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
@@ -39,6 +40,7 @@ public class GstCalculatorActivity extends BaseActivity implements View.OnClickL
 
     double originalCost = 0, gstApplied = 0, netPrice = 0;
     //private AdView mAdView;
+    private InAppReviewManager inAppReviewManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class GstCalculatorActivity extends BaseActivity implements View.OnClickL
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        inAppReviewManager = new InAppReviewManager(this);
         //region floating action button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -202,6 +205,24 @@ public class GstCalculatorActivity extends BaseActivity implements View.OnClickL
                     scrollToRow(scrollView, llEmiCAl, cvResult);
                     calculateGst();
                     bindData();
+
+                    // Request in-app review after successful calculation (with 3-day cooldown)
+                    inAppReviewManager.requestReviewIfNeeded(this, new InAppReviewManager.OnReviewCallback() {
+                        @Override
+                        public void onReviewShown() {
+                            // Review shown
+                        }
+
+                        @Override
+                        public void onReviewSkipped(String reason) {
+                            // Skipped due to cooldown
+                        }
+
+                        @Override
+                        public void onReviewFailed(Exception e) {
+                            // Failed
+                        }
+                    });
                 }
                 break;
         }

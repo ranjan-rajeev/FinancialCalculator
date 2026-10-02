@@ -30,6 +30,7 @@ import com.financialcalculator.roomdb.tables.GenericSearchHistoryEntity;
 import com.financialcalculator.searchhistory.SerachHistoryACtivity;
 import com.financialcalculator.utility.BaseActivity;
 import com.financialcalculator.utility.Constants;
+import com.financialcalculator.utility.InAppReviewManager;
 import com.financialcalculator.utility.Logger;
 
 import org.json.JSONException;
@@ -65,6 +66,7 @@ public class RDCalculatorActivity extends BaseActivity implements View.OnClickLi
 
     RoomDatabase roomDatabase;
     GenericSearchHistoryEntity genericSearchHistoryEntity;
+    private InAppReviewManager inAppReviewManager;
 
     //private AdView mAdView;
 
@@ -76,6 +78,7 @@ public class RDCalculatorActivity extends BaseActivity implements View.OnClickLi
         setSupportActionBar(toolbar);
 
         roomDatabase = RoomDatabase.getAppDatabase(this);
+        inAppReviewManager = new InAppReviewManager(this);
         //region floating button
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +115,24 @@ public class RDCalculatorActivity extends BaseActivity implements View.OnClickLi
     private void showLayouts() {
         cvResult.setVisibility(View.VISIBLE);
         cvDetails.setVisibility(View.VISIBLE);
+
+        // Request in-app review after successful calculation (with 3-day cooldown)
+        inAppReviewManager.requestReviewIfNeeded(this, new InAppReviewManager.OnReviewCallback() {
+            @Override
+            public void onReviewShown() {
+                Logger.d("In-app review shown successfully");
+            }
+
+            @Override
+            public void onReviewSkipped(String reason) {
+                Logger.d("In-app review skipped: " + reason);
+            }
+
+            @Override
+            public void onReviewFailed(Exception e) {
+                Logger.d("In-app review failed: " + e.getMessage());
+            }
+        });
     }
 
     private void setListeners() {

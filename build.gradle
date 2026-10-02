@@ -15,7 +15,7 @@ buildscript {
     }
 }
 ext {
-    versionCode = 18
+    versionCode = 19
     versionName  = "1.1.6"
     appIdSuffix  = 'paid'
     minSdkVersion = 21
