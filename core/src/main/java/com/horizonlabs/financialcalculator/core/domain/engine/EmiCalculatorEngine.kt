@@ -118,8 +118,14 @@ class EmiCalculatorEngine : CalculatorEngine {
                 ))
             }
             
+            val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+                timeInMillis = startDateUtcMillis
+                set(Calendar.DAY_OF_MONTH, 1)
+                add(Calendar.MONTH, (year - 1) * 12)
+            }
+            val yearLabel = "${calendar.get(Calendar.YEAR)}"
             breakdown.add(BreakdownItem(
-                period = "Year $year",
+                period = yearLabel,
                 values = mapOf(
                     "principal" to Formatters.formatCurrencyINR(yearlyPrincipal),
                     "interest" to Formatters.formatCurrencyINR(yearlyInterest),

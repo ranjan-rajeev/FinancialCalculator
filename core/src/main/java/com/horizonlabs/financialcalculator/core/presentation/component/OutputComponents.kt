@@ -1,7 +1,9 @@
 package com.horizonlabs.financialcalculator.core.presentation.component
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,10 +20,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.horizonlabs.financialcalculator.core.domain.model.BreakdownItem
@@ -38,13 +44,23 @@ fun CalculatorSummarySection(
 ) {
     if (summary.items.isEmpty()) return
     
-    Column(
+    Card(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(16.dp)
     ) {
-        LegacySectionTitle(title = "Summary")
-        summary.items.sortedBy { it.order }.forEach { item ->
-            SummaryItemView(item = item)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                "Summary",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
+            EnhancedSummaryView(summary = summary)
         }
     }
 }
@@ -78,25 +94,28 @@ fun CalculatorBreakdownSection(
     
     // EMI/FD/RD expose year rows with monthly children, which the legacy app
     // showed as the expandable four-column table rather than a label/value list.
-    if (isAmortizationBreakdown(items)) {
-        Column(modifier = modifier.fillMaxWidth()) {
-            LegacySectionTitle(
-                title = title,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-            LegacyBreakdownTable(items = items)
-        }
-    } else {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(16.dp)
+    ) {
         Column(
-            modifier = modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(2.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            LegacySectionTitle(
-                title = title,
-                modifier = Modifier.padding(vertical = 8.dp)
+            Text(
+                text = title,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
             )
-            items.forEach { item ->
-                BreakdownItemView(item = item)
+            if (isAmortizationBreakdown(items)) {
+                LegacyBreakdownTable(items = items)
+            } else {
+                items.forEach { item ->
+                    BreakdownItemView(item = item)
+                }
             }
         }
     }
@@ -173,7 +192,7 @@ fun CalculatorMoreInfoSection(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text("More Information", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            Text("More Info", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
             
             items.forEach { item ->
                 MoreInfoItemView(item = item)
@@ -204,4 +223,125 @@ fun MoreInfoItemView(item: MoreInfoItem) {
 
 private fun formatKey(key: String): String {
     return key.split("_").joinToString(" ") { it.replaceFirstChar { it.uppercase() } }
+}
+
+@Composable
+private fun EnhancedSummaryView(summary: CalculatorSummary) {
+    val items = summary.items.sortedBy { it.order }
+    val principalItem = items.find { it.key == "principalPercentage" || it.key == "principal_percent" || it.key.contains("principal", ignoreCase = true) && it.key.contains("percent") }
+    val interestItem = items.find { it.key == "interestPercentage" || it.key == "interest_percent" || it.key.contains("interest", ignoreCase = true) && it.key.contains("percent") }
+    val principalValue = items.find { it.key == "totalPrincipal" || it.key == "principal" && !it.key.contains("percent") }?.value ?: ""
+    val interestValue = items.find { it.key == "totalInterest" || it.key == "interest" && !it.key.contains("percent") }?.value ?: ""
+
+    val principalPercent = principalItem?.value?.replace("%", "")?.toFloatOrNull() ?: 0f
+    val interestPercent = interestItem?.value?.replace("%", "")?.toFloatOrNull() ?: (100f - principalPercent)
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.1f)),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                CircularProgressWithPercentage(
+                    percentage = principalPercent,
+                    valueText = principalValue.ifEmpty { principalItem?.value ?: "" },
+                    title = principalItem?.label ?: "Total Principal",
+                    color = LegacyColors.Primary
+                )
+                CircularProgressWithPercentage(
+                    percentage = interestPercent,
+                    valueText = interestValue.ifEmpty { interestItem?.value ?: "" },
+                    title = interestItem?.label ?: "Total Interest",
+                    color = LegacyColors.Accent
+                )
+            }
+            items.forEach { item ->
+                if (!(item.key.contains("percent", ignoreCase = true) && (item.key.contains("principal") || item.key.contains("interest")))) {
+                    if (item.type != SummaryType.DIVIDER && item.value.isNotBlank()) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(item.label, style = MaterialTheme.typography.bodyMedium, color = LegacyColors.TextPrimary)
+                            Text(item.value, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = LegacyColors.PrimaryDark)
+                        }
+                    } else {
+                        SummaryItemView(item = item)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CircularProgressWithPercentage(
+    percentage: Float,
+    valueText: String,
+    title: String,
+    color: Color,
+    modifier: Modifier = Modifier,
+    strokeWidth: Float = 12f,
+    size: Dp = 100.dp
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Box(
+            modifier = Modifier.size(size),
+            contentAlignment = Alignment.Center
+        ) {
+            Canvas(modifier = Modifier.size(size)) {
+                val stroke = Stroke(width = strokeWidth, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+                val diameter = size.toPx()
+                val topLeft = Offset(strokeWidth / 2, strokeWidth / 2)
+                val arcSize = Size(diameter - strokeWidth, diameter - strokeWidth)
+
+                drawArc(
+                    color = color.copy(alpha = 0.2f),
+                    startAngle = -90f,
+                    sweepAngle = 360f,
+                    useCenter = false,
+                    topLeft = topLeft,
+                    size = arcSize,
+                    style = stroke
+                )
+                drawArc(
+                    color = color,
+                    startAngle = -90f,
+                    sweepAngle = (percentage / 100f) * 360f,
+                    useCenter = false,
+                    topLeft = topLeft,
+                    size = arcSize,
+                    style = stroke
+                )
+            }
+            Text(
+                text = "${percentage.toInt()}%",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = color
+            )
+        }
+        Text(
+            text = title,
+            style = MaterialTheme.typography.bodyMedium,
+            color = LegacyColors.TextPrimary,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = valueText,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
+            color = color,
+            textAlign = TextAlign.Center
+        )
+    }
 }

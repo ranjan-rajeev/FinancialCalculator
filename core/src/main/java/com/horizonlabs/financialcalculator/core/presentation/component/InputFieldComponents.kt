@@ -55,20 +55,23 @@ fun CalculatorInputSection(
     onCalculate: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(LegacyFieldSpacing)
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(16.dp)
     ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(LegacyFieldSpacing)
+        ) {
             fields.sortedBy { it.order }.forEach { field ->
                 when (field) {
                     is InputFieldConfig.EditText -> EditTextField(
                         field = field,
                         value = values[field.key]?.toString() ?: field.defaultValue.orEmpty(),
                         error = errors[field.key],
-                        // Keep the raw text: engines parse strings themselves, and
-                        // round-tripping through Double showed "500000.0" back to the user.
                         onValueChange = { newValue -> onInputChange(field.key, newValue) }
                     )
 
@@ -104,6 +107,7 @@ fun CalculatorInputSection(
                     )
                 }
             }
+        }
     }
 }
 
