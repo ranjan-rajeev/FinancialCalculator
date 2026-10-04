@@ -1,0 +1,93 @@
+[
+  {
+    "cmpData": "[{\"cmpId\":\"1\",\"firebaseId\":\"\",\"interval\":5000,\"redUrl\":\"https://raw.githubusercontent.com/ranjan-rajeev/Finanace-Calculator-Web/main/assets/banner-1.png\",\"webUrl\":\"https://ranjan-rajeev.github.io/Finanace-Calculator-Web/\"}]",
+    "cmpId": "banner",
+    "cmpPos": 1,
+    "cmpType": 1,
+    "firebaseId": ""
+  },
+  {
+    "cmpData": "EMI Calculators",
+    "cmpId": "header_emi_calculators",
+    "cmpPos": 2,
+    "cmpType": 4,
+    "firebaseId": ""
+  },
+  {
+    "cmpData": "[{\"calId\":2,\"calName\":\"EMI Calculator\",\"firebaseId\":\"EMI\",\"iconUrl\":\"https://raw.githubusercontent.com/ranjan-rajeev/Finanace-Calculator-Web/main/icons/emi.png\",\"redUrl\":\"EmiCalculatorActivity\",\"version\":1},{\"calId\":2,\"calName\":\"Compare Loan\",\"firebaseId\":\"COMPARE_LOAN\",\"iconUrl\":\"\",\"redUrl\":\"EmiCompareActivity\",\"version\":1},{\"calId\":2,\"calName\":\"Flat vs Reducing\",\"firebaseId\":\"FLAT_VS_REDUCING\",\"iconUrl\":\"\",\"redUrl\":\"FixedVsReducingActivity\",\"version\":1}]",
+    "cmpId": "grid_emi_calculators",
+    "cmpPos": 3,
+    "cmpType": 5,
+    "firebaseId": ""
+  },
+  {
+    "cmpData": "Mutual Funds & SIP",
+    "cmpId": "header_mutual_funds_and_sip",
+    "cmpPos": 4,
+    "cmpType": 4,
+    "firebaseId": ""
+  },
+  {
+    "cmpData": "[{\"calId\":2,\"calName\":\"SIP Calculator\",\"firebaseId\":\"SIP\",\"iconUrl\":\"\",\"redUrl\":\"SIPCalculatorActivity\",\"version\":1},{\"calId\":2,\"calName\":\"Goal SIP Calculator\",\"firebaseId\":\"GOAL_SIP\",\"iconUrl\":\"\",\"redUrl\":\"SIPGoalCalculatorActivity\",\"version\":1},{\"calId\":2,\"calName\":\"Lumpsum Calculator\",\"firebaseId\":\"LUMPSUM_SIP\",\"iconUrl\":\"\",\"redUrl\":\"LumpSumpSipActivity\",\"version\":1}]",
+    "cmpId": "grid_mutual_funds_and_sip",
+    "cmpPos": 5,
+    "cmpType": 5,
+    "firebaseId": ""
+  },
+  {
+    "cmpData": "Banking & Investments",
+    "cmpId": "header_banking_and_investments",
+    "cmpPos": 6,
+    "cmpType": 4,
+    "firebaseId": ""
+  },
+  {
+    "cmpData": "[{\"calId\":2,\"calName\":\"FD Calculator\",\"firebaseId\":\"FD\",\"iconUrl\":\"\",\"redUrl\":\"FDCalculatorActivity\",\"version\":1},{\"calId\":2,\"calName\":\"RD Calculator\",\"firebaseId\":\"RD\",\"iconUrl\":\"\",\"redUrl\":\"RDCalculatorActivity\",\"version\":1},{\"calId\":2,\"calName\":\"PPF Calculator\",\"firebaseId\":\"PPF\",\"iconUrl\":\"\",\"redUrl\":\"PPFCalculatotActivity\",\"version\":1},{\"calId\":2,\"calName\":\"CAGR Calculator\",\"firebaseId\":\"CAGR\",\"iconUrl\":\"\",\"redUrl\":\"GenericCalculatorActivity\",\"version\":1}]",
+    "cmpId": "grid_banking_and_investments",
+    "cmpPos": 7,
+    "cmpType": 5,
+    "firebaseId": ""
+  },
+  {
+    "cmpData": "Tax",
+    "cmpId": "header_tax",
+    "cmpPos": 8,
+    "cmpType": 4,
+    "firebaseId": ""
+  },
+  {
+    "cmpData": "[{\"calId\":2,\"calName\":\"GST Calculator\",\"firebaseId\":\"GST\",\"iconUrl\":\"\",\"redUrl\":\"GstCalculatorActivity\",\"version\":1},{\"calId\":2,\"calName\":\"VAT Calculator\",\"firebaseId\":\"VAT\",\"iconUrl\":\"\",\"redUrl\":\"VatCalculatorActivity\",\"version\":1}]",
+    "cmpId": "grid_tax",
+    "cmpPos": 9,
+    "cmpType": 5,
+    "firebaseId": ""
+  },
+  {
+    "cmpData": "Retirement",
+    "cmpId": "header_retirement",
+    "cmpPos": 10,
+    "cmpType": 4,
+    "firebaseId": ""
+  },
+  {
+    "cmpData": "[{\"calId\":2,\"calName\":\"NPS Calculator\",\"firebaseId\":\"NPS\",\"iconUrl\":\"\",\"redUrl\":\"GenericCalculatorActivity\",\"version\":1},{\"calId\":2,\"calName\":\"Atal Pension Calculator\",\"firebaseId\":\"ATAL\",\"iconUrl\":\"\",\"redUrl\":\"GenericCalculatorActivity\",\"version\":1}]",
+    "cmpId": "grid_retirement",
+    "cmpPos": 11,
+    "cmpType": 5,
+    "firebaseId": ""
+  },
+  {
+    "cmpData": "24",
+    "cmpId": "spacer_bottom",
+    "cmpPos": 12,
+    "cmpType": 6,
+    "firebaseId": ""
+  },
+  {
+    "cmpData": "",
+    "cmpId": "ad_bottom",
+    "cmpPos": 13,
+    "cmpType": 7,
+    "firebaseId": ""
+  }
+]

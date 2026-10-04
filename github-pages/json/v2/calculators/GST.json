@@ -1,0 +1,144 @@
+{
+  "id": "GST",
+  "name": "GST Calculator",
+  "type": "CUSTOM",
+  "version": 2,
+  "category": "TAX",
+  "engine": "GST_CALCULATOR",
+  "inputFields": [
+    {
+      "type": "EDIT_TEXT",
+      "key": "amount",
+      "label": "Amount",
+      "inputType": "DECIMAL",
+      "formatter": "CURRENCY_INR",
+      "order": 1,
+      "validation": {
+        "required": true,
+        "min": 0
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "gstRate",
+      "label": "GST rate (%)",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 2,
+      "defaultValue": "18",
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 100
+      }
+    },
+    {
+      "type": "SPINNER",
+      "key": "calculationType",
+      "label": "GST calculation",
+      "options": [
+        {
+          "label": "Exclusive (add GST)",
+          "value": "EXCLUSIVE"
+        },
+        {
+          "label": "Inclusive (remove GST)",
+          "value": "INCLUSIVE"
+        }
+      ],
+      "defaultValue": "EXCLUSIVE",
+      "order": 3
+    },
+    {
+      "type": "SPINNER",
+      "key": "isInterstate",
+      "label": "Supply type",
+      "options": [
+        {
+          "label": "Intra-state (CGST + SGST)",
+          "value": "INTRA"
+        },
+        {
+          "label": "Inter-state (IGST)",
+          "value": "INTER"
+        }
+      ],
+      "defaultValue": "INTRA",
+      "order": 4
+    },
+    {
+      "type": "BUTTON",
+      "key": "calculate",
+      "label": "Calculate",
+      "action": "CALCULATE",
+      "style": "PRIMARY",
+      "order": 5
+    }
+  ],
+  "outputConfig": {
+    "summary": [
+      {
+        "key": "baseAmount",
+        "label": "Base amount",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 1
+      },
+      {
+        "key": "gstRate",
+        "label": "GST rate",
+        "type": "KEY_VALUE",
+        "formatter": "PERCENTAGE",
+        "order": 2
+      },
+      {
+        "key": "gstAmount",
+        "label": "GST amount",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 3
+      },
+      {
+        "key": "totalAmount",
+        "label": "Total amount",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 4
+      },
+      {
+        "key": "cgst",
+        "label": "CGST",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 5
+      },
+      {
+        "key": "sgst",
+        "label": "SGST",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 6
+      },
+      {
+        "key": "igst",
+        "label": "IGST",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 7
+      }
+    ],
+    "breakdown": null,
+    "charts": [],
+    "formulas": []
+  },
+  "moreInfo": [
+    {
+      "question": "What is the difference between CGST, SGST and IGST?",
+      "answer": "Intra-state supplies are split into CGST and SGST, half each. Inter-state supplies are charged a single IGST at the full rate."
+    },
+    {
+      "question": "What does exclusive vs inclusive mean?",
+      "answer": "Exclusive adds GST on top of the entered amount. Inclusive treats the entered amount as the final price and extracts GST from it."
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "id": "FD",
+  "name": "FD Calculator",
+  "type": "CUSTOM",
+  "version": 2,
+  "category": "BANKING",
+  "engine": "FD_CALCULATOR",
+  "inputFields": [
+    {
+      "type": "EDIT_TEXT",
+      "key": "principal",
+      "label": "Deposit amount",
+      "inputType": "DECIMAL",
+      "formatter": "CURRENCY_INR",
+      "order": 1,
+      "validation": {
+        "required": true,
+        "min": 1
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "rate",
+      "label": "Interest rate (% p.a.)",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 2,
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 100
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "year",
+      "label": "Years",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 3,
+      "defaultValue": "5",
+      "validation": {
+        "required": true,
+        "min": 0
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "month",
+      "label": "Months",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 4,
+      "defaultValue": "0",
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 11
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "day",
+      "label": "Days",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 5,
+      "defaultValue": "0",
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 30
+      }
+    },
+    {
+      "type": "SPINNER",
+      "key": "compoundingType",
+      "label": "Compounding",
+      "options": [
+        {
+          "label": "Monthly",
+          "value": "MONTHLY"
+        },
+        {
+          "label": "Quarterly",
+          "value": "QUARTELY"
+        },
+        {
+          "label": "Yearly",
+          "value": "YEARLY"
+        }
+      ],
+      "defaultValue": "QUARTELY",
+      "order": 6
+    },
+    {
+      "type": "BUTTON",
+      "key": "calculate",
+      "label": "Calculate",
+      "action": "CALCULATE",
+      "style": "PRIMARY",
+      "order": 7
+    }
+  ],
+  "outputConfig": {
+    "summary": [
+      {
+        "key": "principal",
+        "label": "Principal",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 1
+      },
+      {
+        "key": "totalInterest",
+        "label": "Interest earned",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 2
+      },
+      {
+        "key": "maturity",
+        "label": "Maturity amount",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 3
+      }
+    ],
+    "breakdown": null,
+    "charts": [],
+    "formulas": []
+  },
+  "moreInfo": [
+    {
+      "question": "How is FD maturity calculated?",
+      "answer": "Maturity = Principal x (1 + rate / frequency)^(years x frequency), with the compounding frequency taken from the selected option."
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "id": "NPS",
+  "name": "NPS Calculator",
+  "type": "CUSTOM",
+  "version": 2,
+  "category": "RETIREMENT",
+  "engine": "GENERIC_FORMULA",
+  "inputFields": [
+    {
+      "type": "EDIT_TEXT",
+      "key": "age",
+      "label": "Current age",
+      "inputType": "NUMBER",
+      "formatter": "NONE",
+      "order": 1,
+      "defaultValue": "30",
+      "validation": {
+        "required": true,
+        "min": 18,
+        "max": 59
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "retirementAge",
+      "label": "Retirement age",
+      "inputType": "NUMBER",
+      "formatter": "NONE",
+      "order": 2,
+      "defaultValue": "60",
+      "validation": {
+        "required": true,
+        "min": 40,
+        "max": 70
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "monthlyContribution",
+      "label": "Monthly contribution",
+      "inputType": "DECIMAL",
+      "formatter": "CURRENCY_INR",
+      "order": 3,
+      "defaultValue": "5000",
+      "validation": {
+        "required": true,
+        "min": 0
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "expectedReturn",
+      "label": "Expected return (% p.a.)",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 4,
+      "defaultValue": "10",
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 100
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "annuityPercentage",
+      "label": "Lump sum %",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 5,
+      "defaultValue": "40",
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 100
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "annuityRate",
+      "label": "Annuity rate (% p.a.)",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 6,
+      "defaultValue": "6",
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 100
+      }
+    },
+    {
+      "type": "BUTTON",
+      "key": "calculate",
+      "label": "Calculate",
+      "action": "CALCULATE",
+      "style": "PRIMARY",
+      "order": 7
+    }
+  ],
+  "outputConfig": {
+    "summary": [
+      {
+        "key": "totalCorpus",
+        "label": "Total corpus",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 1
+      },
+      {
+        "key": "maturityValue",
+        "label": "Maturity value",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 2
+      },
+      {
+        "key": "pensionAmount",
+        "label": "Monthly pension",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 3
+      },
+      {
+        "key": "lumpSum",
+        "label": "Lump sum withdrawal",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 4
+      }
+    ],
+    "breakdown": null,
+    "charts": [],
+    "formulas": []
+  },
+  "moreInfo": [
+    {
+      "question": "How much can I withdraw as a lump sum?",
+      "answer": "Under the current rules, up to 60 percent of the corpus is available as a lump sum and the remaining 40 percent buys the pension annuity."
+    },
+    {
+      "question": "Is the pension guaranteed?",
+      "answer": "The pension is not guaranteed. It is allocated from the corpus and the monthly amount varies with annuity and pension purchase rates."
+    }
+  ]
+}

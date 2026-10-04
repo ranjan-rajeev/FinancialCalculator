@@ -1,0 +1,129 @@
+{
+  "id": "GOAL_SIP",
+  "name": "Goal SIP Calculator",
+  "type": "CUSTOM",
+  "version": 2,
+  "category": "SIP",
+  "engine": "SIP_CALCULATOR",
+  "inputFields": [
+    {
+      "type": "EDIT_TEXT",
+      "key": "goalAmount",
+      "label": "Goal amount",
+      "inputType": "DECIMAL",
+      "formatter": "CURRENCY_INR",
+      "order": 1,
+      "validation": {
+        "required": true,
+        "min": 1
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "rate",
+      "label": "Expected return (% p.a.)",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 2,
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 100
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "tenure",
+      "label": "Tenure",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 3,
+      "validation": {
+        "required": true,
+        "min": 1
+      }
+    },
+    {
+      "type": "SPINNER",
+      "key": "tenureType",
+      "label": "Tenure type",
+      "options": [
+        {
+          "label": "Years",
+          "value": "YEARS"
+        },
+        {
+          "label": "Months",
+          "value": "MONTHS"
+        }
+      ],
+      "defaultValue": "YEARS",
+      "order": 4
+    },
+    {
+      "type": "SPINNER",
+      "key": "frequency",
+      "label": "Investment frequency",
+      "options": [
+        {
+          "label": "Monthly",
+          "value": "MONTHLY"
+        },
+        {
+          "label": "Quarterly",
+          "value": "QUARTELY"
+        },
+        {
+          "label": "Yearly",
+          "value": "YEARLY"
+        }
+      ],
+      "defaultValue": "MONTHLY",
+      "order": 5
+    },
+    {
+      "type": "BUTTON",
+      "key": "calculate",
+      "label": "Calculate",
+      "action": "CALCULATE",
+      "style": "PRIMARY",
+      "order": 6
+    }
+  ],
+  "outputConfig": {
+    "summary": [
+      {
+        "key": "requiredMonthly",
+        "label": "Required monthly investment",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 1
+      },
+      {
+        "key": "totalInvested",
+        "label": "Total invested",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 2
+      },
+      {
+        "key": "totalReturns",
+        "label": "Total returns",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 3
+      },
+      {
+        "key": "goalAmount",
+        "label": "Goal amount",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 4
+      }
+    ],
+    "breakdown": null,
+    "charts": [],
+    "formulas": []
+  },
+  "moreInfo": []
+}

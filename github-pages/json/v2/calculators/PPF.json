@@ -1,0 +1,91 @@
+{
+  "id": "PPF",
+  "name": "PPF Calculator",
+  "type": "CUSTOM",
+  "version": 2,
+  "category": "BANKING",
+  "engine": "PPF_CALCULATOR",
+  "inputFields": [
+    {
+      "type": "EDIT_TEXT",
+      "key": "yearlyDeposit",
+      "label": "Yearly deposit",
+      "inputType": "DECIMAL",
+      "formatter": "CURRENCY_INR",
+      "order": 1,
+      "validation": {
+        "required": true,
+        "min": 1
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "rate",
+      "label": "Interest rate (% p.a.)",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 2,
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 100
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "tenure",
+      "label": "Tenure",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 3,
+      "defaultValue": "15",
+      "validation": {
+        "required": true,
+        "min": 1,
+        "max": 15
+      }
+    },
+    {
+      "type": "BUTTON",
+      "key": "calculate",
+      "label": "Calculate",
+      "action": "CALCULATE",
+      "style": "PRIMARY",
+      "order": 4
+    }
+  ],
+  "outputConfig": {
+    "summary": [
+      {
+        "key": "totalInvested",
+        "label": "Total invested",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 1
+      },
+      {
+        "key": "totalInterest",
+        "label": "Interest earned",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 2
+      },
+      {
+        "key": "maturity",
+        "label": "Maturity amount",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 3
+      }
+    ],
+    "breakdown": null,
+    "charts": [],
+    "formulas": []
+  },
+  "moreInfo": [
+    {
+      "question": "When is PPF interest credited?",
+      "answer": "PPF interest is credited annually at the end of each financial year on the running balance."
+    }
+  ]
+}

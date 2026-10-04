@@ -1,0 +1,82 @@
+{
+  "id": "CAGR",
+  "name": "CAGR Calculator",
+  "type": "CUSTOM",
+  "version": 2,
+  "category": "INVESTMENT",
+  "engine": "GENERIC_FORMULA",
+  "inputFields": [
+    {
+      "type": "EDIT_TEXT",
+      "key": "beginningValue",
+      "label": "Beginning value",
+      "inputType": "DECIMAL",
+      "formatter": "CURRENCY_INR",
+      "order": 1,
+      "validation": {
+        "required": true,
+        "min": 1
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "endingValue",
+      "label": "Ending value",
+      "inputType": "DECIMAL",
+      "formatter": "CURRENCY_INR",
+      "order": 2,
+      "validation": {
+        "required": true,
+        "min": 0
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "tenure",
+      "label": "Number of years",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 3,
+      "defaultValue": "5",
+      "validation": {
+        "required": true,
+        "min": 1
+      }
+    },
+    {
+      "type": "BUTTON",
+      "key": "calculate",
+      "label": "Calculate",
+      "action": "CALCULATE",
+      "style": "PRIMARY",
+      "order": 4
+    }
+  ],
+  "outputConfig": {
+    "summary": [
+      {
+        "key": "cagrPercent",
+        "label": "CAGR",
+        "type": "KEY_VALUE",
+        "formatter": "PERCENTAGE",
+        "order": 1
+      },
+      {
+        "key": "endingValue",
+        "label": "Ending value",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 2
+      }
+    ],
+    "breakdown": null,
+    "charts": [],
+    "formulas": []
+  },
+  "moreInfo": [
+    {
+      "question": "What does CAGR tell me?",
+      "answer": "CAGR is the constant yearly rate that takes an investment from its beginning value to its ending value over the given number of years."
+    }
+  ]
+}

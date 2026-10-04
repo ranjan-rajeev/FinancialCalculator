@@ -1,0 +1,237 @@
+{
+  "version": "v2",
+  "config": {
+    "bannerPlacementId": "ca-app-pub-0000000000000000/0000000000",
+    "showAds": true,
+    "inAppReviewEnabled": true,
+    "inAppReviewCooldownDays": 2,
+    "playStoreVersion": 1,
+    "forceUpdateVersion": 0,
+    "maintenanceMode": false,
+    "maintenanceMessage": null
+  },
+  "components": [
+    {
+      "type": "BANNER_CAROUSEL",
+      "id": "banner",
+      "position": 1,
+      "data": {
+        "images": [
+          {
+            "id": "banner_1",
+            "imageUrl": "https://raw.githubusercontent.com/ranjan-rajeev/Finanace-Calculator-Web/main/assets/banner-1.png",
+            "actionUrl": "https://ranjan-rajeev.github.io/Finanace-Calculator-Web/",
+            "actionType": "WEB"
+          }
+        ],
+        "autoPlay": true,
+        "intervalMs": 5000
+      }
+    },
+    {
+      "type": "SECTION_HEADER",
+      "id": "header_emi_calculators",
+      "position": 2,
+      "data": {
+        "title": "EMI Calculators"
+      }
+    },
+    {
+      "type": "CALCULATOR_GRID",
+      "id": "grid_emi_calculators",
+      "position": 3,
+      "data": {
+        "columns": 3,
+        "calculators": [
+          {
+            "id": "EMI",
+            "name": "EMI Calculator",
+            "iconUrl": "https://raw.githubusercontent.com/ranjan-rajeev/Finanace-Calculator-Web/main/icons/emi.png",
+            "calculatorType": "LOAN",
+            "version": 2
+          },
+          {
+            "id": "COMPARE_LOAN",
+            "name": "Compare Loan",
+            "iconUrl": "",
+            "calculatorType": "LOAN",
+            "version": 2
+          },
+          {
+            "id": "FLAT_VS_REDUCING",
+            "name": "Flat vs Reducing",
+            "iconUrl": "",
+            "calculatorType": "LOAN",
+            "version": 2
+          }
+        ]
+      }
+    },
+    {
+      "type": "SECTION_HEADER",
+      "id": "header_mutual_funds_and_sip",
+      "position": 4,
+      "data": {
+        "title": "Mutual Funds & SIP"
+      }
+    },
+    {
+      "type": "CALCULATOR_GRID",
+      "id": "grid_mutual_funds_and_sip",
+      "position": 5,
+      "data": {
+        "columns": 3,
+        "calculators": [
+          {
+            "id": "SIP",
+            "name": "SIP Calculator",
+            "iconUrl": "",
+            "calculatorType": "SIP",
+            "version": 2
+          },
+          {
+            "id": "GOAL_SIP",
+            "name": "Goal SIP Calculator",
+            "iconUrl": "",
+            "calculatorType": "SIP",
+            "version": 2
+          },
+          {
+            "id": "LUMPSUM_SIP",
+            "name": "Lumpsum Calculator",
+            "iconUrl": "",
+            "calculatorType": "SIP",
+            "version": 2
+          }
+        ]
+      }
+    },
+    {
+      "type": "SECTION_HEADER",
+      "id": "header_banking_and_investments",
+      "position": 6,
+      "data": {
+        "title": "Banking & Investments"
+      }
+    },
+    {
+      "type": "CALCULATOR_GRID",
+      "id": "grid_banking_and_investments",
+      "position": 7,
+      "data": {
+        "columns": 3,
+        "calculators": [
+          {
+            "id": "FD",
+            "name": "FD Calculator",
+            "iconUrl": "",
+            "calculatorType": "BANKING",
+            "version": 2
+          },
+          {
+            "id": "RD",
+            "name": "RD Calculator",
+            "iconUrl": "",
+            "calculatorType": "BANKING",
+            "version": 2
+          },
+          {
+            "id": "PPF",
+            "name": "PPF Calculator",
+            "iconUrl": "",
+            "calculatorType": "BANKING",
+            "version": 2
+          },
+          {
+            "id": "CAGR",
+            "name": "CAGR Calculator",
+            "iconUrl": "",
+            "calculatorType": "INVESTMENT",
+            "version": 2
+          }
+        ]
+      }
+    },
+    {
+      "type": "SECTION_HEADER",
+      "id": "header_tax",
+      "position": 8,
+      "data": {
+        "title": "Tax"
+      }
+    },
+    {
+      "type": "CALCULATOR_GRID",
+      "id": "grid_tax",
+      "position": 9,
+      "data": {
+        "columns": 3,
+        "calculators": [
+          {
+            "id": "GST",
+            "name": "GST Calculator",
+            "iconUrl": "",
+            "calculatorType": "TAX",
+            "version": 2
+          },
+          {
+            "id": "VAT",
+            "name": "VAT Calculator",
+            "iconUrl": "",
+            "calculatorType": "TAX",
+            "version": 2
+          }
+        ]
+      }
+    },
+    {
+      "type": "SECTION_HEADER",
+      "id": "header_retirement",
+      "position": 10,
+      "data": {
+        "title": "Retirement"
+      }
+    },
+    {
+      "type": "CALCULATOR_GRID",
+      "id": "grid_retirement",
+      "position": 11,
+      "data": {
+        "columns": 3,
+        "calculators": [
+          {
+            "id": "NPS",
+            "name": "NPS Calculator",
+            "iconUrl": "",
+            "calculatorType": "RETIREMENT",
+            "version": 2
+          },
+          {
+            "id": "ATAL",
+            "name": "Atal Pension Calculator",
+            "iconUrl": "",
+            "calculatorType": "RETIREMENT",
+            "version": 2
+          }
+        ]
+      }
+    },
+    {
+      "type": "SPACER",
+      "id": "spacer_bottom",
+      "position": 12,
+      "data": {
+        "heightDp": 24
+      }
+    },
+    {
+      "type": "AD_PLACEHOLDER",
+      "id": "ad_bottom",
+      "position": 13,
+      "data": {
+        "placementId": "ca-app-pub-0000000000000000/0000000000",
+        "heightDp": 50
+      }
+    }
+  ]
+}

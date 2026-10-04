@@ -1,0 +1,102 @@
+{
+  "id": "VAT",
+  "name": "VAT Calculator",
+  "type": "CUSTOM",
+  "version": 2,
+  "category": "TAX",
+  "engine": "VAT_CALCULATOR",
+  "inputFields": [
+    {
+      "type": "EDIT_TEXT",
+      "key": "amount",
+      "label": "Amount",
+      "inputType": "DECIMAL",
+      "formatter": "CURRENCY_INR",
+      "order": 1,
+      "validation": {
+        "required": true,
+        "min": 0
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "vatRate",
+      "label": "VAT rate (%)",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 2,
+      "defaultValue": "5",
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 100
+      }
+    },
+    {
+      "type": "SPINNER",
+      "key": "calculationType",
+      "label": "VAT calculation",
+      "options": [
+        {
+          "label": "Exclusive (add GST)",
+          "value": "EXCLUSIVE"
+        },
+        {
+          "label": "Inclusive (remove GST)",
+          "value": "INCLUSIVE"
+        }
+      ],
+      "defaultValue": "EXCLUSIVE",
+      "order": 3
+    },
+    {
+      "type": "BUTTON",
+      "key": "calculate",
+      "label": "Calculate",
+      "action": "CALCULATE",
+      "style": "PRIMARY",
+      "order": 4
+    }
+  ],
+  "outputConfig": {
+    "summary": [
+      {
+        "key": "baseAmount",
+        "label": "Base amount",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 1
+      },
+      {
+        "key": "vatRate",
+        "label": "VAT rate",
+        "type": "KEY_VALUE",
+        "formatter": "PERCENTAGE",
+        "order": 2
+      },
+      {
+        "key": "vatAmount",
+        "label": "VAT amount",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 3
+      },
+      {
+        "key": "totalAmount",
+        "label": "Total amount",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 4
+      }
+    ],
+    "breakdown": null,
+    "charts": [],
+    "formulas": []
+  },
+  "moreInfo": [
+    {
+      "question": "How is VAT different from GST?",
+      "answer": "VAT is charged at a single rate with no CGST/SGST split, and applies to goods and services in VAT-registered regions."
+    }
+  ]
+}

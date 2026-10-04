@@ -1,0 +1,136 @@
+{
+  "id": "FLAT_VS_REDUCING",
+  "name": "Flat vs Reducing",
+  "type": "CUSTOM",
+  "version": 2,
+  "category": "LOAN",
+  "engine": "FLAT_VS_REDUCING",
+  "inputFields": [
+    {
+      "type": "EDIT_TEXT",
+      "key": "principal",
+      "label": "Loan amount",
+      "inputType": "DECIMAL",
+      "formatter": "CURRENCY_INR",
+      "order": 1,
+      "validation": {
+        "required": true,
+        "min": 1
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "rate",
+      "label": "Interest rate (% p.a.)",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 2,
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 100
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "tenure",
+      "label": "Tenure",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 3,
+      "validation": {
+        "required": true,
+        "min": 1
+      }
+    },
+    {
+      "type": "SPINNER",
+      "key": "tenureType",
+      "label": "Tenure type",
+      "options": [
+        {
+          "label": "Years",
+          "value": "YEARS"
+        },
+        {
+          "label": "Months",
+          "value": "MONTHS"
+        }
+      ],
+      "defaultValue": "YEARS",
+      "order": 4
+    },
+    {
+      "type": "BUTTON",
+      "key": "calculate",
+      "label": "Calculate",
+      "action": "CALCULATE",
+      "style": "PRIMARY",
+      "order": 5
+    }
+  ],
+  "outputConfig": {
+    "summary": [
+      {
+        "key": "flatEmi",
+        "label": "Flat EMI",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 1
+      },
+      {
+        "key": "flatTotalInterest",
+        "label": "Flat total interest",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 2
+      },
+      {
+        "key": "flatTotalPayable",
+        "label": "Flat total payable",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 3
+      },
+      {
+        "key": "reducingEmi",
+        "label": "Reducing EMI",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 4
+      },
+      {
+        "key": "reducingTotalInterest",
+        "label": "Reducing total interest",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 5
+      },
+      {
+        "key": "reducingTotalPayable",
+        "label": "Reducing total payable",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 6
+      },
+      {
+        "key": "emiDifference",
+        "label": "EMI difference",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 7
+      },
+      {
+        "key": "interestDifference",
+        "label": "Interest difference",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 8
+      }
+    ],
+    "breakdown": null,
+    "charts": [],
+    "formulas": []
+  },
+  "moreInfo": []
+}

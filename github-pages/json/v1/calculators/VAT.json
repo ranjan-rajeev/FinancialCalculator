@@ -1,0 +1,10 @@
+{
+  "calId": 2,
+  "calName": "VAT Calculator",
+  "firebaseId": "VAT",
+  "iconUrl": "",
+  "input": "[{\"calId\":1,\"data\":\"{\\\"inpType\\\":2,\\\"length\\\":12,\\\"isFocus\\\":0,\\\"regex\\\":\\\"\\\"}\",\"firebaseId\":\"\",\"inpId\":1,\"key\":\"amount\",\"title\":\"Amount\",\"type\":1},{\"calId\":2,\"data\":\"{\\\"inpType\\\":2,\\\"length\\\":12,\\\"isFocus\\\":0,\\\"regex\\\":\\\"\\\"}\",\"firebaseId\":\"\",\"inpId\":2,\"key\":\"vatRate\",\"title\":\"VAT rate (%)\",\"type\":1},{\"calId\":3,\"data\":\"VAT calculation\",\"firebaseId\":\"\",\"inpId\":3,\"key\":\"calculationType_title\",\"title\":\"VAT calculation\",\"type\":7},{\"calId\":3,\"data\":\"[{\\\"key\\\":\\\"Exclusive (add GST)\\\",\\\"value\\\":\\\"EXCLUSIVE\\\"},{\\\"key\\\":\\\"Inclusive (remove GST)\\\",\\\"value\\\":\\\"INCLUSIVE\\\"}]\",\"firebaseId\":\"\",\"inpId\":3,\"key\":\"calculationType\",\"title\":\"VAT calculation\",\"type\":3},{\"calId\":4,\"data\":\"{\\\"redUrl\\\":\\\"\\\",\\\"action\\\":1}\",\"firebaseId\":\"\",\"inpId\":4,\"key\":\"calculate\",\"title\":\"Calculate\",\"type\":5}]",
+  "output": "[{\"calId\":1,\"curr\":\"\\u20b9\",\"data\":\"\",\"firebaseId\":\"\",\"formulae\":\"\",\"outId\":1,\"outKey\":\"baseAmount\",\"outMsg\":\"Base amount\",\"type\":1},{\"calId\":2,\"curr\":\"\\u20b9\",\"data\":\"\",\"firebaseId\":\"\",\"formulae\":\"\",\"outId\":2,\"outKey\":\"vatRate\",\"outMsg\":\"VAT rate\",\"type\":1},{\"calId\":3,\"curr\":\"\\u20b9\",\"data\":\"\",\"firebaseId\":\"\",\"formulae\":\"\",\"outId\":3,\"outKey\":\"vatAmount\",\"outMsg\":\"VAT amount\",\"type\":1},{\"calId\":4,\"curr\":\"\\u20b9\",\"data\":\"\",\"firebaseId\":\"\",\"formulae\":\"\",\"outId\":4,\"outKey\":\"totalAmount\",\"outMsg\":\"Total amount\",\"type\":1}]",
+  "redUrl": "VatCalculatorActivity",
+  "version": 1
+}

@@ -1,0 +1,10 @@
+{
+  "bannerPlacementId": "ca-app-pub-0000000000000000/0000000000",
+  "showAds": true,
+  "inAppReviewEnabled": true,
+  "inAppReviewCooldownDays": 2,
+  "playStoreVersion": 1,
+  "forceUpdateVersion": 0,
+  "maintenanceMode": false,
+  "maintenanceMessage": null
+}

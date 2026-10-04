@@ -1,0 +1,126 @@
+{
+  "id": "EMI",
+  "name": "EMI Calculator",
+  "type": "CUSTOM",
+  "version": 2,
+  "category": "LOAN",
+  "engine": "EMI_CALCULATOR",
+  "inputFields": [
+    {
+      "type": "EDIT_TEXT",
+      "key": "principal",
+      "label": "Loan amount",
+      "inputType": "DECIMAL",
+      "formatter": "CURRENCY_INR",
+      "order": 1,
+      "hint": "e.g. 500000",
+      "validation": {
+        "required": true,
+        "min": 1
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "rate",
+      "label": "Interest rate (% p.a.)",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 2,
+      "hint": "e.g. 8.5",
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 100
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "tenure",
+      "label": "Tenure",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 3,
+      "validation": {
+        "required": true,
+        "min": 1
+      }
+    },
+    {
+      "type": "SPINNER",
+      "key": "tenureType",
+      "label": "Tenure type",
+      "options": [
+        {
+          "label": "Years",
+          "value": "YEARS"
+        },
+        {
+          "label": "Months",
+          "value": "MONTHS"
+        }
+      ],
+      "defaultValue": "YEARS",
+      "order": 4
+    },
+    {
+      "type": "BUTTON",
+      "key": "calculate",
+      "label": "Calculate",
+      "action": "CALCULATE",
+      "style": "PRIMARY",
+      "order": 5
+    }
+  ],
+  "outputConfig": {
+    "summary": [
+      {
+        "key": "emi",
+        "label": "Monthly EMI",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 1
+      },
+      {
+        "key": "totalInterest",
+        "label": "Total interest",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 2
+      },
+      {
+        "key": "totalPayable",
+        "label": "Total payable",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 3
+      },
+      {
+        "key": "interestPercentage",
+        "label": "Interest share",
+        "type": "KEY_VALUE",
+        "formatter": "PERCENTAGE",
+        "order": 4
+      },
+      {
+        "key": "principalPercentage",
+        "label": "Principal share",
+        "type": "KEY_VALUE",
+        "formatter": "PERCENTAGE",
+        "order": 5
+      }
+    ],
+    "breakdown": null,
+    "charts": [],
+    "formulas": []
+  },
+  "moreInfo": [
+    {
+      "question": "How is my EMI calculated?",
+      "answer": "EMI = P x r x (1 + r)^n / ((1 + r)^n - 1), where P is the loan amount, r is the monthly interest rate and n is the number of monthly instalments."
+    },
+    {
+      "question": "Does the tenure type change my EMI?",
+      "answer": "Yes. Choosing Months keeps the entered value as-is, while Years is converted to months before the EMI is computed."
+    }
+  ]
+}

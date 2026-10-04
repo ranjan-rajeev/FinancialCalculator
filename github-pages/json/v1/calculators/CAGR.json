@@ -1,0 +1,10 @@
+{
+  "calId": 2,
+  "calName": "CAGR Calculator",
+  "firebaseId": "CAGR",
+  "iconUrl": "",
+  "input": "[{\"calId\":1,\"data\":\"{\\\"inpType\\\":2,\\\"length\\\":12,\\\"isFocus\\\":0,\\\"regex\\\":\\\"\\\"}\",\"firebaseId\":\"\",\"inpId\":1,\"key\":\"beginningValue\",\"title\":\"Beginning value\",\"type\":1},{\"calId\":2,\"data\":\"{\\\"inpType\\\":2,\\\"length\\\":12,\\\"isFocus\\\":0,\\\"regex\\\":\\\"\\\"}\",\"firebaseId\":\"\",\"inpId\":2,\"key\":\"endingValue\",\"title\":\"Ending value\",\"type\":1},{\"calId\":3,\"data\":\"{\\\"inpType\\\":2,\\\"length\\\":12,\\\"isFocus\\\":0,\\\"regex\\\":\\\"\\\"}\",\"firebaseId\":\"\",\"inpId\":3,\"key\":\"tenure\",\"title\":\"Number of years\",\"type\":1},{\"calId\":4,\"data\":\"{\\\"redUrl\\\":\\\"\\\",\\\"action\\\":1}\",\"firebaseId\":\"\",\"inpId\":4,\"key\":\"calculate\",\"title\":\"Calculate\",\"type\":5}]",
+  "output": "[{\"calId\":1,\"curr\":\"\\u20b9\",\"data\":\"\",\"firebaseId\":\"\",\"formulae\":\"\",\"outId\":1,\"outKey\":\"cagrPercent\",\"outMsg\":\"CAGR\",\"type\":1},{\"calId\":2,\"curr\":\"\\u20b9\",\"data\":\"\",\"firebaseId\":\"\",\"formulae\":\"\",\"outId\":2,\"outKey\":\"endingValue\",\"outMsg\":\"Ending value\",\"type\":1}]",
+  "redUrl": "GenericCalculatorActivity",
+  "version": 1
+}

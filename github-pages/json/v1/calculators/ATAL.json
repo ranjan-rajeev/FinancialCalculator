@@ -1,0 +1,10 @@
+{
+  "calId": 2,
+  "calName": "Atal Pension Calculator",
+  "firebaseId": "ATAL",
+  "iconUrl": "",
+  "input": "[{\"calId\":1,\"data\":\"{\\\"inpType\\\":1,\\\"length\\\":12,\\\"isFocus\\\":0,\\\"regex\\\":\\\"\\\"}\",\"firebaseId\":\"\",\"inpId\":1,\"key\":\"age\",\"title\":\"Current age\",\"type\":1},{\"calId\":2,\"data\":\"{\\\"inpType\\\":1,\\\"length\\\":12,\\\"isFocus\\\":0,\\\"regex\\\":\\\"\\\"}\",\"firebaseId\":\"\",\"inpId\":2,\"key\":\"retirementAge\",\"title\":\"Retirement age\",\"type\":1},{\"calId\":3,\"data\":\"{\\\"inpType\\\":2,\\\"length\\\":12,\\\"isFocus\\\":0,\\\"regex\\\":\\\"\\\"}\",\"firebaseId\":\"\",\"inpId\":3,\"key\":\"monthlyContribution\",\"title\":\"Monthly contribution\",\"type\":1},{\"calId\":4,\"data\":\"{\\\"inpType\\\":2,\\\"length\\\":12,\\\"isFocus\\\":0,\\\"regex\\\":\\\"\\\"}\",\"firebaseId\":\"\",\"inpId\":4,\"key\":\"expectedReturn\",\"title\":\"Expected return (% p.a.)\",\"type\":1},{\"calId\":5,\"data\":\"{\\\"inpType\\\":2,\\\"length\\\":12,\\\"isFocus\\\":0,\\\"regex\\\":\\\"\\\"}\",\"firebaseId\":\"\",\"inpId\":5,\"key\":\"pensionRate\",\"title\":\"Pension rate (% p.a.)\",\"type\":1},{\"calId\":6,\"data\":\"{\\\"redUrl\\\":\\\"\\\",\\\"action\\\":1}\",\"firebaseId\":\"\",\"inpId\":6,\"key\":\"calculate\",\"title\":\"Calculate\",\"type\":5}]",
+  "output": "[{\"calId\":1,\"curr\":\"\\u20b9\",\"data\":\"\",\"firebaseId\":\"\",\"formulae\":\"\",\"outId\":1,\"outKey\":\"totalContribution\",\"outMsg\":\"Total contribution\",\"type\":1},{\"calId\":2,\"curr\":\"\\u20b9\",\"data\":\"\",\"firebaseId\":\"\",\"formulae\":\"\",\"outId\":2,\"outKey\":\"totalCorpus\",\"outMsg\":\"Total corpus\",\"type\":1},{\"calId\":3,\"curr\":\"\\u20b9\",\"data\":\"\",\"firebaseId\":\"\",\"formulae\":\"\",\"outId\":3,\"outKey\":\"maturityValue\",\"outMsg\":\"Maturity value\",\"type\":1},{\"calId\":4,\"curr\":\"\\u20b9\",\"data\":\"\",\"firebaseId\":\"\",\"formulae\":\"\",\"outId\":4,\"outKey\":\"monthlyPension\",\"outMsg\":\"Monthly pension\",\"type\":1}]",
+  "redUrl": "GenericCalculatorActivity",
+  "version": 1
+}

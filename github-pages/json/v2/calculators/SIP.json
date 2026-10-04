@@ -1,0 +1,131 @@
+{
+  "id": "SIP",
+  "name": "SIP Calculator",
+  "type": "CUSTOM",
+  "version": 2,
+  "category": "SIP",
+  "engine": "SIP_CALCULATOR",
+  "inputFields": [
+    {
+      "type": "EDIT_TEXT",
+      "key": "monthlyInvestment",
+      "label": "Monthly investment",
+      "inputType": "DECIMAL",
+      "formatter": "CURRENCY_INR",
+      "order": 1,
+      "validation": {
+        "required": true,
+        "min": 1
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "rate",
+      "label": "Expected return (% p.a.)",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 2,
+      "validation": {
+        "required": true,
+        "min": 0,
+        "max": 100
+      }
+    },
+    {
+      "type": "EDIT_TEXT",
+      "key": "tenure",
+      "label": "Tenure",
+      "inputType": "DECIMAL",
+      "formatter": "NONE",
+      "order": 3,
+      "validation": {
+        "required": true,
+        "min": 1
+      }
+    },
+    {
+      "type": "SPINNER",
+      "key": "tenureType",
+      "label": "Tenure type",
+      "options": [
+        {
+          "label": "Years",
+          "value": "YEARS"
+        },
+        {
+          "label": "Months",
+          "value": "MONTHS"
+        }
+      ],
+      "defaultValue": "YEARS",
+      "order": 4
+    },
+    {
+      "type": "SPINNER",
+      "key": "frequency",
+      "label": "Investment frequency",
+      "options": [
+        {
+          "label": "Monthly",
+          "value": "MONTHLY"
+        },
+        {
+          "label": "Quarterly",
+          "value": "QUARTELY"
+        },
+        {
+          "label": "Yearly",
+          "value": "YEARLY"
+        }
+      ],
+      "defaultValue": "MONTHLY",
+      "order": 5
+    },
+    {
+      "type": "BUTTON",
+      "key": "calculate",
+      "label": "Calculate",
+      "action": "CALCULATE",
+      "style": "PRIMARY",
+      "order": 6
+    }
+  ],
+  "outputConfig": {
+    "summary": [
+      {
+        "key": "totalInvested",
+        "label": "Total invested",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 1
+      },
+      {
+        "key": "totalReturns",
+        "label": "Total returns",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 2
+      },
+      {
+        "key": "maturity",
+        "label": "Maturity value",
+        "type": "KEY_VALUE",
+        "formatter": "CURRENCY_INR",
+        "order": 3
+      }
+    ],
+    "breakdown": null,
+    "charts": [],
+    "formulas": []
+  },
+  "moreInfo": [
+    {
+      "question": "What happens if I change the frequency?",
+      "answer": "The instalment amount is multiplied by the frequency, so a quarterly SIP invests three months of contributions at the start of each quarter."
+    },
+    {
+      "question": "Are returns guaranteed?",
+      "answer": "No. SIP returns depend on market performance; the projection assumes the entered rate holds for the full tenure."
+    }
+  ]
+}

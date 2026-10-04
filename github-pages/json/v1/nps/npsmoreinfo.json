@@ -1,0 +1,14 @@
+[
+  {
+    "answer": "Under the current rules, up to 60 percent of the corpus is available as a lump sum and the remaining 40 percent buys the pension annuity.",
+    "calId": "NPS",
+    "firebaseId": "NPS",
+    "ques": "How much can I withdraw as a lump sum?"
+  },
+  {
+    "answer": "The pension is not guaranteed. It is allocated from the corpus and the monthly amount varies with annuity and pension purchase rates.",
+    "calId": "NPS",
+    "firebaseId": "NPS",
+    "ques": "Is the pension guaranteed?"
+  }
+]
