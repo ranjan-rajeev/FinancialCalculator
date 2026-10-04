@@ -8,3 +8,7 @@
 /captures
 .externalNativeBuild
 .idea
+/finance/build
+**/build
+# Kotlin build reports
+.kotlin/

@@ -1,0 +1,95 @@
+package com.financialcalculator.core.util
+
+import android.app.Activity
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+
+fun Context.hideKeyboard(view: View? = null) {
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view?.windowToken ?: return, 0)
+}
+
+fun Activity.hideKeyboard(view: View? = null) {
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view?.windowToken ?: currentFocus?.windowToken ?: return, 0)
+}
+
+@Composable
+inline fun <reified T : ViewModel> ViewModelStoreOwner.hiltViewModel(
+    factory: ViewModelProvider.Factory? = null,
+    extras: androidx.lifecycle.viewmodel.CreationExtras? = null
+): T = viewModel(factory, extras)
+
+@Composable
+fun <T> rememberMutableState(initialValue: T): androidx.compose.runtime.MutableState<T> =
+    remember { mutableStateOf(initialValue) }
+
+fun CoroutineScope.launchOnMain(block: suspend () -> Unit) =
+    launch(Dispatchers.Main) { block }
+
+fun CoroutineScope.launchOnIO(block: suspend () -> Unit) =
+    launch(Dispatchers.IO) { block }
+
+fun CoroutineScope.launchOnDefault(block: suspend () -> Unit) =
+    launch(Dispatchers.Default) { block }
+
+fun LifecycleOwner.coroutineScope(): CoroutineScope = androidx.lifecycle.lifecycleScope
+
+fun ViewModel.coroutineScope(): CoroutineScope = androidx.lifecycle.viewModelScope
+
+fun NavController.navigateTo(route: String) {
+    navigate(route) {
+        popUpTo(startDestination) { saveState = true }
+        launchSingleTop = true
+    }
+}
+
+fun String.removeCommas(): String = replace(",", "")
+
+fun String.removeCurrencySymbol(): String = replace(Constants.CURRENCY_SYMBOL, "").trim()
+
+fun String.removePercentageSymbol(): String = replace("%", "").trim()
+
+fun String.toDoubleSafe(default: Double = 0.0): Double = toDoubleOrNull() ?: default
+
+fun Double.toIntSafe(): Int = toIntOrNull() ?: 0
+
+fun <T> List<T>.ifNotEmpty(block: (List<T>) -> Unit): List<T>? {
+    if (isNotEmpty()) block(this)
+    return if (isNotEmpty()) this else null
+}
+
+@Composable
+fun <T> rememberWithLifecycle(
+    key: Any?,
+    init: () -> T
+): T {
+    val scope = remember { SupervisorJob() }
+    val value = remember(key) { init() }
+    DisposableEffect(scope) {
+        onDispose { scope.cancel() }
+    }
+    return value
+}
