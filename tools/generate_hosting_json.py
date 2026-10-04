@@ -74,6 +74,27 @@ def calculate_button(order):
     }
 
 
+def date_picker(key, label, order, minimum=None, maximum=None, default="TODAY"):
+    """Date field. Bounds accept `dd-MM-yyyy` or the `TODAY` sentinel.
+
+    The hosted JSON is a static file, so a bound of "today" cannot be baked in
+    at generation time; the app resolves the sentinel when the picker opens.
+    """
+    return {
+        "type": "DATE_PICKER",
+        "key": key,
+        "label": label,
+        "defaultValue": default,
+        **({"minDate": minimum} if minimum else {}),
+        **({"maxDate": maximum} if maximum else {}),
+        "order": order,
+    }
+
+
+def chart(ctype, data_keys, title):
+    return {"type": ctype, "dataKeys": data_keys, "title": title}
+
+
 def summary(key, label, order, stype="KEY_VALUE", formatter="NONE"):
     return {"key": key, "label": label, "type": stype, "formatter": formatter, "order": order}
 
@@ -173,7 +194,11 @@ def calculators():
                 edit_text("rate", "Interest rate (% p.a.)", 2, minimum=0, maximum=100, hint="e.g. 8.5"),
                 edit_text("tenure", "Tenure", 3, minimum=1),
                 spinner("tenureType", "Tenure type", 4, TENURE_OPTIONS, "YEARS"),
-                calculate_button(5),
+                # The retired EMI screen let the user set the first instalment date
+                # and labelled the projection from it; a first instalment in the
+                # future was not selectable.
+                date_picker("startDate", "First instalment date", 5, maximum="TODAY"),
+                calculate_button(6),
             ],
             "output": output_config([
                 summary("emi", "Monthly EMI", 1, formatter="CURRENCY_INR"),
@@ -181,6 +206,8 @@ def calculators():
                 summary("totalPayable", "Total payable", 3, formatter="CURRENCY_INR"),
                 summary("interestPercentage", "Interest share", 4, formatter="PERCENTAGE"),
                 summary("principalPercentage", "Principal share", 5, formatter="PERCENTAGE"),
+            ], charts=[
+                chart("PIE", ["principal", "totalInterest"], "Principal vs interest"),
             ]),
         },
         {
@@ -233,6 +260,8 @@ def calculators():
                 summary("totalInvested", "Total invested", 1, formatter="CURRENCY_INR"),
                 summary("totalReturns", "Total returns", 2, formatter="CURRENCY_INR"),
                 summary("maturity", "Maturity value", 3, formatter="CURRENCY_INR"),
+            ], charts=[
+                chart("DONUT", ["totalInvested", "totalReturns"], "Invested vs returns"),
             ]),
         },
         {
@@ -268,6 +297,8 @@ def calculators():
                 summary("lumpsumAmount", "Invested amount", 1, formatter="CURRENCY_INR"),
                 summary("totalReturns", "Total returns", 2, formatter="CURRENCY_INR"),
                 summary("maturity", "Maturity value", 3, formatter="CURRENCY_INR"),
+            ], charts=[
+                chart("DONUT", ["lumpsumAmount", "totalReturns"], "Invested vs returns"),
             ]),
         },
         {
@@ -286,6 +317,8 @@ def calculators():
                 summary("principal", "Principal", 1, formatter="CURRENCY_INR"),
                 summary("totalInterest", "Interest earned", 2, formatter="CURRENCY_INR"),
                 summary("maturity", "Maturity amount", 3, formatter="CURRENCY_INR"),
+            ], charts=[
+                chart("PIE", ["principal", "totalInterest"], "Deposit vs interest"),
             ]),
         },
         {
@@ -302,6 +335,8 @@ def calculators():
                 summary("totalInvested", "Total invested", 1, formatter="CURRENCY_INR"),
                 summary("totalInterest", "Interest earned", 2, formatter="CURRENCY_INR"),
                 summary("maturity", "Maturity amount", 3, formatter="CURRENCY_INR"),
+            ], charts=[
+                chart("PIE", ["totalInvested", "totalInterest"], "Deposits vs interest"),
             ]),
         },
         {
@@ -317,6 +352,8 @@ def calculators():
                 summary("totalInvested", "Total invested", 1, formatter="CURRENCY_INR"),
                 summary("totalInterest", "Interest earned", 2, formatter="CURRENCY_INR"),
                 summary("maturity", "Maturity amount", 3, formatter="CURRENCY_INR"),
+            ], charts=[
+                chart("PIE", ["totalInvested", "totalInterest"], "Deposits vs interest"),
             ]),
         },
         {
@@ -337,6 +374,8 @@ def calculators():
                 summary("cgst", "CGST", 5, formatter="CURRENCY_INR"),
                 summary("sgst", "SGST", 6, formatter="CURRENCY_INR"),
                 summary("igst", "IGST", 7, formatter="CURRENCY_INR"),
+            ], charts=[
+                chart("BAR", ["cgst", "sgst", "igst"], "GST split"),
             ]),
         },
         {
@@ -353,6 +392,8 @@ def calculators():
                 summary("vatRate", "VAT rate", 2, formatter="PERCENTAGE"),
                 summary("vatAmount", "VAT amount", 3, formatter="CURRENCY_INR"),
                 summary("totalAmount", "Total amount", 4, formatter="CURRENCY_INR"),
+            ], charts=[
+                chart("PIE", ["baseAmount", "vatAmount"], "Base vs VAT"),
             ]),
         },
         {
@@ -513,6 +554,17 @@ def write_v2_dashboard():
             },
         })
         position += 1
+
+    components.append({
+        "type": "WEB_VIEW",
+        "id": "web_calculator",
+        "position": position,
+        "data": {
+            "title": "Web Calculator",
+            "url": "https://ranjan-rajeev.github.io/Finanace-Calculator-Web/",
+        },
+    })
+    position += 1
 
     components.append({
         "type": "SPACER",

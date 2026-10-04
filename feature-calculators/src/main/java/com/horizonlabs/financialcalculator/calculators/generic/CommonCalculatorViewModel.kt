@@ -11,6 +11,8 @@ import com.horizonlabs.financialcalculator.core.domain.model.CalculatorIntent
 import com.horizonlabs.financialcalculator.core.domain.model.CalculatorSummary
 import com.horizonlabs.financialcalculator.core.domain.model.InputFieldConfig
 import com.horizonlabs.financialcalculator.core.domain.model.SummaryItem
+import com.horizonlabs.financialcalculator.core.domain.model.decodeInputValues
+import com.horizonlabs.financialcalculator.core.domain.model.encodeInputValues
 import com.horizonlabs.financialcalculator.core.domain.model.defaultValues
 import com.horizonlabs.financialcalculator.core.domain.model.visibleFields
 import com.horizonlabs.financialcalculator.core.domain.model.visibleValues
@@ -30,8 +32,8 @@ class CommonCalculatorViewModel @Inject constructor(
     private val calculateUseCase: CalculateUseCase,
     private val saveHistoryUseCase: SaveHistoryUseCase,
     private val getHistoryUseCase: GetHistoryUseCase,
-    savedStateHandle: SavedStateHandle
-) : MviViewModel<CalculatorIntent, CalculatorState>(
+    private val savedStateHandle: SavedStateHandle
+) : MviViewModel<CalculatorIntent, CalculatorState, Nothing>(
     CalculatorState(
         calculatorId = savedStateHandle[ARG_CALCULATOR_ID] ?: "",
         calculatorName = savedStateHandle[ARG_CALCULATOR_NAME] ?: ""
@@ -56,14 +58,34 @@ class CommonCalculatorViewModel @Inject constructor(
                     // Defaults must live in state, not just in the rendered text, or a
                     // required field with a published default is reported as empty.
                     inputValues = fields.defaultValues(),
+                    charts = config.outputConfig.charts,
                     isLoading = false
                 )}
+                // Applied after the config lands, so restored keys are only kept for fields
+                // this calculator actually publishes.
+                restoreRequestedInputs()
             }.onFailure { error ->
                 _state.update { it.copy(
                     isLoading = false,
                     validationErrors = mapOf("general" to (error.message ?: "Failed to load calculator"))
                 )}
             }
+        }
+    }
+
+    /** Prefills the form from a history row, dropping keys the current config no longer has. */
+    private fun restoreRequestedInputs() {
+        val encoded = savedStateHandle.get<String>(ARG_RESTORE_INPUTS).orEmpty()
+        if (encoded.isBlank()) return
+        val restored = decodeInputValues(encoded)
+        if (restored.isEmpty()) return
+
+        _state.update { current ->
+            val knownKeys = current.inputFields.map { it.key }.toSet()
+            current.copy(
+                inputValues = current.inputValues +
+                    restored.filterKeys { it in knownKeys }
+            )
         }
     }
 
@@ -111,6 +133,7 @@ class CommonCalculatorViewModel @Inject constructor(
                     summary = calculationResult.summary,
                     breakdown = calculationResult.breakdown,
                     moreInfo = calculationResult.moreInfo,
+                    rawValues = calculationResult.rawValues,
                     isLoading = false,
                     validationErrors = calculationResult.errors
                 )}
@@ -176,13 +199,16 @@ class CommonCalculatorViewModel @Inject constructor(
             validationErrors = emptyMap(),
             summary = null,
             breakdown = emptyList(),
-            moreInfo = emptyList()
+            moreInfo = emptyList(),
+            rawValues = emptyMap()
         )}
     }
 
     private fun restoreHistory(history: CalculationHistory) {
         _state.update { it.copy(
-            inputValues = history.inputValues,
+            // History round-trips through Gson, so stored numbers arrive as Double; feed the
+            // raw-text form the inputs render rather than `500000.0`.
+            inputValues = decodeInputValues(encodeInputValues(history.inputValues)),
             summary = history.outputSummary?.let { map ->
                 CalculatorSummary(
                     items = map.map { (key, value) -> SummaryItem(key, key, value.toString()) }
@@ -201,5 +227,6 @@ class CommonCalculatorViewModel @Inject constructor(
     companion object {
         const val ARG_CALCULATOR_ID = "calculatorId"
         const val ARG_CALCULATOR_NAME = "calculatorName"
+        const val ARG_RESTORE_INPUTS = "restoreInputs"
     }
 }

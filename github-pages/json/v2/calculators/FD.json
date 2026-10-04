@@ -127,7 +127,16 @@
       }
     ],
     "breakdown": null,
-    "charts": [],
+    "charts": [
+      {
+        "type": "PIE",
+        "dataKeys": [
+          "principal",
+          "totalInterest"
+        ],
+        "title": "Deposit vs interest"
+      }
+    ],
     "formulas": []
   },
   "moreInfo": [

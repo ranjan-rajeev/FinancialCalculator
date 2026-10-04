@@ -21,6 +21,8 @@ import com.horizonlabs.financialcalculator.core.domain.repository.ConfigReposito
 import com.horizonlabs.financialcalculator.core.domain.repository.HistoryRepository
 import com.horizonlabs.financialcalculator.core.domain.usecase.CalculateUseCase
 import com.horizonlabs.financialcalculator.core.domain.usecase.CalculateUseCaseImpl
+import com.horizonlabs.financialcalculator.core.domain.usecase.DeleteAllHistoryUseCase
+import com.horizonlabs.financialcalculator.core.domain.usecase.DeleteAllHistoryUseCaseImpl
 import com.horizonlabs.financialcalculator.core.domain.usecase.GetAppConfigUseCase
 import com.horizonlabs.financialcalculator.core.domain.usecase.GetAppConfigUseCaseImpl
 import com.horizonlabs.financialcalculator.core.domain.usecase.GetCalculatorConfigUseCase
@@ -29,6 +31,8 @@ import com.horizonlabs.financialcalculator.core.domain.usecase.GetDashboardUseCa
 import com.horizonlabs.financialcalculator.core.domain.usecase.GetDashboardUseCaseImpl
 import com.horizonlabs.financialcalculator.core.domain.usecase.GetHistoryUseCase
 import com.horizonlabs.financialcalculator.core.domain.usecase.GetHistoryUseCaseImpl
+import com.horizonlabs.financialcalculator.core.domain.usecase.ObserveAllHistoryUseCase
+import com.horizonlabs.financialcalculator.core.domain.usecase.ObserveAllHistoryUseCaseImpl
 import com.horizonlabs.financialcalculator.core.domain.usecase.SaveHistoryUseCase
 import com.horizonlabs.financialcalculator.core.domain.usecase.SaveHistoryUseCaseImpl
 import dagger.Module
@@ -166,6 +170,18 @@ object CoreModule {
     @Singleton
     fun provideGetHistoryUseCase(repository: HistoryRepository): GetHistoryUseCase {
         return GetHistoryUseCaseImpl(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideObserveAllHistoryUseCase(repository: HistoryRepository): ObserveAllHistoryUseCase {
+        return ObserveAllHistoryUseCaseImpl(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteAllHistoryUseCase(repository: HistoryRepository): DeleteAllHistoryUseCase {
+        return DeleteAllHistoryUseCaseImpl(repository)
     }
 
     @Provides

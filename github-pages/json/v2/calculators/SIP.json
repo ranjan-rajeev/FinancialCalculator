@@ -115,7 +115,16 @@
       }
     ],
     "breakdown": null,
-    "charts": [],
+    "charts": [
+      {
+        "type": "DONUT",
+        "dataKeys": [
+          "totalInvested",
+          "totalReturns"
+        ],
+        "title": "Invested vs returns"
+      }
+    ],
     "formulas": []
   },
   "moreInfo": [

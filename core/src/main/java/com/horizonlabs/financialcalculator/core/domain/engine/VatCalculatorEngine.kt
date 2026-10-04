@@ -43,7 +43,16 @@ class VatCalculatorEngine : CalculatorEngine {
             )
         )
         
-        return success(CalculationResult(summary = summary, breakdown = emptyList(), errors = emptyMap()))
+        return success(CalculationResult(
+            summary = summary,
+            breakdown = emptyList(),
+            errors = emptyMap(),
+            rawValues = mapOf(
+                "baseAmount" to baseAmount,
+                "vatAmount" to vatAmount,
+                "totalAmount" to totalAmount
+            )
+        ))
     }
     
     private fun getDouble(values: Map<String, Any>, key: String): Double? {

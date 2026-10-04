@@ -11,7 +11,12 @@ import com.horizonlabs.financialcalculator.core.util.Formatters
 import com.horizonlabs.financialcalculator.core.util.Result
 import com.horizonlabs.financialcalculator.core.util.Result.Companion.failure
 import com.horizonlabs.financialcalculator.core.util.Result.Companion.success
+import java.util.Calendar
+import java.util.TimeZone
 import kotlin.math.ceil
+
+private val MONTH_NAMES =
+    arrayOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
 class EmiCalculatorEngine : CalculatorEngine {
     override fun getSupportedCalculatorTypes() = listOf(Constants.CalculatorType.EMI)
@@ -23,6 +28,12 @@ class EmiCalculatorEngine : CalculatorEngine {
         val rate = getDouble(values, "rate") ?: return failure(IllegalArgumentException("Rate is required"))
         val tenure = getDouble(values, "tenure") ?: return failure(IllegalArgumentException("Tenure is required"))
         val tenureType = getString(values, "tenureType") ?: "YEARS"
+        // The retired EMI screen let the user set the first instalment date and
+        // labelled the schedule from it. An absent or unparseable value falls back
+        // to today so the breakdown still carries real month names.
+        val startDate = getString(values, "startDate")
+            ?.let { Formatters.dateStringToUtcMillis(it) }
+            ?: Formatters.todayUtcMillis()
         
         val tenureInMonths = if (tenureType == "YEARS") tenure * 12 else tenure
         if (tenureInMonths <= 0) return failure(IllegalArgumentException("Invalid tenure"))
@@ -49,42 +60,55 @@ class EmiCalculatorEngine : CalculatorEngine {
             )
         )
         
-        val breakdown = generateYearlyBreakdown(principal, rate, tenureInMonths, emi)
+        val breakdown = generateYearlyBreakdown(principal, rate, tenureInMonths, emi, startDate)
         
         return success(CalculationResult(
             summary = summary,
             breakdown = breakdown,
-            errors = emptyMap()
+            errors = emptyMap(),
+            rawValues = mapOf(
+                "principal" to principal,
+                "totalInterest" to totalInterest,
+                "totalPayable" to totalPayable,
+                "interestPercentage" to interestPercentage,
+                "principalPercentage" to principalPercentage
+            )
         ))
     }
     
-    private fun generateYearlyBreakdown(principal: Double, rate: Double, tenureMonths: Double, emi: Double): List<BreakdownItem> {
+    private fun generateYearlyBreakdown(
+        principal: Double,
+        rate: Double,
+        tenureMonths: Double,
+        emi: Double,
+        startDateUtcMillis: Long
+    ): List<BreakdownItem> {
         val monthlyRate = rate / 1200
         var remainingPrincipal = principal
         val breakdown = mutableListOf<BreakdownItem>()
-        
+
         val totalYears = ceil(tenureMonths / 12).toInt()
-        
+
         for (year in 1..totalYears) {
             var yearlyPrincipal = 0.0
             var yearlyInterest = 0.0
             var yearlyTotal = 0.0
             val monthlyItems = mutableListOf<BreakdownItem>()
-            
+
             val startMonth = (year - 1) * 12 + 1
             val endMonth = minOf(year * 12, tenureMonths.toInt())
-            
+
             for (month in startMonth..endMonth) {
                 val interest = remainingPrincipal * monthlyRate
                 val principalPaid = emi - interest
                 remainingPrincipal -= principalPaid
-                
+
                 yearlyPrincipal += principalPaid
                 yearlyInterest += interest
                 yearlyTotal += emi
-                
+
                 monthlyItems.add(BreakdownItem(
-                    period = getMonthName(month),
+                    period = monthLabel(startDateUtcMillis, month),
                     values = mapOf(
                         "principal" to Formatters.formatCurrencyINR(principalPaid),
                         "interest" to Formatters.formatCurrencyINR(interest),
@@ -111,11 +135,22 @@ class EmiCalculatorEngine : CalculatorEngine {
         return breakdown
     }
     
-    private fun getMonthName(month: Int): String {
-        val months = arrayOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
-        return months[(month - 1) % 12]
+    /**
+     * Label for instalment [month] (1-based) counted forward from the first
+     * instalment date, e.g. `Oct 2024`. Adding months to the calendar rather than
+     * indexing a fixed name array keeps the year in step across a December
+     * boundary, which the retired implementation had to special-case.
+     */
+    private fun monthLabel(startDateUtcMillis: Long, month: Int): String {
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+            timeInMillis = startDateUtcMillis
+            set(Calendar.DAY_OF_MONTH, 1)
+            add(Calendar.MONTH, month - 1)
+        }
+        val name = MONTH_NAMES[calendar.get(Calendar.MONTH)]
+        return "$name ${calendar.get(Calendar.YEAR)}"
     }
-    
+
     private fun getDouble(values: Map<String, Any>, key: String): Double? {
         val value = values[key]
         return when (value) {

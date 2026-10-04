@@ -20,6 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.horizonlabs.financialcalculator.core.domain.model.visibleFields
 import com.horizonlabs.financialcalculator.core.domain.model.CalculatorIntent
 import com.horizonlabs.financialcalculator.core.presentation.component.CalculatorBreakdownSection
+import com.horizonlabs.financialcalculator.core.presentation.component.CalculatorChartSection
 import com.horizonlabs.financialcalculator.core.presentation.component.CalculatorInputSection
 import com.horizonlabs.financialcalculator.core.presentation.component.CalculatorMoreInfoSection
 import com.horizonlabs.financialcalculator.core.presentation.component.CalculatorSummarySection
@@ -84,6 +85,12 @@ fun CommonCalculatorScreen(
                     state.summary?.let { summary ->
                         CalculatorSummarySection(summary = summary, modifier = Modifier.padding(0.dp))
                     }
+
+                    CalculatorChartSection(
+                        charts = state.charts,
+                        rawValues = state.rawValues,
+                        modifier = Modifier.padding(0.dp)
+                    )
 
                     if (state.breakdown.isNotEmpty()) {
                         CalculatorBreakdownSection(

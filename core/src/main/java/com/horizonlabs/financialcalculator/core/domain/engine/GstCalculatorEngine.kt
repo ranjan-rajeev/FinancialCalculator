@@ -57,7 +57,19 @@ class GstCalculatorEngine : CalculatorEngine {
             )
         )
         
-        return success(CalculationResult(summary = summary, breakdown = emptyList(), errors = emptyMap()))
+        return success(CalculationResult(
+            summary = summary,
+            breakdown = emptyList(),
+            errors = emptyMap(),
+            rawValues = mapOf(
+                "baseAmount" to baseAmount,
+                "gstAmount" to gstAmount,
+                "totalAmount" to totalAmount,
+                "cgst" to cgst,
+                "sgst" to sgst,
+                "igst" to igst
+            )
+        ))
     }
     
     private fun getDouble(values: Map<String, Any>, key: String): Double? {

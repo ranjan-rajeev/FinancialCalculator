@@ -63,12 +63,20 @@
       "order": 4
     },
     {
+      "type": "DATE_PICKER",
+      "key": "startDate",
+      "label": "First instalment date",
+      "defaultValue": "TODAY",
+      "maxDate": "TODAY",
+      "order": 5
+    },
+    {
       "type": "BUTTON",
       "key": "calculate",
       "label": "Calculate",
       "action": "CALCULATE",
       "style": "PRIMARY",
-      "order": 5
+      "order": 6
     }
   ],
   "outputConfig": {
@@ -110,7 +118,16 @@
       }
     ],
     "breakdown": null,
-    "charts": [],
+    "charts": [
+      {
+        "type": "PIE",
+        "dataKeys": [
+          "principal",
+          "totalInterest"
+        ],
+        "title": "Principal vs interest"
+      }
+    ],
     "formulas": []
   },
   "moreInfo": [

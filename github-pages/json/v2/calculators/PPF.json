@@ -79,7 +79,16 @@
       }
     ],
     "breakdown": null,
-    "charts": [],
+    "charts": [
+      {
+        "type": "PIE",
+        "dataKeys": [
+          "totalInvested",
+          "totalInterest"
+        ],
+        "title": "Deposits vs interest"
+      }
+    ],
     "formulas": []
   },
   "moreInfo": [

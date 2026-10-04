@@ -217,9 +217,18 @@
       }
     },
     {
+      "type": "WEB_VIEW",
+      "id": "web_calculator",
+      "position": 12,
+      "data": {
+        "title": "Web Calculator",
+        "url": "https://ranjan-rajeev.github.io/Finanace-Calculator-Web/"
+      }
+    },
+    {
       "type": "SPACER",
       "id": "spacer_bottom",
-      "position": 12,
+      "position": 13,
       "data": {
         "heightDp": 24
       }
@@ -227,7 +236,7 @@
     {
       "type": "AD_PLACEHOLDER",
       "id": "ad_bottom",
-      "position": 13,
+      "position": 14,
       "data": {
         "placementId": "ca-app-pub-0000000000000000/0000000000",
         "heightDp": 50

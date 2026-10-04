@@ -46,7 +46,16 @@ data class CalculationResult(
     val summary: CalculatorSummary?,
     val breakdown: List<BreakdownItem>,
     val errors: Map<String, String>,
-    val moreInfo: List<MoreInfoItem> = emptyList()
+    val moreInfo: List<MoreInfoItem> = emptyList(),
+    /**
+     * Unformatted numbers keyed by the same names a chart's `dataKeys` reference.
+     *
+     * `summary` holds display strings such as `₹5,41,387.88`, which cannot be
+     * plotted. Engines publish the figures a chart needs here and the chart config
+     * picks them out by key, so adding a chart does not mean reformatting a
+     * summary row.
+     */
+    val rawValues: Map<String, Double> = emptyMap()
 )
 
 data class CalculatorInputValues(
@@ -68,6 +77,10 @@ data class CalculatorState(
     val summary: CalculatorSummary? = null,
     val breakdown: List<BreakdownItem> = emptyList(),
     val moreInfo: List<MoreInfoItem> = emptyList(),
+    /** Chart declarations from the calculator's `outputConfig.charts`. */
+    val charts: List<ChartConfig> = emptyList(),
+    /** Unformatted figures the charts plot, published by the engine. */
+    val rawValues: Map<String, Double> = emptyMap(),
     val isLoading: Boolean = false,
     val showHistory: Boolean = false,
     val calculatorId: String = "",

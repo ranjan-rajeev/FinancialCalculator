@@ -31,3 +31,20 @@ object LegacyColors {
 
     val Error = Color(0xFFD3332B) // red_nav
 }
+
+/**
+ * Series colours for charts, in declaration order.
+ *
+ * The first two are the app's own primary and accent so a two-slice
+ * principal-versus-interest chart matches the progress bars the retired EMI
+ * screen animated. Later entries extend the same hue progression rather than
+ * introducing an unrelated palette.
+ */
+val ChartPalette = listOf(
+    Color(0xFF3F51B5),
+    Color(0xFFFF4081),
+    Color(0xFF00897B),
+    Color(0xFFFFA000),
+    Color(0xFF7E57C2),
+    Color(0xFF5D4037)
+)

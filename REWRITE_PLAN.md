@@ -912,21 +912,25 @@ the unversioned v1 documents on GitHub Pages with their own retired deserializer
 - [x] Input fields keep raw text instead of round-tripping through `Double`, so `500000` no longer displays as `500000.0` and a cleared field stays empty instead of silently becoming `0.0`
 - [x] `FormattersTest` covers Indian grouping, paise rounding, compact abbreviation and parsing (10 tests, passing)
 - [x] On-device EMI flow verified on `emulator-5554` API 37 against live `v2` JSON: `₹4,339.12` EMI, `₹5,41,387.88` total interest, `₹10,41,387.88` total payable, 51.99% interest, and a year-by-year breakdown
+- [x] Real Material 3 `DatePickerDialog` replaces the free-text date field; bounds resolve the `TODAY` sentinel and dates round-trip through UTC midnight so the picker cannot land a day off across DST
+- [x] EMI takes a published `startDate` and labels its schedule `Oct 2024`, `Nov 2024`, … instead of bare `Jan`/`Feb`, matching legacy `EmiCalculatorActivity`
+- [x] Canvas pie/donut/bar/line charts driven by `CalculationResult.rawValues`, published for 8 calculators; `HostingJsonContractTest` runs each engine and fails if a chart names a key the engine does not emit
+- [x] Fixed a user-reachable crash: RD with rate `0` divided by the monthly rate, produced `NaN`, and `BigDecimal.valueOf(NaN)` threw out of the formatter. `Formatters` now renders `—`/`∞` instead of throwing
+- [x] In-app `WebViewScreen` replaces the external-browser placeholder; scheme allowlist blocks `file:`/`content:`/`javascript:`/`intent:`, no `@JavascriptInterface` is exposed to remote pages, history backs before leaving the screen
+- [x] `DashboardIntent.OnCalculatorClick`/`OnBannerClick` are wired through a new `MviViewModel` effect channel instead of being inert; the banner pager is now actually clickable and propagates its published `actionType`
+- [x] History screen reads Room live via `ObserveAllHistoryUseCase`, groups by day, and tapping a row prefills the calculator through a `restoreInputs` nav argument; Gson-decoded `Double`s are normalised back to raw text so `500000` does not return as `500000.0`
+- [x] Drawer Share / Rate / About implemented as effects; Share prefers WhatsApp then falls back to the system chooser, Rate falls back from `market://` to the web listing, About reproduces the retired feature-group list
+- [x] `Routes.encodeUrlSegment` uses `Uri.encode` instead of `URLEncoder`, which emitted `+` that Navigation's `Uri.decode` does not turn back into a space
 
 ### Outstanding
 - [ ] AdMob banner (`bannerPlacementId`) and in-app review are not implemented; the id in the generated JSON is a placeholder
 - [ ] Banner images and calculator icons are not uploaded; every icon URL is empty except `EMI`
 - [ ] Custom (non-generic) calculator screens are not written; everything routes through the common calculator screen
-- [ ] `WebViewData` renders a placeholder card instead of a real WebView
-- [ ] `InputFieldConfig.visibleWhen` is not applied in the UI (fields always render)
-- [ ] Legacy `DashboardIntent.OnCalculatorClick` / `OnBannerClick` intents are inert; navigation happens through screen callbacks
 - [ ] `GenericFormulaEngine` derives NPS/ATAL/CAGR formulas internally; verify results against the retired Java engines
-- [ ] `CommonCalculatorViewModel` injects `calculatorId` into the engine value map so `GenericFormulaEngine` and `SipCalculatorEngine` can dispatch on type without a hidden JSON field
-- [ ] History screen is a placeholder; `GetHistoryUseCase` is injected but unused
-- [ ] `visibleWhen` conditions in the spec are unimplemented, so conditional fields cannot be published yet
-- [ ] No unit tests for business logic or engines yet (deprioritised by request); `Formatters` and the JSON contract are covered
-- [ ] `versionCode` is still `1` while the retired APK published `19`, so a Play Store update will be rejected
-- [ ] The `WebViewData` placeholder opens the legacy web calculator in an external Chrome browser; it should render in-app
+- [ ] `Loan Profile` (create/view) and `Home Loan Eligibility` are declared as routes but have no implementation. Home Loan Eligibility additionally has no recoverable config: legacy routes it to the generic calculator with no hosted JSON, and the retired `HomeLoanEligibility.java` is dead code that computes FD-style maturity. Needs a product decision.
+- [ ] The regenerated `github-pages/json/` tree (date picker, charts, `WEB_VIEW` component) still has to be copied into the separate `ranjan-rajeev/Finanace-Calculator-Web` repo before the app can serve it
+- [ ] `usesCleartextTraffic="true"` is set in the app manifest; a finance app should not permit cleartext
+- [ ] Legacy `MainActivity` supported a Play Store in-app update flow (`AppUpdateManager`) that has no equivalent in the rewrite
 
 ---
 

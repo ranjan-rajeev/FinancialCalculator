@@ -2,6 +2,11 @@ package com.horizonlabs.financialcalculator.core.util
 
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 /**
  * Number and currency formatting for the UI.
@@ -29,6 +34,11 @@ object Formatters {
     }
 
     private fun decimal(value: Double, minFrac: Int, maxFrac: Int): String {
+        // `BigDecimal.valueOf` throws NumberFormatException on NaN and Infinity.
+        // An engine that divides by a zero rate produces them, and a formatting
+        // call must never be the thing that takes the screen down, so they are
+        // rendered as an em dash instead.
+        if (!value.isFinite()) return if (value.isNaN()) "—" else if (value > 0) "∞" else "-∞"
         val rounded = BigDecimal.valueOf(value).setScale(maxFrac, RoundingMode.HALF_UP)
         val plain = rounded.abs().toPlainString()
         val integerPart = plain.substringBefore('.')
@@ -86,4 +96,78 @@ object Formatters {
 
     fun roundToDecimals(value: Double, decimals: Int): Double =
         BigDecimal.valueOf(value).setScale(decimals, RoundingMode.HALF_UP).toDouble()
+
+    /**
+     * Calendar dates are carried through the app as `dd-MM-yyyy` text, matching the
+     * retired Java app's `Util.DATE_FORMAT`. A plain string has no timezone, which
+     * keeps a picked date stable across DST shifts and device locale changes.
+     *
+     * Compose Material's date picker works in UTC milliseconds, so the two
+     * conversions below pin the text to midnight *UTC* rather than the device's
+     * zone. Going through the local zone is what makes a picker that opens on the
+     * right day land one day off.
+     */
+    const val DATE_PATTERN = "dd-MM-yyyy"
+
+    private fun dateFormat() = SimpleDateFormat(DATE_PATTERN, Locale.US).apply {
+        isLenient = false
+        timeZone = TimeZone.getTimeZone("UTC")
+    }
+
+    /** `05-10-2024` -> millis for 2024-10-05T00:00:00Z, or null if unparseable. */
+    fun dateStringToUtcMillis(date: String): Long? =
+        runCatching { dateFormat().parse(date.trim())?.time }.getOrNull()
+
+    /** Millis for 2024-10-05T00:00:00Z -> `05-10-2024`. */
+    fun utcMillisToDateString(millis: Long): String = dateFormat().format(Date(millis))
+
+    /** Today's date as `dd-MM-yyyy`, for resolving a `"TODAY"` default. */
+    fun todayDateString(): String = utcMillisToDateString(todayUtcMillis())
+
+    /**
+     * Resolves a published date bound, which may be a literal `dd-MM-yyyy` or the
+     * `TODAY` sentinel. Static hosted JSON cannot bake in the current day, so
+     * "no later than today" has to be expressed symbolically.
+     */
+    fun resolveDateBound(bound: String?): Long? = when {
+        bound == null -> null
+        bound.trim().equals(TODAY_SENTINEL, ignoreCase = true) -> todayUtcMillis()
+        else -> dateStringToUtcMillis(bound)
+    }
+
+    const val TODAY_SENTINEL = "TODAY"
+
+    fun todayUtcMillis(): Long {
+        val now = Calendar.getInstance()
+        return Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+            clear()
+            set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
+        }.timeInMillis
+    }
+
+    /**
+     * `12 Sep 2026, 14:05` for a stored history timestamp. Deliberately *not* [dateFormat]:
+     * those values are wall-clock instants, so they must render in the device's zone rather
+     * than be pinned to UTC midnight.
+     */
+    fun formatTimestamp(millis: Long): String =
+        SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()).format(Date(millis))
+
+    /** `Today` / `Yesterday` / a date, for grouping history rows under day headers. */
+    fun formatRelativeDay(millis: Long): String {
+        val midnight = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val dayMillis = 86_400_000L
+        val daysApart = ((midnight.timeInMillis - millis) / dayMillis).toInt()
+        return when (daysApart) {
+            0 -> "Today"
+            1 -> "Yesterday"
+            in 2..6 -> SimpleDateFormat("EEEE", Locale.getDefault()).format(Date(millis))
+            else -> SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(Date(millis))
+        }
+    }
 }

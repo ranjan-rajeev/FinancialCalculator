@@ -48,7 +48,16 @@ class PpfCalculatorEngine : CalculatorEngine {
         
         val breakdown = generatePpfBreakdown(yearlyDeposit, rate, tenure.toInt())
         
-        return success(CalculationResult(summary = summary, breakdown = breakdown, errors = emptyMap()))
+        return success(CalculationResult(
+            summary = summary,
+            breakdown = breakdown,
+            errors = emptyMap(),
+            rawValues = mapOf(
+                "totalInvested" to totalInvested,
+                "totalInterest" to totalInterest,
+                "maturity" to balance
+            )
+        ))
     }
     
     private fun generatePpfBreakdown(yearlyDeposit: Double, rate: Double, tenure: Int): List<BreakdownItem> {

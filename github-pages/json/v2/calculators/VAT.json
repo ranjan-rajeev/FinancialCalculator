@@ -90,7 +90,16 @@
       }
     ],
     "breakdown": null,
-    "charts": [],
+    "charts": [
+      {
+        "type": "PIE",
+        "dataKeys": [
+          "baseAmount",
+          "vatAmount"
+        ],
+        "title": "Base vs VAT"
+      }
+    ],
     "formulas": []
   },
   "moreInfo": [

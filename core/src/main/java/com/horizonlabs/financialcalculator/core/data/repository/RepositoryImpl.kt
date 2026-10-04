@@ -47,19 +47,33 @@ class CalculatorRepositoryImpl @Inject constructor(
     override suspend fun getCalculatorConfig(calculatorId: String): Result<CalculatorConfig> {
         return withContext(Dispatchers.IO) {
             try {
+                // Remote wins whenever it is reachable. The hosted JSON is edited in place and
+                // carries a static `version`, so comparing versions can never distinguish a
+                // fresh config from one cached before an edit - it pinned users to whatever
+                // they first downloaded (no date field, `charts: []`). The local row is the
+                // offline fallback, not a cache to prefer.
+                val remoteConfig = fetchRemoteConfig(calculatorId).getOrNull()
+                if (remoteConfig != null) {
+                    val entity = remoteConfig.toEntity()
+                    val cached = runCatching {
+                        database.calculatorConfigDao().getConfig(calculatorId)
+                    }.getOrNull()
+                    // Only write when the content actually changed, to avoid a needless
+                    // row rewrite on every calculator open.
+                    if (cached != entity) {
+                        database.calculatorConfigDao().insert(entity)
+                    }
+                    return@withContext success(remoteConfig)
+                }
+
                 val localConfig = runCatching {
                     database.calculatorConfigDao().getConfig(calculatorId)?.toDomain()
                 }.getOrNull()
 
-                val remoteConfig = fetchRemoteConfig(calculatorId).getOrNull()
-
-                when {
-                    remoteConfig != null && (localConfig == null || remoteConfig.version > localConfig.version) -> {
-                        database.calculatorConfigDao().insert(remoteConfig.toEntity())
-                        success(remoteConfig)
-                    }
-                    localConfig != null -> success(localConfig)
-                    else -> failure(IllegalStateException("Calculator config not found: $calculatorId"))
+                if (localConfig != null) {
+                    success(localConfig)
+                } else {
+                    failure(IllegalStateException("Calculator config not found: $calculatorId"))
                 }
             } catch (e: Exception) {
                 failure(e)

@@ -2,6 +2,7 @@ package com.horizonlabs.financialcalculator.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.horizonlabs.financialcalculator.core.domain.model.ActionType
 import com.horizonlabs.financialcalculator.core.domain.model.DashboardResponse
 import com.horizonlabs.financialcalculator.core.domain.usecase.GetDashboardUseCase
 import com.horizonlabs.financialcalculator.core.presentation.mvi.MviViewModel
@@ -16,6 +17,17 @@ sealed interface DashboardIntent {
     data object OnRetry : DashboardIntent
     data class OnCalculatorClick(val calculatorId: String, val calculatorName: String) : DashboardIntent
     data class OnBannerClick(val actionUrl: String?, val actionType: String) : DashboardIntent
+    data object OnShareApp : DashboardIntent
+    data object OnRateApp : DashboardIntent
+    data object OnAboutClick : DashboardIntent
+}
+
+sealed interface DashboardEffect {
+    data class OpenCalculator(val calculatorId: String, val calculatorName: String) : DashboardEffect
+    data class OpenBanner(val actionUrl: String, val actionType: ActionType) : DashboardEffect
+    data object ShareApp : DashboardEffect
+    data object RateApp : DashboardEffect
+    data object OpenAbout : DashboardEffect
 }
 
 data class DashboardState(
@@ -26,7 +38,7 @@ data class DashboardState(
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val getDashboardUseCase: GetDashboardUseCase
-) : MviViewModel<DashboardIntent, DashboardState>(DashboardState()) {
+) : MviViewModel<DashboardIntent, DashboardState, DashboardEffect>(DashboardState()) {
 
     init {
         loadDashboard()
@@ -35,8 +47,20 @@ class DashboardViewModel @Inject constructor(
     override fun onIntent(intent: DashboardIntent) {
         when (intent) {
             DashboardIntent.OnRefresh, DashboardIntent.OnRetry -> loadDashboard()
-            is DashboardIntent.OnCalculatorClick -> Unit
-            is DashboardIntent.OnBannerClick -> Unit
+            is DashboardIntent.OnCalculatorClick -> sendEffect(
+                DashboardEffect.OpenCalculator(intent.calculatorId, intent.calculatorName)
+            )
+            is DashboardIntent.OnBannerClick -> {
+                val url = intent.actionUrl
+                if (url.isNullOrBlank()) return
+                val actionType = runCatching { ActionType.valueOf(intent.actionType) }
+                    .getOrDefault(ActionType.WEB)
+                if (actionType == ActionType.NONE) return
+                sendEffect(DashboardEffect.OpenBanner(url, actionType))
+            }
+            DashboardIntent.OnShareApp -> sendEffect(DashboardEffect.ShareApp)
+            DashboardIntent.OnRateApp -> sendEffect(DashboardEffect.RateApp)
+            DashboardIntent.OnAboutClick -> sendEffect(DashboardEffect.OpenAbout)
         }
     }
 

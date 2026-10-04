@@ -1,5 +1,10 @@
 package com.horizonlabs.financialcalculator.dashboard
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,10 +21,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.horizonlabs.financialcalculator.core.domain.model.ActionType
 import com.horizonlabs.financialcalculator.core.domain.model.AdData
 import com.horizonlabs.financialcalculator.core.domain.model.BannerData
 import com.horizonlabs.financialcalculator.core.domain.model.CalculatorCard
@@ -69,10 +79,26 @@ fun DashboardScreen(
     onCalculatorClick: (calculatorId: String, calculatorName: String) -> Unit,
     onBannerClick: (actionUrl: String?) -> Unit,
     onHistoryClick: () -> Unit,
+    onWebViewClick: (url: String, title: String) -> Unit,
+    onAboutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     val drawerOpen = remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.effects.collect { effect ->
+            when (effect) {
+                is DashboardEffect.OpenCalculator ->
+                    onCalculatorClick(effect.calculatorId, effect.calculatorName)
+                is DashboardEffect.OpenBanner -> onBannerClick(effect.actionUrl)
+                DashboardEffect.ShareApp -> shareApp(context)
+                DashboardEffect.RateApp -> rateApp(context)
+                DashboardEffect.OpenAbout -> onAboutClick()
+            }
+        }
+    }
 
     Box(modifier = modifier.fillMaxSize()) {
         Surface(
@@ -96,8 +122,13 @@ fun DashboardScreen(
                     is UiState.Success -> state.dashboard?.let { dashboard ->
                         DashboardContent(
                             dashboard = dashboard,
-                            onCalculatorClick = onCalculatorClick,
-                            onBannerClick = onBannerClick
+                            onCalculatorClick = { id, name ->
+                                viewModel.onIntent(DashboardIntent.OnCalculatorClick(id, name))
+                            },
+                            onBannerClick = { url, actionType ->
+                                viewModel.onIntent(DashboardIntent.OnBannerClick(url, actionType.name))
+                            },
+                            onWebViewClick = onWebViewClick
                         )
                     }
                 }
@@ -109,24 +140,61 @@ fun DashboardScreen(
             onClose = { drawerOpen.value = false },
             onItemClick = { item ->
                 drawerOpen.value = false
-                when (item) {
-                    DrawerItem.Home -> {
-                        // Already on home
-                    }
-                    DrawerItem.Share -> {
-                        // TODO: Implement share
-                    }
-                    DrawerItem.Rate -> {
-                        // TODO: Implement rate app
-                    }
-                    DrawerItem.About -> {
-                        // TODO: Implement about
-                    }
+                // Home is a no-op: the drawer is only reachable from the dashboard itself.
+                val intent = when (item) {
+                    DrawerItem.Home -> null
+                    DrawerItem.Share -> DashboardIntent.OnShareApp
+                    DrawerItem.Rate -> DashboardIntent.OnRateApp
+                    DrawerItem.About -> DashboardIntent.OnAboutClick
                 }
+                intent?.let(viewModel::onIntent)
             }
         )
     }
 }
+
+/**
+ * Prefers WhatsApp like the retired `MainActivity.shareWhatsApp()`, but falls back to the system
+ * chooser instead of silently doing nothing when WhatsApp is not installed.
+ */
+private fun shareApp(context: Context) {
+    val link = playStoreLink(context)
+    val whatsapp = Intent(Intent.ACTION_SEND).apply {
+        setPackage("com.whatsapp")
+        putExtra(Intent.EXTRA_TEXT, link)
+        type = "text/plain"
+    }
+    val intent = if (whatsapp.resolveActivity(context.packageManager) != null) {
+        whatsapp
+    } else {
+        Intent.createChooser(
+            Intent(Intent.ACTION_SEND).apply {
+                putExtra(Intent.EXTRA_TEXT, link)
+                type = "text/plain"
+            },
+            null
+        )
+    }
+    runCatching { context.startActivity(intent) }
+}
+
+/** Opens the Play Store listing, falling back to the web URL when no store app exists. */
+private fun rateApp(context: Context) {
+    val market = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse("market://details?id=${context.packageName}")
+    )
+    if (market.resolveActivity(context.packageManager) != null) {
+        runCatching { context.startActivity(market) }
+    } else {
+        runCatching {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(playStoreLink(context))))
+        }
+    }
+}
+
+private fun playStoreLink(context: Context): String =
+    "https://play.google.com/store/apps/details?id=${context.packageName}"
 
 @Composable
 private fun LoadingView() {
@@ -164,7 +232,8 @@ fun ErrorView(message: String, onRetry: () -> Unit) {
 private fun DashboardContent(
     dashboard: DashboardResponse,
     onCalculatorClick: (String, String) -> Unit,
-    onBannerClick: (String?) -> Unit
+    onBannerClick: (String?, ActionType) -> Unit,
+    onWebViewClick: (String, String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -178,7 +247,8 @@ private fun DashboardContent(
             DashboardComponentView(
                 component = component,
                 onCalculatorClick = onCalculatorClick,
-                onBannerClick = onBannerClick
+                onBannerClick = onBannerClick,
+                onWebViewClick = onWebViewClick
             )
         }
     }
@@ -188,7 +258,8 @@ private fun DashboardContent(
 private fun DashboardComponentView(
     component: DashboardComponent,
     onCalculatorClick: (String, String) -> Unit,
-    onBannerClick: (String?) -> Unit
+    onBannerClick: (String?, ActionType) -> Unit,
+    onWebViewClick: (String, String) -> Unit
 ) {
     when (component) {
         is DashboardComponent.BannerCarousel ->
@@ -199,7 +270,10 @@ private fun DashboardComponentView(
         is DashboardComponent.CalculatorList ->
             CalculatorListView(data = component.data, onCalculatorClick = onCalculatorClick)
         is DashboardComponent.Spacer -> SpacerView(data = component.data)
-        is DashboardComponent.WebView -> WebViewComponentView(data = component.data)
+        is DashboardComponent.WebView -> WebViewComponentView(
+            data = component.data,
+            onWebViewClick = onWebViewClick
+        )
         is DashboardComponent.AdPlaceholder -> AdPlaceholderView(data = component.data)
     }
 }
@@ -208,7 +282,7 @@ private fun DashboardComponentView(
 @Composable
 private fun BannerCarouselView(
     data: BannerData,
-    onBannerClick: (String?) -> Unit
+    onBannerClick: (url: String?, actionType: ActionType) -> Unit
 ) {
     if (data.images.isEmpty()) return
 
@@ -228,13 +302,20 @@ private fun BannerCarouselView(
         modifier = Modifier.fillMaxWidth()
     ) { page ->
         val image = data.images[page]
-        AsyncImage(
-            model = image.imageUrl,
-            contentDescription = "Banner",
+        Box(
             modifier = Modifier
-                .fillMaxWidth(),
-            contentScale = ContentScale.FillWidth
-        )
+                .fillMaxWidth()
+                .clickable(enabled = image.actionType != ActionType.NONE) {
+                    onBannerClick(image.actionUrl, image.actionType)
+                }
+        ) {
+            AsyncImage(
+                model = image.imageUrl,
+                contentDescription = "Banner",
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.FillWidth
+            )
+        }
     }
 }
 
@@ -361,21 +442,46 @@ private fun SpacerView(data: SpacerData) {
     Spacer(modifier = Modifier.height(data.heightDp.dp))
 }
 
+/**
+ * An inline WebView inside the dashboard `LazyColumn` would fight the parent's scroll gesture and
+ * pin a WebView per dashboard entry, so the card is a tappable preview that opens the full screen
+ * host in `finance`'s nav graph.
+ */
 @Composable
-private fun WebViewComponentView(data: WebViewData) {
+private fun WebViewComponentView(
+    data: WebViewData,
+    onWebViewClick: (url: String, title: String) -> Unit
+) {
+    if (data.url.isBlank()) return
+
     Card(
+        onClick = { onWebViewClick(data.url, data.title) },
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         shape = RoundedCornerShape(LegacyDimens.CardRadius),
         colors = CardDefaults.cardColors(containerColor = LegacyColors.CardBackground)
     ) {
-        Text(
-            text = data.title,
-            style = MaterialTheme.typography.bodyMedium,
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
-        )
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = data.title,
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f)
+            )
+            Spacer(modifier = Modifier.size(8.dp))
+            Icon(
+                imageVector = Icons.Default.ArrowForward,
+                contentDescription = "Open",
+                tint = LegacyColors.TextLight,
+                modifier = Modifier.size(18.dp)
+            )
+        }
     }
 }
 

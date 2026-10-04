@@ -12,6 +12,7 @@ import com.horizonlabs.financialcalculator.core.domain.repository.HistoryReposit
 import com.horizonlabs.financialcalculator.core.util.Result
 import com.horizonlabs.financialcalculator.core.util.Result.Companion.failure
 import com.horizonlabs.financialcalculator.core.util.Result.Companion.success
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -61,6 +62,21 @@ class GetHistoryUseCaseImpl @Inject constructor(
     override operator suspend fun invoke(calculatorType: String): Result<List<CalculationHistory>> {
         return repository.getHistoryByType(calculatorType)
     }
+}
+
+@Singleton
+class ObserveAllHistoryUseCaseImpl @Inject constructor(
+    private val repository: HistoryRepository
+) : ObserveAllHistoryUseCase {
+    override operator fun invoke(): Flow<List<CalculationHistory>> =
+        repository.observeAllHistory()
+}
+
+@Singleton
+class DeleteAllHistoryUseCaseImpl @Inject constructor(
+    private val repository: HistoryRepository
+) : DeleteAllHistoryUseCase {
+    override suspend operator fun invoke(): Result<Int> = repository.deleteAllHistory()
 }
 
 @Singleton

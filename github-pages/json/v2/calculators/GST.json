@@ -128,7 +128,17 @@
       }
     ],
     "breakdown": null,
-    "charts": [],
+    "charts": [
+      {
+        "type": "BAR",
+        "dataKeys": [
+          "cgst",
+          "sgst",
+          "igst"
+        ],
+        "title": "GST split"
+      }
+    ],
     "formulas": []
   },
   "moreInfo": [

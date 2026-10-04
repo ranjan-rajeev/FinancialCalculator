@@ -28,7 +28,14 @@ class RdCalculatorEngine : CalculatorEngine {
         if (tenureMonths <= 0) return failure(IllegalArgumentException("Invalid tenure"))
         
         val monthlyRate = rate / 1200
-        val maturity = monthlyDeposit * ((Math.pow(1 + monthlyRate, tenureMonths) - 1) / monthlyRate) * (1 + monthlyRate)
+        // The annuity formula divides by the rate, so a 0% deposit (which the
+        // published config allows) is 0/0 = NaN. With no interest the maturity is
+        // simply the deposits.
+        val maturity = if (monthlyRate > 0) {
+            monthlyDeposit * ((Math.pow(1 + monthlyRate, tenureMonths) - 1) / monthlyRate) * (1 + monthlyRate)
+        } else {
+            monthlyDeposit * tenureMonths
+        }
         val totalInvested = monthlyDeposit * tenureMonths
         val totalInterest = maturity - totalInvested
         
@@ -42,7 +49,16 @@ class RdCalculatorEngine : CalculatorEngine {
         
         val breakdown = generateRdBreakdown(monthlyDeposit, rate, tenureMonths)
         
-        return success(CalculationResult(summary = summary, breakdown = breakdown, errors = emptyMap()))
+        return success(CalculationResult(
+            summary = summary,
+            breakdown = breakdown,
+            errors = emptyMap(),
+            rawValues = mapOf(
+                "totalInvested" to totalInvested,
+                "totalInterest" to totalInterest,
+                "maturity" to maturity
+            )
+        ))
     }
     
     private fun generateRdBreakdown(monthlyDeposit: Double, rate: Double, tenureMonths: Double): List<BreakdownItem> {

@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -193,10 +194,16 @@ fun LegacyTextField(
     required: Boolean = false,
     error: String? = null,
     singleLine: Boolean = true,
+    readOnly: Boolean = false,
     keyboardOptions: androidx.compose.foundation.text.KeyboardOptions = androidx.compose.foundation.text.KeyboardOptions.Default,
-    visualTransformation: androidx.compose.ui.text.input.VisualTransformation = androidx.compose.ui.text.input.VisualTransformation.None
+    visualTransformation: androidx.compose.ui.text.input.VisualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
+    interactionSource: MutableInteractionSource? = null,
+    trailingIcon: (@Composable () -> Unit)? = null
 ) {
     Column(modifier = modifier.padding(horizontal = LegacyDimens.CardMargin)) {
+        // OutlinedTextField requires a non-null source, so an un-supplied one is
+        // created here rather than widening the public signature to a platform type.
+        val resolvedInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
@@ -207,9 +214,12 @@ fun LegacyTextField(
             placeholder = placeholder?.let { { Text(it, color = LegacyColors.TextSecondary) } },
             isError = error != null,
             singleLine = singleLine,
+            readOnly = readOnly,
             shape = RoundedCornerShape(LegacyDimens.InputRadius),
             keyboardOptions = keyboardOptions,
             visualTransformation = visualTransformation,
+            interactionSource = resolvedInteractionSource,
+            trailingIcon = trailingIcon,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = LegacyColors.Primary,
                 unfocusedBorderColor = LegacyColors.InputStroke,

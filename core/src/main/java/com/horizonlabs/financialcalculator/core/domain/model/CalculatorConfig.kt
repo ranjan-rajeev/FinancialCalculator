@@ -59,6 +59,10 @@ sealed interface InputFieldConfig {
         override val key: String,
         val label: String,
         val defaultValue: String = "TODAY",
+        /** Inclusive lower bound as `dd-MM-yyyy`. Null means unbounded. */
+        val minDate: String? = null,
+        /** Inclusive upper bound as `dd-MM-yyyy`. Null means unbounded. */
+        val maxDate: String? = null,
         override val order: Int = 0,
         override val visibleWhen: VisibilityCondition? = null
     ) : InputFieldConfig

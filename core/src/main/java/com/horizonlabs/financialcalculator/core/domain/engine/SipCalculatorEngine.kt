@@ -80,7 +80,16 @@ class SipCalculatorEngine : CalculatorEngine {
         
         val breakdown = generateSipBreakdown(monthlyInvestment, rate, tenureInMonths, frequencyMultiplier)
         
-        return success(CalculationResult(summary = summary, breakdown = breakdown, errors = emptyMap()))
+        return success(CalculationResult(
+            summary = summary,
+            breakdown = breakdown,
+            errors = emptyMap(),
+            rawValues = mapOf(
+                "totalInvested" to totalInvested,
+                "totalReturns" to totalReturns,
+                "maturity" to maturity
+            )
+        ))
     }
     
     private fun calculateGoalSip(values: Map<String, Any>): Result<CalculationResult> {
@@ -126,7 +135,17 @@ class SipCalculatorEngine : CalculatorEngine {
         
         val breakdown = generateSipBreakdown(requiredMonthly, rate, tenureInMonths, frequencyMultiplier)
         
-        return success(CalculationResult(summary = summary, breakdown = breakdown, errors = emptyMap()))
+        return success(CalculationResult(
+            summary = summary,
+            breakdown = breakdown,
+            errors = emptyMap(),
+            rawValues = mapOf(
+                "requiredMonthly" to requiredMonthly,
+                "totalInvested" to totalInvested,
+                "totalReturns" to totalReturns,
+                "goalAmount" to goalAmount
+            )
+        ))
     }
     
     private fun calculateLumpsumSip(values: Map<String, Any>): Result<CalculationResult> {
@@ -152,7 +171,16 @@ class SipCalculatorEngine : CalculatorEngine {
         
         val breakdown = generateLumpsumBreakdown(lumpsumAmount, rate, tenureInMonths)
         
-        return success(CalculationResult(summary = summary, breakdown = breakdown, errors = emptyMap()))
+        return success(CalculationResult(
+            summary = summary,
+            breakdown = breakdown,
+            errors = emptyMap(),
+            rawValues = mapOf(
+                "lumpsumAmount" to lumpsumAmount,
+                "totalReturns" to totalReturns,
+                "maturity" to maturity
+            )
+        ))
     }
     
     private fun generateSipBreakdown(

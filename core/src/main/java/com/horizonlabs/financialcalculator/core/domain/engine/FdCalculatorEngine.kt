@@ -56,7 +56,12 @@ class FdCalculatorEngine : CalculatorEngine {
         return success(CalculationResult(
             summary = summary,
             breakdown = breakdown,
-            errors = emptyMap()
+            errors = emptyMap(),
+            rawValues = mapOf(
+                "principal" to principal,
+                "totalInterest" to totalInterest,
+                "maturity" to maturity
+            )
         ))
     }
     
